@@ -15,10 +15,10 @@ var loadTemplateDetails = function(id){
 
 var populateTemplateDetails = function(template){
 	$("#templateId").val(template.id);
-	$("#templateName").text(template.name);
-	$("#templateDescription").text(template.description);
-	$("#inactivityPeriod").text(template.inactivityPeriod);
-	$("#templateTags").text(template.tags);
+	$("#templateName").val(template.name);
+	$("#templateDescription").val(template.description);
+	$("#inactivityPeriod").val(template.inactivityPeriod);
+	$("#templateTags").val(template.tags);
 	$("#templateProperties").val($.map(template.properties, function(value,key){
 		return key + "=" + value;
 	}).join("\n"));

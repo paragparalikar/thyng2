@@ -6,3 +6,7 @@ $(".sidebar-menu > li").click(function(){
 	}
 });
 
+
+var confirm = function(title, text, cancelCallback, confirmCallback){
+	
+}
