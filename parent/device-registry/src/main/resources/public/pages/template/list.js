@@ -7,7 +7,7 @@ $("#templates")
 							{
 								orderable : false,
 								mRender : function(data, type, row) {
-									return '<a href="#" onclick="showViewModal(event, '+row.id+');">View</a>'
+									return '<a href="#" onclick="showViewTemplateModal(event, '+row.id+');">View</a>'
 											+ ' | <a href="#">Edit</a>'
 											+ ' | <a href="#">Delete</a>';
 								}
@@ -18,7 +18,7 @@ $("#templates")
 					}
 				});
 
-var showViewModal = function(event, id) {
+var showViewTemplateModal = function(event, id) {
 	event.preventDefault();
 	$(".modal").load("pages/template/view.html", function() {
 		$(".modal").modal();
