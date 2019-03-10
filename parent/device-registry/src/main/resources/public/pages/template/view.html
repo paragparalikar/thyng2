@@ -3,54 +3,69 @@
 		<h4 class="modal-title">View Template Details</h4>
 	</div>
 	<div class="modal-body">
-		<table style="width:100%">
-			<tr>
-				<td width="50%" style="padding: 0 1em 0 0;">
-					<div class="form-group">
-						<label for="templateName">Name</label> 
-						<input type="text" class="form-control" id="templateName" placeholder="Template Name">
-					</div>
-					<div class="form-group">
-						<label for="templateDescription">Description</label> 
-						<input type="text" class="form-control" id="templateDescription" placeholder="Template Description">
-					</div>
-					<div class="form-group">
-						<label for="inactivityPeriod">Inactivity Period</label> 
-						<input type="text" class="form-control" id="inactivityPeriod" placeholder="Inactivity Period (in seconds)">
-					</div>
-				</td>
-				<td width="50%"  style="padding: 0 0 0 1em;">
-					<div class="form-group">
-						<label for="templateTags">Tags</label> 
-						<input type="text" class="form-control" id="templateTags" placeholder="Tags (type and press Enter)">
-					</div>
-					<div class="form-group">
-						<label for="templateProperties">Properties</label> 
-						<textarea class="form-control" id="templateProperties" rows="5"></textarea>
-					</div>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<table id="metrics" class="table table-striped table-bordered table-sm">
-						<caption>
-							<label><strong>Metrics</strong></label>
-							<button class="btn btn-primary pull-right">New Metric</button>
-						</caption>
-						<thead>
-							<tr>
-								<th scope="col">Name</th>
-								<th scope="col">Abbreviation</th>
-								<th scope="col">Unit</th>
-								<th scope="col">Data Type</th>
-								<th scope="col">Description</th>
-								<th scope="col">&nbsp;</th>
-							</tr>
-						</thead>
-					</table>
-				</td>
-			</tr>
-		</table>
+		<ul class="nav nav-tabs" role="tablist" data-tabs="tabs">
+			<li class="nav-item active">
+				<a class="nav-link active" id="template-details-tab" data-toggle="tab" href="#template-details-tab-content" role="tab" aria-controls="template-details" aria-selected="true">Details</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="metrics-tab" data-toggle="tab" href="#metrics-tab-content" role="tab" aria-controls="metrics" aria-selected="false">Metrics</a>
+			</li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="template-details-tab-content" role="tabpanel" aria-labelledby="template-details-tab">
+				<table style="width:100%">
+					<tr>
+						<td width="50%" style="padding: 0 1em 0 0;">
+							<div class="form-group">
+								<label for="templateName">Name</label> 
+								<input type="text" class="form-control" id="templateName" placeholder="Template Name">
+							</div>
+							<div class="form-group">
+								<label for="templateDescription">Description</label> 
+								<input type="text" class="form-control" id="templateDescription" placeholder="Template Description">
+							</div>
+							<div class="form-group">
+								<label for="inactivityPeriod">Inactivity Period</label> 
+								<input type="text" class="form-control" id="inactivityPeriod" placeholder="Inactivity Period (in seconds)">
+							</div>
+						</td>
+						<td width="50%"  style="padding: 0 0 0 1em;">
+							<div class="form-group">
+								<label for="templateTags">Tags</label> 
+								<input type="text" class="form-control" id="templateTags" placeholder="Tags (type and press Enter)">
+							</div>
+							<div class="form-group">
+								<label for="templateProperties">Properties</label> 
+								<textarea class="form-control" id="templateProperties" rows="5"></textarea>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="tab-pane" id="metrics-tab-content" role="tabpanel" aria-labelledby="metrics-tab">
+				<table id="metrics-table" class="table table-striped table-bordered table-sm" style="width:100%;">
+					<caption>
+						<label>Metrics for <strong id="metrics-tab-content-title"></strong></label>
+						<button class="btn btn-primary pull-right">New Metric</button>
+					</caption>
+					<thead>
+						<tr>
+							<th scope="col">Name</th>
+							<th scope="col">Abbreviation</th>
+							<th scope="col">Unit</th>
+							<th scope="col">Data Type</th>
+							<th scope="col">Description</th>
+							<th scope="col">&nbsp;</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+		
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-secondary">Cancel</button>
+		<button type="button" class="btn btn-primary" id="">Save</button>
 	</div>
 </div>
 <script type="text/javascript" src="pages/template/view.js"></script>

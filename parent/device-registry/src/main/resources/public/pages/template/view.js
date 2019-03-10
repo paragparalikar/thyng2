@@ -4,7 +4,8 @@ var viewTemplateDetails = function(id){
 		$("#templateDescription").val(template.description);
 		$("#inactivityPeriod").val(template.inactivityPeriod);
 		$("#templateTags").val(template.tags);
-		$("#metrics").DataTable({
+		$("#metrics-tab-content-title").text(template.name);
+		$("#metrics-table").DataTable({
 			searching: false,
 			ordering: false,
 			paging: false,

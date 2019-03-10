@@ -7,11 +7,22 @@ $("#templates")
 							{
 								orderable : false,
 								mRender : function(data, type, row) {
-									return '<a href="#" onclick="showViewTemplateModal(event, '+row.id+');">View</a>'
-											+ ' | <a href="#">Edit</a>'
-											+ ' | <a href="#">Delete</a>';
+									
+									return '<div class="btn-group" role="group">'+
+										'<button type="button" class="btn btn-warning btn-xs" onclick="showViewTemplateModal(event, '+row.id+');">'+
+											'<span class="fa fa-edit"></span> Edit'+
+										'</button>'+
+										'<button type="button" class="btn btn-danger btn-xs">'+
+											'<span class="fa fa-trash"></span> Delete'+
+										'</button>'+
+									'</div>';
+									
 								}
 							} ],
+					columnDefs: [{
+						targets: -1,
+						className: "text-center"
+					}],
 					ajax : {
 						url : "../../templates",
 						dataSrc : ""
