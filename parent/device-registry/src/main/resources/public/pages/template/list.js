@@ -1,6 +1,12 @@
 templateService.findAll(function(templates){
 	$("#templates").DataTable({
-		columns : [{data : "name"},
+		columns : [
+		        {
+		        	data : "name",
+		        	mRender : function(data, type, row) {
+		        		return '<a href="#" onclick="showViewTemplateModal(this, event, '+row.id+');">'+data+'</a>';
+		        	}
+		        },
 				{data : "inactivityPeriod"},
 				{data : "description"},
 				{data : "tags"},
