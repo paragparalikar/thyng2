@@ -19,25 +19,25 @@
 							<input type="text" style="display:none;" id="templateId">
 							<div class="form-group">
 								<label for="templateName">Name</label> 
-								<label class="form-control" id="templateName"></label>
+								<input type="text" class="form-control" id="templateName" placeholder="Template Name">
 							</div>
 							<div class="form-group">
 								<label for="templateDescription">Description</label> 
-								<label class="form-control" id="templateDescription"></label>
+								<input type="text" class="form-control" id="templateDescription" placeholder="Template Description">
 							</div>
 							<div class="form-group">
 								<label for="inactivityPeriod">Inactivity Period</label> 
-								<label class="form-control" id="inactivityPeriod"></label>
+								<input type="text" class="form-control" id="inactivityPeriod" placeholder="Inactivity Period (in seconds)">
 							</div>
 						</td>
 						<td width="50%"  style="padding: 0 0 0 1em;">
 							<div class="form-group">
 								<label for="templateTags">Tags</label> 
-								<label class="form-control" id="templateTags"></label>
+								<input type="text" class="form-control" id="templateTags" placeholder="Tags (type and press Enter)">
 							</div>
 							<div class="form-group">
 								<label for="templateProperties">Properties</label> 
-								<textarea readonly="readonly" disabled="disabled" class="form-control" id="templateProperties" rows="4"></textarea>
+								<textarea class="form-control" id="templateProperties" rows="4"></textarea>
 							</div>
 						</td>
 					</tr>
@@ -52,6 +52,11 @@
 							<th scope="col">Unit</th>
 							<th scope="col">Data Type</th>
 							<th scope="col">Description</th>
+							<th scope="col">
+								<button class="btn btn-primary pull-right">
+									<span class="fa fa-plus"></span> New Metric
+								</button>
+							</th>
 						</tr>
 					</thead>
 				</table>
@@ -63,7 +68,10 @@
 		<button id="cancelButton" type="button" class="btn btn-secondary">
 			<span class="fa fa-trash"></span> Cancel
 		</button>
+		<button id="saveButton" type="button" class="btn btn-primary" id="">
+			<span class="fa fa-save"></span> Save
+		</button>
 	</div>
 </div>
-<script type="text/javascript" src="pages/template/view.js"></script>
+<script type="text/javascript" src="pages/template/edit.js"></script>
 

@@ -13,7 +13,7 @@ templateService.findAll(function(templates){
 				{
 					mRender : function(data, type, row) {
 						return '<div class="btn-group" role="group">'+
-							'<button type="button" class="btn btn-warning btn-xs" onclick="showViewTemplateModal(this, event, '+row.id+');">'+
+							'<button type="button" class="btn btn-warning btn-xs" onclick="showEditTemplateModal(this, event, '+row.id+');">'+
 								'<span class="fa fa-edit"></span> Edit'+
 							'</button>'+
 							'<button type="button" class="btn btn-danger btn-xs">'+
@@ -36,6 +36,15 @@ var showViewTemplateModal = function(source, event, id) {
 	$(".modal").load("pages/template/view.html", function() {
 		$(".modal").modal();
 		viewTemplateDetails(id);
+	});
+};
+
+var showEditTemplateModal = function(source, event, id) {
+	event.preventDefault();
+	source.blur();
+	$(".modal").load("pages/template/edit.html", function() {
+		$(".modal").modal();
+		editTemplateDetails(id);
 	});
 };
 
