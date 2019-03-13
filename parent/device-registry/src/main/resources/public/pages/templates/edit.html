@@ -81,6 +81,7 @@ $("#cancelButton").click(function(){
 var metricsDataTable = null;
 var showMetricsDataTable = function(metrics){
 	metricsDataTable = $("#metrics-table").DataTable({
+		rowId : "id",		
 		searching: false,
 		ordering: false,
 		paging: false,
@@ -113,18 +114,25 @@ var showMetricsDataTable = function(metrics){
 }
 
 $("#newMetricBtn").click(function(){
-	$("#metric-modal-container").loadTemplate("pages/metrics/edit.html", null, {
+	showMetricEditView(null);
+});
+
+var showMatricEditorModal = function(source, event, id){
+	event.preventDefault();
+	source.blur();
+	metric = metricsDataTable.row("#"+id).data();
+	showMetricEditView(metric);
+}
+
+var showMetricEditView = function(metric){
+	$("#metric-modal-container").loadTemplate("pages/metrics/edit.html", metric, {
 		success: function(){
 			metricEditorModal = $("#metric-modal-container").modal({
 				closeExisting: false
 			});
 		}
 	});
-});
-
-var showMatricEditorModal = function(source, event, id){
-	event.preventDefault();
-	source.blur();
 }
+
 </script>
 
