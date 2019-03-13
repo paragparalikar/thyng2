@@ -42,4 +42,11 @@
 	$("#metricEditorCancelButton").click(function(){
 		$.modal.close();
 	});
+	var populateMetric = function(metric){
+		metric.name= $("#metricName").val();
+		metric.description= $("#metricDescription").val();
+		metric.abbreviation= $("#abbreviation").val();
+		metric.unit= $("#metricUnit").val();
+		metric.dataType= $("#dataType").val();
+	}
 </script>

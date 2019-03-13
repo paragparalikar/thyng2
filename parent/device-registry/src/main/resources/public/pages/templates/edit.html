@@ -1,4 +1,4 @@
-<div class="modal-content" style="width: 50em;">
+<div class="modal-content" style="width: 60em;">
 	<div class="modal-header">
 		<h4 class="modal-title">Template Details</h4>
 	</div>
@@ -78,8 +78,10 @@ $("#cancelButton").click(function(){
 	$.modal.close();
 });
 
+var metricsData = null;
 var metricsDataTable = null;
 var showMetricsDataTable = function(metrics){
+	metricsData = metrics;
 	metricsDataTable = $("#metrics-table").DataTable({
 		rowId : "id",		
 		searching: false,
@@ -100,7 +102,7 @@ var showMetricsDataTable = function(metrics){
 			{
 				mRender : function(data, type, row) {
 					return '<div class="btn-group" role="group">'+
-						'<button type="button" class="btn btn-warning btn-xs" onclick="showMatricEditorModal(this, event, '+row.id+');">'+
+						'<button type="button" class="btn btn-warning btn-xs" onclick="showMatricEditorModal(this, event, \''+row.id+'\');">'+
 							'<span class="fa fa-edit"></span> Edit'+
 						'</button>'+
 						'<button type="button" class="btn btn-danger btn-xs">'+
@@ -120,15 +122,28 @@ $("#newMetricBtn").click(function(){
 var showMatricEditorModal = function(source, event, id){
 	event.preventDefault();
 	source.blur();
+	alert(JSON.stringify(id));
 	metric = metricsDataTable.row("#"+id).data();
 	showMetricEditView(metric);
 }
 
+var counter = 0;
 var showMetricEditView = function(metric){
 	$("#metric-modal-container").loadTemplate("pages/metrics/edit.html", metric, {
 		success: function(){
 			metricEditorModal = $("#metric-modal-container").modal({
 				closeExisting: false
+			});
+			$("#metricEditorSaveButton").click(function(){
+				if(metric){
+					populateMetric(metric);
+				}else{
+					newMetric = {id: "temp"+(++counter)};
+					populateMetric(newMetric);
+					metricsData.push(newMetric);
+				}
+				metricsDataTable.clear().rows.add(metricsData).draw();
+				$.modal.close();
 			});
 		}
 	});
