@@ -16,6 +16,8 @@ public class TemplateDTO {
 
 	private String description;
 	
+	private Set<MetricDTO> metrics;
+	
 	private Set<String> tags;
 
 	private Map<String, String> properties;

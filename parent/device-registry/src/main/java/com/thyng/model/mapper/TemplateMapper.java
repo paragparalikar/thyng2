@@ -9,7 +9,7 @@ import org.mapstruct.Mapper;
 import com.thyng.model.dto.TemplateDTO;
 import com.thyng.model.entity.Template;
 
-@Mapper(componentModel="spring")
+@Mapper(componentModel="spring", uses=MetricMapper.class)
 public interface TemplateMapper {
 
 	TemplateDTO toDTO(Template template);
