@@ -21,17 +21,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = true, of={"id", "name", "organisation"})
 public class Thing extends AuditableEntity {
 
 	@Id 
 	@GeneratedValue
 	private Long id;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Template template;
 	
-	@ManyToOne
+	@ManyToOne(optional=false)
 	private Organisation organisation;
 	
 	private String name;

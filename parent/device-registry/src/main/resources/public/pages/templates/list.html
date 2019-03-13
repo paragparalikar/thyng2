@@ -29,8 +29,10 @@
 	</div>
 </section>
 <script type="text/javascript">
+	var templatesDataTable = null;
 	templateService.findAll(function(templates){
-		$("#templates").DataTable({
+		templatesDataTable = $("#templates").DataTable({
+			rowId : "id",
 			columns : [
 			        {
 			        	data : "name",
@@ -61,29 +63,33 @@
 		});
 	});
 
-var showViewTemplateModal = function(source, event, id) {
-	event.preventDefault();
-	source.blur();
-	$.publish("show-template-view-modal", id);
-};
-
-var showEditTemplateModal = function(source, event, id) {
-	event.preventDefault();
-	source.blur();
-	$(".modal").load("pages/templates/edit.html", function() {
-		$(".modal").modal();
-		editTemplateDetails(id);
-	});
-};
-
-var showDeleteTemplateModal = function(source, event, id){
-	event.preventDefault();
-	source.blur();
-	showConfirmationModal("Delete template",
-			"Are you sure you want to delete this template ?",
-			"No", "Yes", "btn-danger", null, function(){
-		alert("deleting modal id "+id);
-	});
-}
+	var showViewTemplateModal = function(source, event, id) {
+		event.preventDefault();
+		source.blur();
+		$.publish("show-template-view-modal", id);
+	};
+	
+	var showEditTemplateModal = function(source, event, id) {
+		event.preventDefault();
+		source.blur();
+		$(".modal").load("pages/templates/edit.html", function() {
+			$(".modal").modal();
+			editTemplateDetails(id);
+		});
+	};
+	
+	var showDeleteTemplateModal = function(source, event, id){
+		event.preventDefault();
+		source.blur();
+		row = templatesDataTable.row("#"+id);
+		$.publish("show-confirmation-modal", [{
+			message : "Are you sure you want to delete template "+row.data().name+" ?"
+		}, function(){
+			templateService.deleteById(id, function(){
+				row.remove().draw();
+				$.modal.close();
+			});
+		}]);
+	}
 
 </script>

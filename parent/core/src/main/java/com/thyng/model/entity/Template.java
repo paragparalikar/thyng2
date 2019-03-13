@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude="metrics")
+@EqualsAndHashCode(callSuper = true, of={"id", "name", "organisation"})
 public class Template extends AuditableEntity {
 
 	@Id
@@ -37,8 +37,11 @@ public class Template extends AuditableEntity {
 
 	private String description;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true, mappedBy="template")
 	private Set<Metric> metrics;
+	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="template")
+	private Set<Thing> things;
 	
 	private Integer inactivityPeriod; // seconds
 

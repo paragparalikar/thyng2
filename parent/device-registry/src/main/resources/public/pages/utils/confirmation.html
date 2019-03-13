@@ -1,12 +1,27 @@
-<div class="modal-content" style="width: 50em;">
-	<div class="modal-header">
-		<h4 class="modal-title" id="confirmation-modal-title"></h4>
+<div id="confirmation-modal" class="modal modal-danger" style="display: block;">
+	<div class="modal-content" style="width: 50em;">
+		<div class="modal-header">
+			<h4 class="modal-title" data-content="title">
+				<i class="fa fa-warning"></i> Please confirm
+			</h4>
+		</div>
+		<div class="modal-body">
+			<label data-content="message">Are you sure?</label>
+		</div>
+		<div class="modal-footer">
+			<button id="confirmation-cancel-button" type="button" class="btn btn-outline btn-danger">
+				<i class="fa fa-times"></i> No
+			</button>
+			<button id="confirmation-action-button" type="button" class="btn btn-outline btn-danger">
+				<i class="fa fa-check"></i> Yes
+			</button>
+		</div>
 	</div>
-	<div class="modal-body">
-		<label id="confirmation-modal-message"></label>
-	</div>
-	<div class="modal-footer">
-		<button id="confirmation-cancel-button" type="button" class="btn btn-secondary">No</button>
-		<button id="confirmation-action-button" type="button" class="btn btn-primary">Yes</button>
-	</div>
+	<script>
+		$("#confirmation-cancel-button").click(function(){
+			$.modal.close();
+		});
+	</script>
 </div>
+
+

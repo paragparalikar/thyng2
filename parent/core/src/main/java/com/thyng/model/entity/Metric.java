@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, exclude="template")
+@EqualsAndHashCode(callSuper = true, of={"id", "name"})
 public class Metric extends AuditableEntity {
 
 	@Id

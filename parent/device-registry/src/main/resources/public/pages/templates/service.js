@@ -4,6 +4,13 @@ var templateService = {
 	},
 	findOne : function(id, successCallback) {
 		$.get(window.location.origin + "/templates/" + id, successCallback);
+	},
+	deleteById : function(id, callback){
+		$.ajax({
+			url: window.location.origin + "/templates/" + id,
+			type: "DELETE",
+			success: callback
+		});
 	}
 }
 
@@ -12,9 +19,9 @@ $.subscribe("show-template-list-view", function(){
 });
 $.subscribe("show-template-view-modal", function(event, id){
 	templateService.findOne(id, function(template, status){
-		$(".modal").loadTemplate("pages/templates/view.html", template, {
+		$("#modal-container").loadTemplate("pages/templates/view.html", template, {
 			success : function(){
-				$(".modal").modal();
+				$("#modal-container").modal();
 				showMetricsDataTable(template.metrics);
 			}
 		});

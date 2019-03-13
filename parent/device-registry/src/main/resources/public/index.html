@@ -61,7 +61,7 @@
 			 </aside>
 			<div class="content-wrapper"></div>
 		</div>
-		<div class="modal"></div>
+		<div id="modal-container"></div>
 		<script src="libs/jquery/dist/jquery.min.js"></script>
 		<script src="libs/jquery-tiny-pubsub/ba-tiny-pubsub.min.js"></script>
 		<script src="libs/loadTemplate/jquery.loadTemplate.js"></script>
@@ -72,6 +72,7 @@
 		<script src="libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
 		<script src="libs/admin-lte/js/adminlte.min.js"></script>
 		
+		<script src="pages/utils/utils.js"></script>
 		<script src="pages/dashboard/service.js"></script>
 		<script src="pages/templates/service.js"></script>
 		<script src="pages/metrics/service.js"></script>
@@ -93,30 +94,6 @@
 		$(function(){
 			$("#menu-dashboard").trigger("click");
 		});
-		
-			var showConfirmationModal = function(title, text, cancelButtonText, actionButtonText, actionButtonStyleClass, cancelCallback, actionCallback){
-				$(".modal").load(window.location.origin+"/pages/utils/confirmation.html", function(){
-					$("#confirmation-modal-title").text(title);
-					$("#confirmation-modal-message").text(text);
-					
-					$("#confirmation-cancel-button").text(cancelButtonText);
-					$("#confirmation-cancel-button").click(function(){$.modal.close();});
-					if(null != cancelCallback){
-						$("#confirmation-cancel-button").click(cancelCallback);
-					}
-					
-					$("#confirmation-action-button").text(actionButtonText);
-					$("#confirmation-action-button").addClass(actionButtonStyleClass);
-					$("#confirmation-action-button").click(function(){$.modal.close();});
-					if(null != actionCallback){
-						$("#confirmation-action-button").click(actionCallback);
-					}
-					
-					$(".modal").modal({
-						closeExisting: false
-					});
-				});
-			}
 
 		</script>
 	</body>
