@@ -57,34 +57,24 @@
 				</table>
 			</div>
 		</div>
-		
-	</div>
-	<div class="modal-footer">
-		<button id="cancelButton" type="button" class="btn btn-secondary">
-			<span class="fa fa-trash"></span> Cancel
-		</button>
 	</div>
 </div>
 <script>
-$("#cancelButton").click(function(){
-	$.modal.close();
-});
-
-var showMetricsDataTable = function(metrics){
-	$("#metrics-table").DataTable({
-		searching: false,
-		ordering: false,
-		paging: false,
-		info: false,
-		data: metrics,
-		columns : [
-			{data: "name"},
-			{data: "abbreviation"},
-			{data: "unit"},
-			{data: "dataType"},
-			{data: "description"},
-		]
-	});
-}
+	var showMetricsDataTable = function(metrics){
+		$("#metrics-table").DataTable({
+			searching: false,
+			ordering: false,
+			paging: false,
+			info: false,
+			data: metrics,
+			columns : [
+				{data: "name"},
+				{data: "abbreviation"},
+				{data: "unit"},
+				{data: "dataType"},
+				{data: "description"},
+			]
+		});
+	}
 </script>
 

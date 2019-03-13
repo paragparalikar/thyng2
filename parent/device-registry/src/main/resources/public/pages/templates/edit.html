@@ -53,7 +53,7 @@
 							<th scope="col">Data Type</th>
 							<th scope="col">Description</th>
 							<th scope="col">
-								<button class="btn btn-primary btn-sm">
+								<button class="btn btn-primary btn-sm" id="newMetricBtn">
 									<span class="fa fa-plus"></span> New Metric
 								</button>
 							</th>
@@ -62,7 +62,7 @@
 				</table>
 			</div>
 		</div>
-		
+		<div id="metric-modal-container"></div>
 	</div>
 	<div class="modal-footer">
 		<button id="cancelButton" type="button" class="btn btn-secondary">
@@ -112,6 +112,15 @@ var showMetricsDataTable = function(metrics){
 	});
 }
 
+$("#newMetricBtn").click(function(){
+	$("#metric-modal-container").loadTemplate("pages/metrics/edit.html", null, {
+		success: function(){
+			metricEditorModal = $("#metric-modal-container").modal({
+				closeExisting: false
+			});
+		}
+	});
+});
 
 var showMatricEditorModal = function(source, event, id){
 	event.preventDefault();

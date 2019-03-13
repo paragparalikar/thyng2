@@ -1,0 +1,45 @@
+<div class="modal-content" style="width: 30em;">
+	<div class="modal-header">
+		<h4 class="modal-title">Metric</h4>
+	</div>
+	<div class="modal-body">
+		<input type="text" style="display: none;" id="metricId" data-value="id">
+		<div class="form-group">
+			<label for="metricName">Name</label> 
+			<input type="text" data-value="name" class="form-control" id="metricName" placeholder="Metric Name">
+		</div>
+		<div class="form-group">
+			<label for="metricDescription">Description</label> 
+			<input type="text" data-value="description" class="form-control" id="metricDescription" placeholder="Description for the Metric">
+		</div>
+		<div class="form-group">
+			<label for="abbreviation">Abbreviation</label> 
+			<input type="text" data-value="abbreviation" class="form-control" id="abbreviation" placeholder="Abbreviation for the measurement Unit">
+		</div>
+		<div class="form-group">
+			<label for="metricUnit">Unit</label> 
+			<input type="text" data-value="unit" class="form-control" id="metricUnit" placeholder="Measurement unit for this metric">
+		</div>
+		<div class="form-group">
+			<label for="dataType">Data Type</label> 
+			<select data-value="dataType" class="form-control" id="dataType">
+				<option selected="selected">NUMBER</option>
+				<option>BOOLEAN</option>
+				<option>TEXT</option>
+			</select>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button id="metricEditorCancelButton" type="button" class="btn btn-secondary">
+			<span class="fa fa-trash"></span> Cancel
+		</button>
+		<button id="metricEditorSaveButton" type="button" class="btn btn-primary" id="">
+			<span class="fa fa-save"></span> Save
+		</button>
+	</div>
+</div>
+<script>
+	$("#metricEditorCancelButton").click(function(){
+		$.modal.close();
+	});
+</script>
