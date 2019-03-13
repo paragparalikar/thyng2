@@ -122,7 +122,6 @@ $("#newMetricBtn").click(function(){
 var showMatricEditorModal = function(source, event, id){
 	event.preventDefault();
 	source.blur();
-	alert(JSON.stringify(id));
 	metric = metricsDataTable.row("#"+id).data();
 	showMetricEditView(metric);
 }
