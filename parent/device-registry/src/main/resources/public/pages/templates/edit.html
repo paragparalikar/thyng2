@@ -19,25 +19,25 @@
 							<input type="text" style="display:none;" id="templateId">
 							<div class="form-group">
 								<label for="templateName">Name</label> 
-								<input type="text" class="form-control" id="templateName" placeholder="Template Name">
+								<input type="text" class="form-control" id="templateName" data-value="name" placeholder="Template Name">
 							</div>
 							<div class="form-group">
 								<label for="templateDescription">Description</label> 
-								<input type="text" class="form-control" id="templateDescription" placeholder="Template Description">
+								<input type="text" class="form-control" id="templateDescription" data-value="description" placeholder="Template Description">
 							</div>
 							<div class="form-group">
 								<label for="inactivityPeriod">Inactivity Period</label> 
-								<input type="text" class="form-control" id="inactivityPeriod" placeholder="Inactivity Period (in seconds)">
+								<input type="text" class="form-control" id="inactivityPeriod" data-value="inactivityPeriod" placeholder="Inactivity Period (in seconds)">
 							</div>
 						</td>
 						<td width="50%"  style="padding: 0 0 0 1em;">
 							<div class="form-group">
 								<label for="templateTags">Tags</label> 
-								<input type="text" class="form-control" id="templateTags" placeholder="Tags (type and press Enter)">
+								<input type="text" class="form-control" id="templateTags" data-value="tags" placeholder="Tags (type and press Enter)">
 							</div>
 							<div class="form-group">
 								<label for="templateProperties">Properties</label> 
-								<textarea class="form-control" id="templateProperties" rows="4"></textarea>
+								<textarea class="form-control" id="templateProperties" data-value="properties" data-format="MapFormatter" data-format-target="value" rows="4"></textarea>
 							</div>
 						</td>
 					</tr>
@@ -53,7 +53,7 @@
 							<th scope="col">Data Type</th>
 							<th scope="col">Description</th>
 							<th scope="col">
-								<button class="btn btn-primary pull-right">
+								<button class="btn btn-primary btn-sm">
 									<span class="fa fa-plus"></span> New Metric
 								</button>
 							</th>
@@ -74,43 +74,22 @@
 	</div>
 </div>
 <script>
-var editTemplateDetails = function(id){
-	loadTemplateDetails(id);
-}
-
 $("#cancelButton").click(function(){
 	$.modal.close();
 });
 
-var loadTemplateDetails = function(id){
-	templateService.findOne(id, function(template, status){
-		populateTemplateDetails(template);
-		var table = loadMetrics(template.id);
-	});
-}
-
-var populateTemplateDetails = function(template){
-	$("#templateId").val(template.id);
-	$("#templateName").val(template.name);
-	$("#templateDescription").val(template.description);
-	$("#inactivityPeriod").val(template.inactivityPeriod);
-	$("#templateTags").val(template.tags);
-	$("#templateProperties").val($.map(template.properties, function(value,key){
-		return key + "=" + value;
-	}).join("\n"));
-}
-
-
-var loadMetrics = function(id){
-	return $("#metrics-table").DataTable({
+var metricsDataTable = null;
+var showMetricsDataTable = function(metrics){
+	metricsDataTable = $("#metrics-table").DataTable({
 		searching: false,
 		ordering: false,
 		paging: false,
 		info: false,
-		ajax: {
-			url : "../../templates/"+id+"/metrics",
-			dataSrc : ""
-		},
+		data: metrics,
+		columnDefs: [{
+			targets: -1,
+			className: "text-center"
+		}],
 		columns : [
 			{data: "name"},
 			{data: "abbreviation"},
@@ -132,6 +111,7 @@ var loadMetrics = function(id){
 		]
 	});
 }
+
 
 var showMatricEditorModal = function(source, event, id){
 	event.preventDefault();

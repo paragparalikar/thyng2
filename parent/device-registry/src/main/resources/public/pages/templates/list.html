@@ -19,7 +19,11 @@
 								<th>Inactivity Period</th>
 								<th>Description</th>
 								<th>Tags</th>
-								<th>&nbsp;</th>
+								<th>
+									<button class="btn btn-primary btn-sm">
+										<span class="fa fa-plus"></span> New Template
+									</button>
+								</th>
 							</tr>
 						</thead>
 					</table>
@@ -33,6 +37,10 @@
 	templateService.findAll(function(templates){
 		templatesDataTable = $("#templates").DataTable({
 			rowId : "id",
+			language : {
+				processing : "Loading ..."
+			},
+			processing : true,
 			columns : [
 			        {
 			        	data : "name",
@@ -57,6 +65,7 @@
 					} ],
 			columnDefs: [{
 				targets: -1,
+				orderable: false,
 				className: "text-center"
 			}],
 			data: templates
@@ -72,10 +81,7 @@
 	var showEditTemplateModal = function(source, event, id) {
 		event.preventDefault();
 		source.blur();
-		$(".modal").load("pages/templates/edit.html", function() {
-			$(".modal").modal();
-			editTemplateDetails(id);
-		});
+		$.publish("show-template-edit-modal", id);
 	};
 	
 	var showDeleteTemplateModal = function(source, event, id){

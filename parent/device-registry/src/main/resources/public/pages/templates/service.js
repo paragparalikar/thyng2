@@ -27,3 +27,14 @@ $.subscribe("show-template-view-modal", function(event, id){
 		});
 	});
 });
+$.subscribe("show-template-edit-modal", function(event, id){
+	templateService.findOne(id, function(template, status){
+		$("#modal-container").loadTemplate("pages/templates/edit.html", template, {
+			success : function(){
+				$("#modal-container").modal();
+				showMetricsDataTable(template.metrics);
+			}
+		});
+	});
+});
+
