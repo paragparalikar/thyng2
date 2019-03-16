@@ -1,25 +1,28 @@
-<table id="templates" class="table table-bordered table-striped" style="width: 100%">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Inactivity Period</th>
-            <th>Description</th>
-            <th>Tags</th>
-            <th>
-                <button class="btn btn-primary btn-sm" id="newTemplateButton">
-                    <span class="fa fa-plus"></span> New Template
-                </button>
-            </th>
-        </tr>
-    </thead>
-</table>
+<div class="card">
+    <div class="card-body">
+        <table id="templates" class="table table-bordered table-striped" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Inactivity Period</th>
+                    <th>Description</th>
+                    <th>Tags</th>
+                    <th>
+                        <button class="btn btn-primary btn-sm" id="newTemplateButton">
+                            <span class="fa fa-plus"></span> New Template
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
 <script type="text/javascript">
     var templatesDataTable = null;
     templateService.findAll(function (templates) {
         templatesDataTable = $("#templates").DataTable({
             rowId: "id",
-            searching: false,
-            lengthChange: false,
             language: {
                 processing: "Loading ..."
             },
@@ -37,11 +40,11 @@
                 {
                     mRender: function (data, type, row, meta) {
                         return '<div class="btn-group" role="group">' +
-                            '<a class="btn btn-warning btn-xs" href="#templates/'+row.id+'">'+
+                            '<a class="btn btn-warning btn-xs" href="#templates/' + row.id + '">' +
                                 '<span class="fa fa-edit"></span> Edit' +
-                            '</a>'+
+                            '</a>' +
 
-                          
+
                             '<button type="button" class="btn btn-danger btn-xs" onclick="showDeleteTemplateModal(this, event, ' + row.id + ')">' +
                             '<span class="fa fa-trash"></span> Delete' +
                             '</button>' +
@@ -57,9 +60,11 @@
         });
     });
 
+    $("#page-title").html("Templates");
     $("#newTemplateButton").click(function () {
         $.publish("show-template-edit-modal");
     });
+
 
     var showViewTemplateModal = function (source, event, id) {
         event.preventDefault();

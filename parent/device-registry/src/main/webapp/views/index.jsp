@@ -18,6 +18,28 @@ body {
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	font-family: 'Source Sans Pro', sans-serif
 }
+.button-bar{
+	padding-top: 2em;
+	text-align: right;
+}
+.table thead tr th {
+	background-color: #555555;
+	color: white;
+	padding: 5px;
+}
+.table tbody tr td{
+	padding: 3px;
+}
+.card{
+	border-radius: 5px;
+	background-color: #ffffff;
+	padding: 1em;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  	transition: 0.3s;
+}
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
 
 .modal {
 	width: auto;
