@@ -78,7 +78,7 @@
 <script>
     $("#page-title").html("Edit Template Details");
     $("#cancelButton").click(function () {
-        $.modal.close();
+        window.history.back();
     });
 
     var metricsData = null;
@@ -130,9 +130,9 @@
     }
 
     var showMetricEditView = function (metric) {
-        $("#modal-container-1").loadTemplate("pages/metrics/edit.html", metric, {
+        $("#modal-container").loadTemplate("pages/metrics/edit.html", metric, {
             success: function () {
-                metricEditorModal = $("#modal-container-1").modal({
+                metricEditorModal = $("#modal-container").modal({
                     closeExisting: false
                 });
                 $("#metricName").focus();
