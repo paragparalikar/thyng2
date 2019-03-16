@@ -8,9 +8,9 @@
                     <th>Description</th>
                     <th>Tags</th>
                     <th>
-                        <button class="btn btn-primary btn-sm" id="newTemplateButton">
+                        <a href="#templates/0" class="btn btn-primary btn-sm" id="newTemplateButton">
                             <span class="fa fa-plus"></span> New Template
-                        </button>
+                        </a>
                     </th>
                 </tr>
             </thead>
@@ -61,10 +61,6 @@
     });
 
     $("#page-title").html("Templates");
-    $("#newTemplateButton").click(function () {
-        $.publish("show-template-edit-modal");
-    });
-
 
     var showViewTemplateModal = function (source, event, id) {
         event.preventDefault();

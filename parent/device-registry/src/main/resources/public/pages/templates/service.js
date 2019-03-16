@@ -18,7 +18,7 @@ $.router.add("#templates", function(){
     $("#template-container").loadTemplate("pages/templates/list.html");
 });
 $.router.add("#templates/:id", function(){
-    if(arguments[0]){
+    if(arguments[0] && 0 < arguments[0]){
         templateService.findOne(arguments[0], function(template, status){
 			doShowTemplateEditView(template);
 		});
