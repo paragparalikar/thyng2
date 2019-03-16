@@ -15,7 +15,7 @@ var templateService = {
 }
 
 $.router.add("#templates", function(){
-    $("#page-container").loadTemplate("pages/templates/list.html");
+    $("#template-container").loadTemplate("pages/templates/list.html");
 });
 
 
