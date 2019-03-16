@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/templates/{templateId}/metrics")
+@RequestMapping("/api/v1/templates/{templateId}/metrics")
 public class MetricController {
 
 	private final MetricMapper metricMapper;

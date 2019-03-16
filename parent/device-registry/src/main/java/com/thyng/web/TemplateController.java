@@ -16,7 +16,7 @@ import com.thyng.model.mapper.TemplateMapper;
 import com.thyng.service.TemplateService;
 
 @RestController
-@RequestMapping("/templates")
+@RequestMapping("/api/v1/templates")
 public class TemplateController {
 	
 	@Autowired

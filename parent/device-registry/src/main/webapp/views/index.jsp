@@ -6,8 +6,6 @@
 <link rel="stylesheet" href="libs/font-awesome/css/font-awesome.min.css">
 <link rel="stylesheet" href="libs/jquery-modal/0.9.1/jquery.modal.min.css">
 <link rel="stylesheet" href="libs\datatables.net-bs\css\dataTables.bootstrap.min.css">
-<link rel="stylesheet" href="libs/custom-scrollbar/jquery.mCustomScrollbar.min.css">
-<link rel="stylesheet" href="pages/utils/sidebar.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 <style type="text/css">
 .modal {
@@ -138,8 +136,6 @@
 	</div>
 	<script src="libs/jquery/dist/jquery.min.js"></script>
 	<script src="libs\jquery\dist\jquery-migrate-1.0.0.min.js"></script>
-	<script src="libs/popper/popper.min.js"></script>
-	<script src="libs/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="libs/jquery-tiny-pubsub/ba-tiny-pubsub.min.js"></script>
 	<script src="libs/loadTemplate/jquery.loadTemplate.js"></script>
 	<script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -158,11 +154,14 @@
 			authorities: ["LIST_TEMPLATES"]
 		};
 		$(function(){
+			//loadTemplates
 			$.addTemplateFormatter("MapFormatter", function(value, template) {
 	            return $.map(value, function(val,key){
 	        		return key + "=" + val;
 	        	}).join("\n");
 	        });	
+			
+			// Sidebar
 			$("#sidnav-toggle").click(function(){
 				$("#page-wrapper").toggleClass("nav-open");
 			});	
@@ -170,6 +169,8 @@
 				$("#sidenav > ul > li > a").removeClass("active");
 				$(this).toggleClass("active");
 			});
+	        
+	        //Router
 			$.router.start();
 			$(window).hashchange();
 		});

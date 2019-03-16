@@ -30,7 +30,6 @@
             path.split($.router.config.separator);
     };
     Route.prototype.matches = function(path, parseParameters){
-        console.log("this path : "+this.path+", against : "+this.parse(path));
         pathParts = this.split(this.parse(path));
         if(this.parts.length == pathParts.length){
             var counter = 0;

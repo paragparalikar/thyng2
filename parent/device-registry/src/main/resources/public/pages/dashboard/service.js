@@ -1,3 +1,7 @@
-$.subscribe("show-main-dashboard", function(){
-	$(".content-wrapper").loadTemplate("pages/dashboard/dashboard.html");
-});
+var showDashboard = function(){
+    $("#page-container").loadTemplate("pages/dashboard/dashboard.html");
+}
+$.router.add("#dashboard", showDashboard);
+$.router.add("", showDashboard);
+$.router.add("/", showDashboard);
+$.router.add("/#", showDashboard);

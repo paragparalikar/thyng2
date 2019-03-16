@@ -37,7 +37,7 @@
 							</div>
 							<div class="form-group">
 								<label for="templateProperties">Properties</label> 
-								<textarea class="form-control" id="templateProperties" data-value="properties" data-format="MapFormatter" data-format-target="value" rows="4"></textarea>
+								<textarea placeholder="key=value" class="form-control" id="templateProperties" data-value="properties" data-format="MapFormatter" data-format-target="value" rows="4"></textarea>
 							</div>
 						</td>
 					</tr>
@@ -62,7 +62,6 @@
 				</table>
 			</div>
 		</div>
-		<div id="metric-modal-container"></div>
 	</div>
 	<div class="modal-footer">
 		<button id="cancelButton" type="button" class="btn btn-secondary">
@@ -100,9 +99,9 @@ var showMetricsDataTable = function(metrics){
 			{data: "dataType"},
 			{data: "description"},
 			{
-				mRender : function(data, type, row) {
+				render : function(data, type, full, meta) {
 					return '<div class="btn-group" role="group">'+
-						'<button type="button" class="btn btn-warning btn-xs" onclick="showMatricEditorModal(this, event, \''+row.id+'\');">'+
+						'<button type="button" class="btn btn-warning btn-xs" onclick="showMatricEditorModal(this, event, '+meta.row+');">'+
 							'<span class="fa fa-edit"></span> Edit'+
 						'</button>'+
 						'<button type="button" class="btn btn-danger btn-xs">'+
@@ -119,25 +118,28 @@ $("#newMetricBtn").click(function(){
 	showMetricEditView(null);
 });
 
-var showMatricEditorModal = function(source, event, id){
+var showMatricEditorModal = function(source, event, index){
 	event.preventDefault();
 	source.blur();
-	metric = metricsDataTable.row("#"+id).data();
+	metric = metricsDataTable.row(index).data();
 	showMetricEditView(metric);
 }
 
-var counter = 0;
 var showMetricEditView = function(metric){
-	$("#metric-modal-container").loadTemplate("pages/metrics/edit.html", metric, {
+	$("#modal-container-1").loadTemplate("pages/metrics/edit.html", metric, {
 		success: function(){
-			metricEditorModal = $("#metric-modal-container").modal({
+			metricEditorModal = $("#modal-container-1").modal({
 				closeExisting: false
+			});
+			$("#metricName").focus();
+			$("#metricEditorCancelButton").click(function(){
+				$.modal.close();
 			});
 			$("#metricEditorSaveButton").click(function(){
 				if(metric){
 					populateMetric(metric);
 				}else{
-					newMetric = {id: "temp"+(++counter)};
+					newMetric = {};
 					populateMetric(newMetric);
 					metricsData.push(newMetric);
 				}
