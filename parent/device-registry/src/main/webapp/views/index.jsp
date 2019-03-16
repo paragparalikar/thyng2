@@ -160,6 +160,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 			<div id="template-container" class="container-fluid"></div>
 		</main>
 	</div>
+	<div id="modal-container"></div>
 	<script src="libs/jquery/dist/jquery.min.js"></script>
 	<script src="libs\jquery\dist\jquery-migrate-1.0.0.min.js"></script>
 	<script src="libs/jquery-tiny-pubsub/ba-tiny-pubsub.min.js"></script>
