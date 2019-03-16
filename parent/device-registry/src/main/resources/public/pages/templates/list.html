@@ -26,6 +26,8 @@
     templateService.findAll(function (templates) {
         templatesDataTable = $("#templates").DataTable({
             rowId: "id",
+            searching: false,
+            lengthChange: false,
             language: {
                 processing: "Loading ..."
             },
