@@ -28,7 +28,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 #page-wrapper {
 	height: 100%;
 	width: 100%;
-	background-color: #ecf0f5;
+	background-color: #eeeeee;
 	position: relative;
 }
 
@@ -86,7 +86,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 #page-header {
 	height: 50px;
 	width: 100%;
-	background-color: #3c8dbc;
+	background-color: #555555;
 }
 
 #page-container {
@@ -152,9 +152,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 					<i class="fa fa-bars"></i>
 				</button>
 			</header>
-			<div id="page-title" class="container-fluid">
-				<h2>
-					Templates <small>View a list of all templates</small>
+			<div class="container-fluid">
+				<h2 id="page-title" >				
 				</h2>
 			</div>
 			<div id="template-container" class="container-fluid"></div>

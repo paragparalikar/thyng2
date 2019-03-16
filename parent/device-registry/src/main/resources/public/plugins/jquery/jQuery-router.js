@@ -69,7 +69,7 @@
          $.each(this.routes, function(index, route){
             if(route.matches(path)){
                 if(route.reRouteCallback && typeof route.reRouteCallback === 'function'){
-                    route.reRouteCallback();
+                    route.reRouteCallback.apply(route, route.parameters);
                 }
                 return false;
             }
@@ -78,8 +78,8 @@
     };
     Router.prototype.routeCallback = function(path){
         $.each($.router.routes, function(index, route){
-            if(route.matches(path)){
-                route.callback();
+            if(route.matches(path, true)){
+                route.callback.apply(route, route.parameters);
                 return false;
             }
             return true;

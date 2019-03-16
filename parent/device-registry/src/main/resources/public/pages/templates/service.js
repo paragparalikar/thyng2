@@ -17,7 +17,15 @@ var templateService = {
 $.router.add("#templates", function(){
     $("#template-container").loadTemplate("pages/templates/list.html");
 });
-
+$.router.add("#templates/:id", function(){
+    if(arguments[0]){
+        templateService.findOne(arguments[0], function(template, status){
+			doShowTemplateEditView(template);
+		});
+    }else{
+        doShowTemplateEditView({metrics: []});
+    }
+});
 
 $.subscribe("show-template-view-modal", function(event, id){
 	templateService.findOne(id, function(template, status){
@@ -29,20 +37,10 @@ $.subscribe("show-template-view-modal", function(event, id){
 		});
 	});
 });
-$.subscribe("show-template-edit-modal", function(event, id){
-	if(id){
-		templateService.findOne(id, function(template, status){
-			doShowTemplateEditModal(template);
-		});
-	}else{
-		doShowTemplateEditModal({metrics: []});
-	}
-});
 
-var doShowTemplateEditModal = function(template){
-	$("#modal-container").loadTemplate("pages/templates/edit.html", template, {
+var doShowTemplateEditView = function(template){
+	$("#template-container").loadTemplate("pages/templates/edit.html", template, {
 		success : function(){
-			$("#modal-container").modal();
 			showMetricsDataTable(template.metrics);
 		}
 	});

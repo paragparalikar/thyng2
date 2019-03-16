@@ -1,26 +1,18 @@
-<div class="row">
-    <div class="col-xs-12">
-        <div class="box">
-            <div class="box-body">
-                <table id="templates" class="table table-bordered table-striped" style="width: 100%">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Inactivity Period</th>
-                            <th>Description</th>
-                            <th>Tags</th>
-                            <th>
-                                <button class="btn btn-primary btn-sm" id="newTemplateButton">
-                                    <span class="fa fa-plus"></span> New Template
-                                </button>
-                            </th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+<table id="templates" class="table table-bordered table-striped" style="width: 100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Inactivity Period</th>
+            <th>Description</th>
+            <th>Tags</th>
+            <th>
+                <button class="btn btn-primary btn-sm" id="newTemplateButton">
+                    <span class="fa fa-plus"></span> New Template
+                </button>
+            </th>
+        </tr>
+    </thead>
+</table>
 <script type="text/javascript">
     var templatesDataTable = null;
     templateService.findAll(function (templates) {
@@ -43,11 +35,13 @@
                 { data: "description" },
                 { data: "tags" },
                 {
-                    mRender: function (data, type, row) {
+                    mRender: function (data, type, row, meta) {
                         return '<div class="btn-group" role="group">' +
-                            '<button type="button" class="btn btn-warning btn-xs" onclick="showEditTemplateModal(this, event, ' + row.id + ');">' +
-                            '<span class="fa fa-edit"></span> Edit' +
-                            '</button>' +
+                            '<a class="btn btn-warning btn-xs" href="#templates/'+row.id+'">'+
+                                '<span class="fa fa-edit"></span> Edit' +
+                            '</a>'+
+
+                          
                             '<button type="button" class="btn btn-danger btn-xs" onclick="showDeleteTemplateModal(this, event, ' + row.id + ')">' +
                             '<span class="fa fa-trash"></span> Delete' +
                             '</button>' +
@@ -73,10 +67,10 @@
         $.publish("show-template-view-modal", id);
     };
 
-    var showEditTemplateModal = function (source, event, id) {
+    var showEditTemplateView = function (source, event, id) {
         event.preventDefault();
         source.blur();
-        $.publish("show-template-edit-modal", id);
+        $.publish("show-template-edit-view", id);
     };
 
     var showDeleteTemplateModal = function (source, event, id) {
