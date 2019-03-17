@@ -8,4 +8,6 @@ import com.thyng.model.entity.Template;
 @Repository
 public interface TemplateRepository extends JpaRepository<Template, Long> {
 
+	boolean existsByName(String name);
+	
 }

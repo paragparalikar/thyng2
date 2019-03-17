@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thyng.model.dto.TemplateDTO;
@@ -40,6 +41,11 @@ public class TemplateController {
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable Long id){
 		templateService.deleteById(id);
+	}
+	
+	@GetMapping(params="name")
+	public String existsByName(@RequestParam String name){
+		return templateService.existsByName(name) ? "[ \"Template already exists with this name\" ]" : Boolean.TRUE.toString();
 	}
 	
 }

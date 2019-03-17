@@ -7,11 +7,11 @@
                     <input type="text" style="display:none;" id="templateId">
                     <div class="form-group">
                         <label for="templateName">Name</label>
-                        <input required minlength="3" maxlength="255" class="form-control" id="templateName" data-value="name" placeholder="Template Name">
+                        <input required minlength="3" maxlength="255" class="form-control" id="templateName" name="name" data-value="name" placeholder="Template Name">
                     </div>
                     <div class="form-group">
                         <label for="templateDescription">Description</label>
-                        <input maxlength="255" type="text" class="form-control" id="templateDescription" data-value="description"
+                        <input maxlength="255" type="text" class="form-control" id="templateDescription" name="description" data-value="description"
                             placeholder="Template Description">
                     </div>
 
@@ -19,18 +19,18 @@
                 <td width="33.33%" style="padding: 0 1em 0 1em;">
                     <div class="form-group">
                         <label for="templateTags">Tags</label>
-                        <input type="text" class="form-control" id="templateTags" data-value="tags" placeholder="Tags (type and press Enter)">
+                        <input type="text" class="form-control" id="templateTags" data-value="tags" name="tags" placeholder="Tags (type and press Enter)">
                     </div>
                     <div class="form-group">
                         <label for="inactivityPeriod">Inactivity Period</label>
-                        <input required digits min="60" type="text" class="form-control" id="inactivityPeriod" data-value="inactivityPeriod"
+                        <input required digits min="60" type="text" class="form-control" id="inactivityPeriod" name="inactivityPeriod" data-value="inactivityPeriod"
                             placeholder="Inactivity Period (in seconds)">
                     </div>
                 </td>
                 <td width="33.33%" style="padding: 0 0 0 1em;">
                     <div class="form-group">
                         <label for="templateProperties">Properties</label>
-                        <textarea maxlength="255" placeholder="key=value" class="form-control" id="templateProperties" data-value="properties"
+                        <textarea maxlength="255" placeholder="key=value" class="form-control" id="templateProperties" data-value="properties" name="properties"
                             data-format="MapFormatter" data-format-target="value" rows="5"></textarea>
                     </div>
                 </td>
@@ -80,6 +80,12 @@
         window.history.back();
     });
     $("#template-form").validate({
+		rules:{
+			name: {
+				required: true,
+				remote: "/api/v1/templates"
+			}
+		},    	
     	submitHandler: function(form, event){
     		
     	}
@@ -120,25 +126,21 @@
                 }
             ]
         });
-    }
+    };
 
-    $("#newMetricBtn").click(function () {
+    $("#newMetricBtn").click(function (metric) {
         showMetricEditView(null);
     });
-
     var showMatricEditorModal = function (source, event, index) {
         event.preventDefault();
         source.blur();
         metric = metricsDataTable.row(index).data();
         showMetricEditView(metric);
-    }
-
+    };
     var showMetricEditView = function (metric) {
         $("#modal-container").loadTemplate("pages/metrics/edit.html", metric, {
             success: function () {
-                metricEditorModal = $("#modal-container").modal({
-                    closeExisting: false
-                });
+                $("#modal-container").modal();
                 $("#metricEditorSaveButton").click(function () {
                     if (metric) {
                         populateMetric(metric);
@@ -152,6 +154,6 @@
                 });
             }
         });
-    }
+    };
 
 </script>

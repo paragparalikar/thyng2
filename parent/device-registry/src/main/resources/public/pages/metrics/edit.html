@@ -1,4 +1,4 @@
-<div class="modal-content" style="width: 30em;">
+<form class="modal-content" id="metric-form" style="width: 30em;">
 	<div class="modal-header">
 		<h4 class="modal-title">Metric</h4>
 	</div>
@@ -6,19 +6,19 @@
 		<input type="text" style="display: none;" id="metricId" data-value="id">
 		<div class="form-group">
 			<label for="metricName">Name</label> 
-			<input type="text" data-value="name" class="form-control" id="metricName" maxlength="255" placeholder="Metric Name">
+			<input required minlength="3" maxlength="255" type="text" data-value="name" class="form-control" id="metricName" placeholder="Metric Name">
 		</div>
 		<div class="form-group">
 			<label for="metricDescription">Description</label> 
-			<input type="text" data-value="description" class="form-control" id="metricDescription" maxlength="255" placeholder="Description for the Metric">
+			<input maxlength="255" type="text" data-value="description" class="form-control" id="metricDescription" placeholder="Description for the Metric">
 		</div>
 		<div class="form-group">
 			<label for="abbreviation">Abbreviation</label> 
-			<input type="text" data-value="abbreviation" class="form-control" id="abbreviation" maxlength="10" placeholder="Abbreviation for the measurement Unit">
+			<input required minlength="1" maxlength="10" type="text" data-value="abbreviation" class="form-control" id="abbreviation" placeholder="Abbreviation for the measurement Unit">
 		</div>
 		<div class="form-group">
 			<label for="metricUnit">Unit</label> 
-			<input type="text" data-value="unit" class="form-control" id="metricUnit" maxlength="255" placeholder="Measurement unit for this metric">
+			<input required minlength="3" maxlength="255" type="text" data-value="unit" class="form-control" id="metricUnit" placeholder="Measurement unit for this metric">
 		</div>
 		<div class="form-group">
 			<label for="dataType">Data Type</label> 
@@ -33,16 +33,21 @@
 		<a id="metricEditorCancelButton" href="#" class="btn btn-secondary">
 			<span class="fa fa-trash"></span> Cancel
 		</a>
-		<a id="metricEditorSaveButton" href="#" class="btn btn-primary">
+		<button type="submit" id="metricEditorSaveButton" href="#" class="btn btn-primary">
 			<span class="fa fa-save"></span> Save
-		</a>
+		</button>
 	</div>
-</div>
+</form>
 <script>
 	$("#metricName").focus();
 	$("#metricEditorCancelButton").click(function (event) {
 		event.preventDefault();
 	    $.modal.close();
+	});
+	$("#metric-form").validate({
+		submitHandler: function(){
+			
+		}	
 	});
 	var populateMetric = function(metric){
 		metric.name= $("#metricName").val();
@@ -50,5 +55,5 @@
 		metric.abbreviation= $("#abbreviation").val();
 		metric.unit= $("#metricUnit").val();
 		metric.dataType= $("#dataType").val();
-	}
+	};
 </script>

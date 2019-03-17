@@ -27,5 +27,9 @@ public class TemplateService {
 	public void deleteById(Long id){
 		templateRepository.deleteById(id);
 	}
+	
+	public boolean existsByName(String name){
+		return templateRepository.existsByName(name);
+	}
 
 }
