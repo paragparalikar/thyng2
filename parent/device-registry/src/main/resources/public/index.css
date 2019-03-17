@@ -13,8 +13,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	text-align: right;
 }
 .table thead tr th {
-	background-color: #555555;
-	color: white;
+	background-color: #eeeeee;
+	color: #2c353e;
 	padding: 5px;
 }
 .table tbody tr td{
@@ -44,13 +44,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 #sidenav {
 	height: 100%;
 	z-index: 999;
-	background-color : #212529;
-	border-top: 1px solid #3b3b3b;
-	background-image: url(/images/bg1.jpg);
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-blend-mode: overlay;
-	background-color: #212529;
+	background-color: #2c353e;
 	position: absolute;
 }
 
@@ -77,15 +71,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 #sidnav-toggle, #sidnav-toggle:FOCUS {
-	color: white;
+	color: #2c353e;
 	background-color: transparent;
 	border-width: 0;
 	height: 100%;
 	outline: 0;
+	display: inline-block;
 }
 
 #page-wrapper.nav-open #sidenav {
-	width: 250px;
+	width: 200px;
 }
 
 #page-wrapper:not(.nav-open) #sidenav {
@@ -95,15 +90,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 #page-header {
 	height: 50px;
 	width: 100%;
-	background-color: #555555;
 }
 
 #page-container {
 	position: absolute;	
 	right: 0;
+	top: 0;
+	bottom: 0;
 }
 #page-wrapper.nav-open #page-container{
-	left: 250px;
+	left: 200px;
 }
 #page-wrapper:not(.nav-open) #page-container{
 	left: 50px;
@@ -111,7 +107,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 
 #page-title {
-	
+	display: inline-block;
+	margin-top:auto;
+	margin-bottom: auto;
 }
 
 #sidenav, #page-container, #logo, .menu-text {
@@ -138,4 +136,13 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 #page-wrapper:not(.nav-open) #logo, #page-wrapper:not(.nav-open) .menu-text, #page-wrapper.nav-open #logo-sm {
 	display: none;
+}
+
+#template-container{
+	position: absolute;
+	top: 50px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 15px;
 }
