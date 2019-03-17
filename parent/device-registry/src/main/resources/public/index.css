@@ -1,0 +1,141 @@
+body {
+	font-family: 'Source Sans Pro', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: 400;
+	overflow-x: hidden;
+	overflow-y: auto
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	font-family: 'Source Sans Pro', sans-serif
+}
+.button-bar{
+	padding-top: 2em;
+	text-align: right;
+}
+.table thead tr th {
+	background-color: #555555;
+	color: white;
+	padding: 5px;
+}
+.table tbody tr td{
+	padding: 3px;
+}
+.card{
+	border-radius: 5px;
+	background-color: #ffffff;
+	padding: 1em;
+	box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
+  	transition: 0.3s;
+}
+
+.modal {
+	width: auto;
+	max-width: none;
+	padding: 0;
+}
+
+#page-wrapper {
+	height: 100%;
+	width: 100%;
+	background-color: #eeeeee;
+	position: relative;
+}
+
+#sidenav {
+	height: 100%;
+	z-index: 999;
+	background-color : #212529;
+	border-top: 1px solid #3b3b3b;
+	background-image: url(/images/bg1.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-blend-mode: overlay;
+	background-color: #212529;
+	position: absolute;
+}
+
+#sidenav>ul {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+#sidenav>ul>li>a>i {
+	font-size: 16px;
+	padding: 17px;
+}
+
+#page-wrapper.nav-open #sidenav>ul>li>a {
+	color: #cccccc;
+}
+
+#page-wrapper:not(.nav-open) #sidenav>ul>li>a {
+	color: white;
+}
+
+#sidenav>ul>li>a.active {
+	color: yellow !important;
+}
+
+#sidnav-toggle, #sidnav-toggle:FOCUS {
+	color: white;
+	background-color: transparent;
+	border-width: 0;
+	height: 100%;
+	outline: 0;
+}
+
+#page-wrapper.nav-open #sidenav {
+	width: 250px;
+}
+
+#page-wrapper:not(.nav-open) #sidenav {
+	width: 50px;
+}
+
+#page-header {
+	height: 50px;
+	width: 100%;
+	background-color: #555555;
+}
+
+#page-container {
+	position: absolute;	
+	right: 0;
+}
+#page-wrapper.nav-open #page-container{
+	left: 250px;
+}
+#page-wrapper:not(.nav-open) #page-container{
+	left: 50px;
+}
+
+
+#page-title {
+	
+}
+
+#sidenav, #page-container, #logo, .menu-text {
+	-webkit-transition: left .3s ease, width .3s ease, display .3s linear;
+	transition: left .3s ease, width .3s ease, display .3s linear;
+}
+
+#logo, #logo-sm {
+	height: 50px;
+	font-weight: bold;
+	font-size: 1.2em;
+	color: white;
+	line-height: 40px;
+	text-align: center;
+}
+
+#page-wrapper.nav-open .menu-text {
+	display: inline-block;
+}
+
+#page-wrapper.nav-open #logo, #page-wrapper:not(.nav-open) #logo-sm {
+	display: block;
+}
+
+#page-wrapper:not(.nav-open) #logo, #page-wrapper:not(.nav-open) .menu-text, #page-wrapper.nav-open #logo-sm {
+	display: none;
+}

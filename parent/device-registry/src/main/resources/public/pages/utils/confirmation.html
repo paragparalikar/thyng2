@@ -9,16 +9,16 @@
 			<label data-content="message">Are you sure?</label>
 		</div>
 		<div class="modal-footer">
-			<button id="confirmation-cancel-button" type="button" class="btn btn-outline btn-danger">
+			<button id="confirmation-cancel-button" type="button" class="btn btn-secondary">
 				<i class="fa fa-times"></i> No
 			</button>
-			<button id="confirmation-action-button" type="button" class="btn btn-outline btn-danger">
+			<button id="confirmation-action-button" type="button" class="btn btn-danger">
 				<i class="fa fa-check"></i> Yes
 			</button>
 		</div>
 	</div>
 	<script>
-		$("#confirmation-cancel-button").click(function(){
+		$("#confirmation-cancel-button").focus().click(function(){
 			$.modal.close();
 		});
 	</script>
