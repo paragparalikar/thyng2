@@ -1,4 +1,4 @@
-<div class="card">
+<form class="card" id="template-form">
     <div class="card-body">
 
         <table style="width:100%">
@@ -7,11 +7,11 @@
                     <input type="text" style="display:none;" id="templateId">
                     <div class="form-group">
                         <label for="templateName">Name</label>
-                        <input type="text" class="form-control" id="templateName" data-value="name" placeholder="Template Name">
+                        <input required minlength="3" maxlength="255" class="form-control" id="templateName" data-value="name" placeholder="Template Name">
                     </div>
                     <div class="form-group">
                         <label for="templateDescription">Description</label>
-                        <input type="text" class="form-control" id="templateDescription" data-value="description"
+                        <input maxlength="255" type="text" class="form-control" id="templateDescription" data-value="description"
                             placeholder="Template Description">
                     </div>
 
@@ -23,14 +23,14 @@
                     </div>
                     <div class="form-group">
                         <label for="inactivityPeriod">Inactivity Period</label>
-                        <input type="text" class="form-control" id="inactivityPeriod" data-value="inactivityPeriod"
+                        <input required digits min="60" type="text" class="form-control" id="inactivityPeriod" data-value="inactivityPeriod"
                             placeholder="Inactivity Period (in seconds)">
                     </div>
                 </td>
                 <td width="33.33%" style="padding: 0 0 0 1em;">
                     <div class="form-group">
                         <label for="templateProperties">Properties</label>
-                        <textarea placeholder="key=value" class="form-control" id="templateProperties" data-value="properties"
+                        <textarea maxlength="255" placeholder="key=value" class="form-control" id="templateProperties" data-value="properties"
                             data-format="MapFormatter" data-format-target="value" rows="5"></textarea>
                     </div>
                 </td>
@@ -64,21 +64,25 @@
             <a href="#" id="cancelButton" class="btn btn-secondary">
                 <i class="fa fa-trash"></i> Cancel
             </a>
-            <a href="#" id="saveButton" class="btn btn-primary">
+            <button type="submit" href="#" id="saveButton" class="btn btn-primary">
                 <i class="fa fa-save"></i> Save
-            </a>
+            </button>
         </div>
 
 
     </div>
-</div>
+</form>
 
 
 
 <script>
-    $("#page-title").html("Edit Template Details");
     $("#cancelButton").click(function () {
         window.history.back();
+    });
+    $("#template-form").validate({
+    	submitHandler: function(form, event){
+    		
+    	}
     });
 
     var metricsData = null;

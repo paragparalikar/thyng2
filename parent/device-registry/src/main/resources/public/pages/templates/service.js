@@ -41,6 +41,7 @@ $.subscribe("show-template-view-modal", function(event, id){
 var doShowTemplateEditView = function(template){
 	$("#template-container").loadTemplate("pages/templates/edit.html", template, {
 		success : function(){
+			$("#page-title").html(template.id ? "Edit Template Details" : "New Template");
 			showMetricsDataTable(template.metrics);
 		}
 	});

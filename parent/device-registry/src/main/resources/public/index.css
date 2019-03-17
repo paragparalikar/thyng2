@@ -8,6 +8,9 @@ body {
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	font-family: 'Source Sans Pro', sans-serif
 }
+input, textarea, select, .form-control{
+	border-radius: 0;
+}
 .button-bar{
 	padding-top: 2em;
 	text-align: right;
@@ -20,6 +23,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .table tbody tr td{
 	padding: 3px;
 }
+.form-control.valid{
+	border-color: #aaffaa;
+}
+.form-control.error{
+	border-color: #ffaaaa;
+}
 .card{
 	border-radius: 5px;
 	background-color: #ffffff;
@@ -27,7 +36,18 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
   	transition: 0.3s;
 }
-
+.error{
+	font-weight: 100;
+	font-size: small;
+	color: red;
+}
+.error:before{
+	font-family:'FontAwesome';
+	content:"\f071";
+	font-weight: 100;
+	font-size: small;
+	padding-right: 0.5em;
+}
 .modal {
 	width: auto;
 	max-width: none;
