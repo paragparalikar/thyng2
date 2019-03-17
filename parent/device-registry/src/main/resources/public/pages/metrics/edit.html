@@ -30,15 +30,20 @@
 		</div>
 	</div>
 	<div class="modal-footer">
-		<button id="metricEditorCancelButton" type="button" class="btn btn-secondary">
+		<a id="metricEditorCancelButton" href="#" class="btn btn-secondary">
 			<span class="fa fa-trash"></span> Cancel
-		</button>
-		<button id="metricEditorSaveButton" type="button" class="btn btn-primary" id="">
+		</a>
+		<a id="metricEditorSaveButton" href="#" class="btn btn-primary">
 			<span class="fa fa-save"></span> Save
-		</button>
+		</a>
 	</div>
 </div>
 <script>
+	$("#metricName").focus();
+	$("#metricEditorCancelButton").click(function (event) {
+		event.preventDefault();
+	    $.modal.close();
+	});
 	var populateMetric = function(metric){
 		metric.name= $("#metricName").val();
 		metric.description= $("#metricDescription").val();

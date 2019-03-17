@@ -135,10 +135,6 @@
                 metricEditorModal = $("#modal-container").modal({
                     closeExisting: false
                 });
-                $("#metricName").focus();
-                $("#metricEditorCancelButton").click(function () {
-                    $.modal.close();
-                });
                 $("#metricEditorSaveButton").click(function () {
                     if (metric) {
                         populateMetric(metric);
