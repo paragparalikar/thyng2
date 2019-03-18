@@ -4,7 +4,7 @@
         <table style="width:100%">
             <tr>
                 <td width="33.33%" style="padding: 0 1em 0 0;">
-                    <input type="text" style="display:none;" id="templateId">
+                    <input type="text" style="display:none;" id="templateId" name="id">
                     <div class="form-group">
                         <label for="templateName">Name</label>
                         <input required minlength="3" maxlength="255" class="form-control" id="templateName" name="name" data-value="name" placeholder="Template Name">
@@ -49,7 +49,7 @@
                                 <th scope="col">Data Type</th>
                                 <th scope="col">Description</th>
                                 <th scope="col">
-                                    <button class="btn btn-primary btn-sm" id="newMetricBtn">
+                                    <button type="button" class="btn btn-primary btn-sm" formnovalidate="formnovalidate"  id="newMetricBtn">
                                         <span class="fa fa-plus"></span> New Metric
                                     </button>
                                 </th>
@@ -87,7 +87,23 @@
 			}
 		},    	
     	submitHandler: function(form, event){
-    		
+    		var template = {
+				id: $("#templateId").val(),    				
+    			name: $("#templateName").val(),
+    			description: $("#templateDescription").val(),
+    			tags: $("#templateTags").val().split(","),
+    			inactivityPeriod: $("#inactivityPeriod").val(),
+    			properties: {},
+    			metrics: []
+    		};
+    		$("#templateProperties").val().split("\n").forEach(function(item){
+    			var pair = item.split("=");
+    			template.properties[pair[0]] = pair[1];
+    		});
+    		for(var index = 0; index < metricsDataTable.rows().data().length; index++){
+    			template.metrics.push(metricsDataTable.rows().data()[index].clone());
+    		}
+    		templateService.save(JSON.stringify(template));
     	}
     });
 
@@ -118,7 +134,7 @@
                             '<button type="button" class="btn btn-warning btn-xs" onclick="showMatricEditorModal(this, event, ' + meta.row + ');">' +
                             '<span class="fa fa-edit"></span> Edit' +
                             '</button>' +
-                            '<button type="button" class="btn btn-danger btn-xs">' +
+                            '<button type="button" class="btn btn-danger btn-xs" onclick="showMetricDeleteConfirmation(this, event, '+meta.row+');">' +
                             '<span class="fa fa-trash"></span> Delete' +
                             '</button>' +
                             '</div>';
@@ -155,5 +171,18 @@
             }
         });
     };
-
+	var showMetricDeleteConfirmation = function(source, event, index){
+		event.preventDefault();
+	    source.blur();
+	    row = metricsDataTable.row(index);
+	    metric = row.data();
+        $.publish("show-confirmation-modal", [{
+            message: "Are you sure you want to delete metric " + metric.name + " ?"
+        }, function () {
+        	metricService.deleteById(metric.id, function () {
+                row.remove().draw();
+                $.modal.close();
+            });
+        }]);
+	};
 </script>

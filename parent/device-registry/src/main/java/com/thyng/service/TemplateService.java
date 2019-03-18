@@ -24,6 +24,10 @@ public class TemplateService {
 		return templateRepository.findById(id).orElseThrow(() -> new TemplateNotFoundException());
 	}
 	
+	public Template save(Template template){
+		return templateRepository.save(template);
+	}
+	
 	public void deleteById(Long id){
 		templateRepository.deleteById(id);
 	}

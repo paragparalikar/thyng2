@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,6 +38,12 @@ public class TemplateController {
 	public TemplateDTO findById(@PathVariable Long id){
 		final Template template = templateService.findById(id);
 		return templateMapper.toDTO(template);
+	}
+	
+	@PostMapping
+	public void save(@RequestBody TemplateDTO dto){
+		final Template template = templateMapper.toEntity(dto);
+		templateService.save(template);
 	}
 
 	@DeleteMapping("/{id}")

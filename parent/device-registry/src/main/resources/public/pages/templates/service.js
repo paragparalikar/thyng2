@@ -5,6 +5,15 @@ var templateService = {
 	findOne : function(id, successCallback) {
 		$.get(window.location.origin + "/api/v1/templates/" + id, successCallback);
 	},
+	save: function(template, callback){
+		$.ajax({
+			url: window.location.origin + "/api/v1/templates",
+			type: "POST",
+			contentType:"application/json; charset=utf-8",
+			data: template,
+			success: callback
+		});
+	},
 	deleteById : function(id, callback){
 		$.ajax({
 			url: window.location.origin + "/api/v1/templates/" + id,

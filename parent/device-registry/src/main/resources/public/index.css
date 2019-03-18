@@ -53,6 +53,9 @@ input, textarea, select, .form-control{
 	max-width: none;
 	padding: 0;
 }
+.modal-content{
+	margin-bottom: 0;
+}
 .modal-header, .modal-footer{
 	background-color: #eeeeee;
 }
