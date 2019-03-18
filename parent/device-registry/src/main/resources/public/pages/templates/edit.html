@@ -179,10 +179,8 @@
         $.publish("show-confirmation-modal", [{
             message: "Are you sure you want to delete metric " + metric.name + " ?"
         }, function () {
-        	metricService.deleteById(metric.id, function () {
-                row.remove().draw();
-                $.modal.close();
-            });
+        	row.remove().draw();
+            $.modal.close();
         }]);
 	};
 </script>
