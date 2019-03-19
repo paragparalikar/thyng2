@@ -23,9 +23,6 @@ input, textarea, select, .form-control{
 .table tbody tr td{
 	padding: 3px;
 }
-.form-control.valid{
-	border-color: #aaffaa;
-}
 .form-control.error{
 	border-color: #ffaaaa;
 }

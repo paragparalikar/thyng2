@@ -201,7 +201,9 @@
 	    var bindEventHandlers = function(){
 	    	$("#metrics-table").on("edit-metric", showMatricEditorModal);
 	    	$("#metrics-table").on("delete-metric", showMetricDeleteConfirmation);
-	    	$("#cancelButton").click(window.history.back);
+	    	$("#cancelButton").click(function(){
+	    		window.history.back();
+	    	});
 	 	    $("#newMetricBtn").click(function() {
 	 		    showMetricEditView(null);
 	 	    });
