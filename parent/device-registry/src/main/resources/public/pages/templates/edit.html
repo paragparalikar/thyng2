@@ -74,16 +74,10 @@
 	render = (function($) {
 		var metricsData = null;
 	    var metricsDataTable = null;
-	    
-	    $("#cancelButton").click(function() {
-		    window.history.back();
-	    });
-	    $("#newMetricBtn").click(function(metric) {
-		    showMetricEditView(null);
-	    });
-	    var showMatricEditorModal = function(source, event, index) {
-		    event.preventDefault();
+	   
+	    var showMatricEditorModal = function(event, source, originalEvent, index) {
 		    source.blur();
+		    originalEvent.preventDefault();
 		    metric = metricsDataTable.row(index).data();
 		    showMetricEditView(metric);
 	    };
@@ -105,9 +99,9 @@
 			    }
 		    });
 	    };
-	    var showMetricDeleteConfirmation = function(source, event, index) {
-		    event.preventDefault();
+	    var showMetricDeleteConfirmation = function(event, source, originalEvent, index) {
 		    source.blur();
+		    originalEvent.preventDefault();
 		    row = metricsDataTable.row(index);
 		    metric = row.data();
 		    $.publish("show-confirmation-modal", [ {
@@ -117,6 +111,7 @@
 			    $.modal.close();
 		    } ]);
 	    };
+	    
 	    $("#template-form").validate({
 	        rules : {
 		        name : {
@@ -138,6 +133,7 @@
 		        templateService.save(JSON.stringify(toModel()));
 	        }
 	    });
+	    
 	    var toModel = function(template){
 			template = template ? template : {};	    	
 	    	template.id = $("#templateId").val();
@@ -160,44 +156,70 @@
 	    var toView = function(template){
 	    	if(template){
 	    		$("#page-title").html(template.id || template.id > 0 ? "Edit Templates Details" : "New Template");
+	    		$("#templateId").val(template.id);
+		    	$("#templateName").val(template.name);
+			    $("#templateDescription").val(template.description);
+			    $("#templateTags").val(template.tags);
+			    $("#inactivityPeriod").val(template.inactivityPeriod);
+			    $("#templateProperties").val($.map(template.properties, function(val, key) {
+					return key + "=" + val;
+				}).join("\n"));
 	    		showMetricsDataTable(template.metrics);
 	    	}
 	    };
 	    
 	    var showMetricsDataTable = function(metrics) {
 		    metricsData = metrics;
-		    metricsDataTable = $("#metrics-table").DataTable(
-		            {
-		                rowId : "id",
-		                searching : false,
-		                ordering : false,
-		                paging : false,
-		                info : false,
-		                data : metrics,
-		                columnDefs : [ {
-		                    targets : -1,
-		                    className : "text-center"
-		                } ],
-		                columns : [
-		                        {data : "name"},
-		                        {data : "abbreviation"},
-		                        {data : "unit"},
-		                        {data : "dataType"},
-		                        {data : "description"},
-		                        {
-			                        render : function(data, type, full, meta) {
-				                        return '<div class="btn-group" role="group">'
-				                                + '<button type="button" class="btn btn-warning btn-xs" onclick="showMatricEditorModal(this, event, ' + meta.row + ');">'
-				                                + '<span class="fa fa-edit"></span> Edit' + '</button>'
-				                                + '<button type="button" class="btn btn-danger btn-xs" onclick="showMetricDeleteConfirmation(this, event, ' + meta.row + ');">'
-				                                + '<span class="fa fa-trash"></span> Delete' + '</button>' + '</div>';
-			                        }
-		                        } ]
-		            });
+		    metricsDataTable = $("#metrics-table").DataTable({
+                rowId : "id",
+                searching : false,
+                ordering : false,
+                paging : false,
+                info : false,
+                data : metrics,
+                columnDefs : [ {
+                    targets : -1,
+                    className : "text-center"
+                } ],
+                columns : [
+                   {data : "name"},
+                   {data : "abbreviation"},
+                   {data : "unit"},
+                   {data : "dataType"},
+                   {data : "description"},
+                   {render : function(data, type, full, meta) {
+                     return '<div class="btn-group" role="group">'
+                             + '<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#metrics-table\').trigger(\'edit-metric\', [this, event, ' + meta.row + ']);">'
+                             + '<span class="fa fa-edit"></span> Edit' + '</button>'
+                             + '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#metrics-table\').trigger(\'delete-metric\', [this, event, ' + meta.row + ']);">'
+                             + '<span class="fa fa-trash"></span> Delete' + '</button>' + '</div>';
+                    }
+                   }]
+            });
 	    };
 	   	
-	    return function(template){
-	    	toView(template);
+	    var bindEventHandlers = function(){
+	    	$("#metrics-table").on("edit-metric", showMatricEditorModal);
+	    	$("#metrics-table").on("delete-metric", showMetricDeleteConfirmation);
+	    	$("#cancelButton").click(window.history.back);
+	 	    $("#newMetricBtn").click(function() {
+	 		    showMetricEditView(null);
+	 	    });
+	    };
+	    
+	    var load = function(id){
+	    	if(id && id > 0){
+    		 	templateService.findOne(id, function(template, status){
+    		 		toView(template);
+   				});
+	    	}else{
+	    		toView({metrics:[]});
+	    	}
+	    };
+	    
+	    return function(id){
+	    	load(id);
+	    	bindEventHandlers();
 	    };
     })(jQuery);
 </script>

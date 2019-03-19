@@ -30,14 +30,14 @@ $.router.add("#templates", function(){
     	}
     });
 });
+
 $.router.add("#templates/:id", function(){
-    if(arguments[0] && 0 < arguments[0]){
-        templateService.findOne(arguments[0], function(template, status){
-			doShowTemplateEditView(template);
-		});
-    }else{
-        doShowTemplateEditView({metrics: []});
-    }
+	var id = arguments[0];
+	$("#template-container").loadTemplate("pages/templates/edit.html", null, {
+		success : function(){
+			render(id);
+		}
+	});
 });
 
 $.subscribe("show-template-view-modal", function(event, id){
@@ -50,12 +50,3 @@ $.subscribe("show-template-view-modal", function(event, id){
 		});
 	});
 });
-
-var doShowTemplateEditView = function(template){
-	$("#template-container").loadTemplate("pages/templates/edit.html", template, {
-		success : function(){
-			render(template);
-		}
-	});
-}
-
