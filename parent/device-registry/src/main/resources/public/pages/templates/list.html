@@ -19,73 +19,75 @@
 </div>
 
 <script type="text/javascript">
-    var templatesDataTable = null;
-    templateService.findAll(function (templates) {
-        templatesDataTable = $("#templates").DataTable({
-            rowId: "id",
-            language: {
-                processing: "Loading ..."
-            },
-            processing: true,
-            columns: [
-                {
-                    data: "name",
-                    mRender: function (data, type, row) {
-                        return '<a href="#" onclick="showViewTemplateModal(this, event, ' + row.id + ');">' + data + '</a>';
-                    }
-                },
-                { data: "inactivityPeriod" },
-                { data: "description" },
-                { data: "tags" },
-                {
-                    mRender: function (data, type, row, meta) {
-                        return '<div class="btn-group" role="group">' +
-                            '<a class="btn btn-warning btn-xs" href="#templates/' + row.id + '">' +
-                                '<span class="fa fa-edit"></span> Edit' +
-                            '</a>' +
-
-
-                            '<button type="button" class="btn btn-danger btn-xs" onclick="showDeleteTemplateModal(this, event, ' + row.id + ')">' +
-                            '<span class="fa fa-trash"></span> Delete' +
-                            '</button>' +
-                            '</div>';
-                    }
-                }],
-            columnDefs: [{
-                targets: -1,
-                orderable: false,
-                className: "text-center"
-            }],
-            data: templates
-        });
-    });
-
-    $("#page-title").html("Templates");
-
-    var showViewTemplateModal = function (source, event, id) {
-        event.preventDefault();
-        source.blur();
-        $.publish("show-template-view-modal", id);
-    };
-
-    var showEditTemplateView = function (source, event, id) {
-        event.preventDefault();
-        source.blur();
-        $.publish("show-template-edit-view", id);
-    };
-
-    var showDeleteTemplateModal = function (source, event, id) {
-        event.preventDefault();
-        source.blur();
-        row = templatesDataTable.row("#" + id);
-        $.publish("show-confirmation-modal", [{
-            message: "Are you sure you want to delete template " + row.data().name + " ?"
-        }, function () {
-            templateService.deleteById(id, function () {
-                row.remove().draw();
-                $.modal.close();
-            });
-        }]);
-    }
+	render = (function($){
+		var templatesDataTable = null;
+		
+		 var showViewTemplateModal = function (event, source, originalEvent, id) {
+			 source.blur();
+			 originalEvent.preventDefault();
+	        $.publish("show-template-view-modal", id);
+	    };
+		
+		var showDeleteTemplateConfirmationModal = function(event, element, originalEvent, id){
+			element.blur();
+			originalEvent.preventDefault();
+			row = templatesDataTable.row("#" + id);
+	        $.publish("show-confirmation-modal", [{
+	            message: "Are you sure you want to delete template " + row.data().name + " ?"
+	        }, function () {
+	            templateService.deleteById(id, function () {
+	                row.remove().draw();
+	                $.modal.close();
+	            });
+	        }]);
+		};
+		
+		var showTemplatesDataTable = function(){
+			templateService.findAll(function (templates) {
+		        templatesDataTable = $("#templates").DataTable({
+		            rowId: "id",
+		            language: {
+		                processing: "Loading ..."
+		            },
+		            processing: true,
+		            columns: [
+		                {
+		                    data: "name",
+		                    mRender: function (data, type, row) {
+		                        return '<a href="#" onclick="$(\'#templates\').trigger(\'view-template\', [this, event,'+row.id+']);">' + data + '</a>';
+		                    }
+		                },
+		                { data: "inactivityPeriod" },
+		                { data: "description" },
+		                { data: "tags" },
+		                {
+		                    mRender: function (data, type, row, meta) {
+		                        return '<div class="btn-group" role="group">' +
+		                            '<a class="btn btn-warning btn-xs" href="#templates/' + row.id + '">' +
+		                                '<span class="fa fa-edit"></span> Edit' +
+		                            '</a>' +
+		                            '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#templates\').trigger(\'delete-template\', [this, event,'+row.id+'])">' +
+		                            	'<span class="fa fa-trash"></span> Delete' +
+		                            '</button>' +
+		                            '</div>';
+		                    }
+		                }],
+		            columnDefs: [{
+		                targets: -1,
+		                orderable: false,
+		                className: "text-center"
+		            }],
+		            data: templates
+		        });
+		    });
+		};
+		
+		return function(){
+			$("#page-title").html("Templates");
+			showTemplatesDataTable();
+			$("#templates").on("view-template", showViewTemplateModal);
+			$("#templates").on("delete-template", showDeleteTemplateConfirmationModal);
+		}
+	})(jQuery);
 
 </script>

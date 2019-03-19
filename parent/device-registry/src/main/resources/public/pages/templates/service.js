@@ -24,7 +24,11 @@ var templateService = {
 }
 
 $.router.add("#templates", function(){
-    $("#template-container").loadTemplate("pages/templates/list.html");
+    $("#template-container").loadTemplate("pages/templates/list.html", null, {
+    	success: function(){
+    		render();
+    	}
+    });
 });
 $.router.add("#templates/:id", function(){
     if(arguments[0] && 0 < arguments[0]){
@@ -50,8 +54,7 @@ $.subscribe("show-template-view-modal", function(event, id){
 var doShowTemplateEditView = function(template){
 	$("#template-container").loadTemplate("pages/templates/edit.html", template, {
 		success : function(){
-			$("#page-title").html(template.id ? "Edit Template Details" : "New Template");
-			showMetricsDataTable(template.metrics);
+			render(template);
 		}
 	});
 }
