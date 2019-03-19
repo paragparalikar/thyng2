@@ -32,8 +32,8 @@ public class TemplateService {
 		templateRepository.deleteById(id);
 	}
 	
-	public boolean existsByName(String name){
-		return templateRepository.existsByName(name);
+	public boolean existsByIdNotAndNameIgnoreCase(Long id, String name){
+		return templateRepository.existsByIdNotAndNameIgnoreCase(id, name);
 	}
 
 }

@@ -4,7 +4,7 @@
         <table style="width:100%">
             <tr>
                 <td width="33.33%" style="padding: 0 1em 0 0;">
-                    <input type="text" style="display:none;" id="templateId" name="id">
+                    <input type="text" style="display:none;" id="templateId" name="id" data-value="id">
                     <div class="form-group">
                         <label for="templateName">Name</label>
                         <input required minlength="3" maxlength="255" class="form-control" id="templateName" name="name" data-value="name" placeholder="Template Name">
@@ -83,7 +83,17 @@
 		rules:{
 			name: {
 				required: true,
-				remote: "/api/v1/templates"
+				remote: {
+					url: "/api/v1/templates",
+					data: {
+						id: function(){
+							return $("#templateId").val();
+						},
+						name: function(){
+							return $("#templateName").val();
+						}
+					}
+				}
 			}
 		},    	
     	submitHandler: function(form, event){

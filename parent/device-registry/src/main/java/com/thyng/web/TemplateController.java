@@ -51,9 +51,9 @@ public class TemplateController {
 		templateService.deleteById(id);
 	}
 	
-	@GetMapping(params="name")
-	public String existsByName(@RequestParam String name){
-		return templateService.existsByName(name) ? "[ \"Template already exists with this name\" ]" : Boolean.TRUE.toString();
+	@GetMapping(params={"id","name"})
+	public String existsByIdNotAndNameIgnoreCase(@RequestParam(defaultValue="0") Long id, @RequestParam String name){
+		return templateService.existsByIdNotAndNameIgnoreCase(id, name) ? "[ \"Another template already exists with this name\" ]" : Boolean.TRUE.toString();
 	}
 	
 }
