@@ -5,7 +5,9 @@ $(function() {
 			return key + "=" + val;
 		}).join("\n");
 	});
-
+	$(document).on("keypress", ":input:not(textarea)", function(event) {
+	    return event.keyCode != 13;
+	});
 	// Sidebar
 	$("#sidnav-toggle").click(function() {
 		$("#page-wrapper").toggleClass("nav-open");
