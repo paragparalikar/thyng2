@@ -5,18 +5,15 @@
 			<tr>
 				<td width="33.33%" style="padding: 0 1em 0 0;"><input type="text" style="display: none;" id="templateId" name="id" data-value="id">
 					<div class="form-group">
-						<label for="templateName">Name</label> <input required minlength="3" maxlength="255" class="form-control" id="templateName" name="name" data-value="name"
-							placeholder="Template Name"
-						>
+						<label for="templateName">Name</label> <input required minlength="3" maxlength="255" class="form-control" id="templateName" name="name" data-value="name" placeholder="Template Name">
 					</div>
 					<div class="form-group">
-						<label for="templateDescription">Description</label> <input maxlength="255" type="text" class="form-control" id="templateDescription" name="description"
-							data-value="description" placeholder="Template Description"
-						>
+						<label for="templateDescription">Description</label> <input maxlength="255" type="text" class="form-control" id="templateDescription" name="description" data-value="description" placeholder="Template Description">
 					</div></td>
 				<td width="33.33%" style="padding: 0 1em 0 1em;">
 					<div class="form-group">
-						<label for="templateTags">Tags</label> <input type="text" class="form-control" id="templateTags" data-value="tags" name="tags" placeholder="Tags (type and press Enter)">
+						<label for="templateTags">Tags</label> 
+						<input type="text" class="form-control" id="templateTags" data-value="tags" data-role="tagsinput" name="tags" placeholder="Tags (type and press Space)">
 					</div>
 					<div class="form-group">
 						<label for="inactivityPeriod">Inactivity Period</label> <input required digits min="60" type="text" class="form-control" id="inactivityPeriod" name="inactivityPeriod"
@@ -159,7 +156,17 @@
 	    		$("#templateId").val(template.id);
 		    	$("#templateName").val(template.name);
 			    $("#templateDescription").val(template.description);
-			    $("#templateTags").val(template.tags);
+			    $("#templateTags").tagsinput({
+			    	  trimValue: true,
+			    	  maxChars: 255,
+			    	  maxTags: 10,
+			    	  confirmKeys: [13, 32, 44, 188]
+			    });
+			    if(template.tags){
+			    	template.tags.forEach(function(tag){
+			    		$("#templateTags").tagsinput("add",tag);
+			    	});
+			    }
 			    $("#inactivityPeriod").val(template.inactivityPeriod);
 			    $("#templateProperties").val($.map(template.properties, function(val, key) {
 					return key + "=" + val;
@@ -206,6 +213,9 @@
 	    	});
 	 	    $("#newMetricBtn").click(function() {
 	 		    showMetricEditView(null);
+	 	    });
+	 	    $("template-form").submit(function(e){
+	 	        e.preventDefault();
 	 	    });
 	    };
 	    

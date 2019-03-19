@@ -11,6 +11,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 input, textarea, select, .form-control{
 	border-radius: 0;
 }
+.bootstrap-tagsinput{
+	width: 100%;
+}
 .button-bar{
 	padding-top: 2em;
 	text-align: right;
