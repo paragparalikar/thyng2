@@ -3,6 +3,8 @@ package com.thyng.web;
 import java.util.Collection;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import com.thyng.service.TemplateService;
 @RestController
 @RequestMapping("/api/v1/templates")
 public class TemplateController {
+	private static final String MSG_UNIQUE_NAME = "Another template already exists with this name";
 	
 	@Autowired
 	private TemplateMapper templateMapper;
@@ -41,7 +44,10 @@ public class TemplateController {
 	}
 	
 	@PostMapping
-	public void save(@RequestBody TemplateDTO dto){
+	public void save(@RequestBody @Valid TemplateDTO dto){
+		if(templateService.existsByIdNotAndNameIgnoreCase(null == dto.getId() ? 0 : dto.getId(), dto.getName())){
+			throw new IllegalArgumentException(MSG_UNIQUE_NAME);
+		}
 		final Template template = templateMapper.toEntity(dto);
 		templateService.save(template);
 	}
@@ -53,7 +59,7 @@ public class TemplateController {
 	
 	@GetMapping(params={"id","name"})
 	public String existsByIdNotAndNameIgnoreCase(@RequestParam(defaultValue="0") Long id, @RequestParam String name){
-		return templateService.existsByIdNotAndNameIgnoreCase(id, name) ? "[ \"Another template already exists with this name\" ]" : Boolean.TRUE.toString();
+		return templateService.existsByIdNotAndNameIgnoreCase(id, name) ? "[ \""+MSG_UNIQUE_NAME+"\" ]" : Boolean.TRUE.toString();
 	}
 	
 }
