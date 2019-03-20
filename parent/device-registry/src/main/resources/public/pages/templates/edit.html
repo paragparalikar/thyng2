@@ -153,7 +153,15 @@
 		        }
 	        },
 	        submitHandler : function() {
-		        templateService.save(JSON.stringify(toModel()));
+		        templateService.save(JSON.stringify(toModel()), function(){
+		        	$.toast({
+		        		heading: 'Success',
+		        	    text: 'Template has been saved successfully',
+		        	    showHideTransition: 'slide',
+		        	    position: 'top-right',
+		        	    icon: 'success'
+		        	});
+		        });
 	        }
 	    });
 	    
