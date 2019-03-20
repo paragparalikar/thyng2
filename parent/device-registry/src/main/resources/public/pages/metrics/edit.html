@@ -6,7 +6,7 @@
 		<input type="text" style="display: none;" id="metricId" data-value="id">
 		<div class="form-group">
 			<label for="metricName">Name</label> 
-			<input required minlength="3" maxlength="255" type="text" data-value="name" class="form-control" id="metricName" placeholder="Metric Name">
+			<input required minlength="3" maxlength="255" type="text" data-value="name" class="form-control" id="metricName" name="name" placeholder="Metric Name">
 		</div>
 		<div class="form-group">
 			<label for="metricDescription">Description</label> 
@@ -39,21 +39,74 @@
 	</div>
 </form>
 <script>
-	$("#metricName").focus();
-	$("#metricEditorCancelButton").click(function (event) {
-		event.preventDefault();
-	    $.modal.close();
-	});
-	$("#metric-form").validate({
-		submitHandler: function(){
-			
-		}	
-	});
-	var populateMetric = function(metric){
-		metric.name= $("#metricName").val();
-		metric.description= $("#metricDescription").val();
-		metric.abbreviation= $("#abbreviation").val();
-		metric.unit= $("#metricUnit").val();
-		metric.dataType= $("#dataType").val();
-	};
+	renderModal = (function($){
+		var inputMetric = null;
+		var inputMetrics = null;
+		var metricCallback = null;
+		$("#metricName").focus();
+		
+		$("#metric-form").validate({
+			messages:{
+				name: {
+					notInArray: "Another metric exists with same name"
+				}
+			},			
+			rules:{
+				name: {
+					notInArray : {
+						provider: function(){
+							var array = inputMetrics ? inputMetrics.map(m => m.name) : [];
+							var index = array.indexOf(inputMetric.name);
+							if(index > -1){
+								array.splice(index, 1);	
+							}
+							return array;
+						}
+					}
+				}
+			},			
+			submitHandler: function(){
+				toModel(inputMetric);
+				$.modal.close();
+				if(metricCallback){
+			    	metricCallback();
+			    }
+			}	
+		});
+		
+		var bindEventHandlers = function(){
+			$("#metricEditorCancelButton").click(function (event) {
+				event.preventDefault();
+			    $.modal.close();
+			});
+		};
+		
+		var toView = function(metric){
+			if(metric){
+				$("#metricId").val(metric.id);
+				$("#metricName").val(metric.name);
+				$("#metricDescription").val(metric.description);
+				$("#abbreviation").val(metric.abbreviation);
+				$("#metricUnit").val(metric.unit);
+				$("#dataType").val(metric.dataType);	
+			}
+		};
+		
+		var toModel = function(metric){
+			metric.id = $("#metricId").val();
+			metric.name= $("#metricName").val();
+			metric.description= $("#metricDescription").val();
+			metric.abbreviation= $("#abbreviation").val();
+			metric.unit= $("#metricUnit").val();
+			metric.dataType= $("#dataType").val();
+		};
+		
+		return function(metric, metrics, callback){
+			inputMetric = metric;
+			inputMetrics = metrics;
+			metricCallback = callback;
+			toView(metric);
+			bindEventHandlers();
+		};
+	})(jQuery);
 </script>

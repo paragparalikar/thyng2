@@ -1,13 +1,13 @@
 <style>
-	#template-form table tr td{
+	#editTemplateLayoutTable > tbody > tr > td{
 		vertical-align: top;
 		padding: 0 1em 0 1em;
 		width: 33.33%;
 	};
-	#template-form table tr td:FIRST-CHILD {
+	#editTemplateLayoutTable > tbody > tr > td:FIRST-CHILD {
 		padding: 0 1em 0 0;
 	};
-	#template-form table tr td:LAST-CHILD {
+	#editTemplateLayoutTable > tbody > tr > td:LAST-CHILD {
 		padding: 0 0 0 1em;
 	};
 </style>
@@ -15,20 +15,18 @@
 <form class="card" id="template-form">
 	<div class="card-body">
 		<input type="text" style="display: none;" id="templateId" name="id" data-value="id">
-		<table style="width: 100%">
+		<table style="width: 100%" id="editTemplateLayoutTable">
 			<tr>
 				<td>
 					<div class="form-group">
 						<label for="templateName">Name</label> 
 						<input data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" class="form-control" id="templateName" name="name" data-value="name" placeholder="Template Name">
 					</div>
-					
 				<td>
 					<div class="form-group">
 						<label for="inactivityPeriod">Inactivity Period</label> 
 						<input data-rule-required="true" data-rule-digits="true" data-rule-min="60" type="text" class="form-control" id="inactivityPeriod" name="inactivityPeriod" data-value="inactivityPeriod" placeholder="Inactivity Period (in seconds)">
 					</div>
-					
 				</td>
 				<td rowspan="2">
 					<div class="form-group">
@@ -47,7 +45,7 @@
 				<td>
 					<div class="form-group">
 						<label for="templateTags">Tags</label> 
-						<input type="text" class="form-control" id="templateTags" data-value="tags" data-role="tagsinput" name="tags" placeholder="type and press Space">
+						<input type="text" class="form-control" id="templateTags" data-value="tags" data-role="tagsinput" name="tags">
 					</div>
 				</td>
 			</tr>
@@ -100,19 +98,15 @@
 		    showMetricEditView(metric);
 	    };
 	    var showMetricEditView = function(metric) {
+	    	metric = metric ? metric : {};
 		    $("#modal-container").loadTemplate("pages/metrics/edit.html", metric, {
 			    success : function() {
-				    $("#modal-container").modal();
-				    $("#metricEditorSaveButton").click(function() {
-					    if (metric) {
-						    populateMetric(metric);
-					    } else {
-						    newMetric = {};
-						    populateMetric(newMetric);
-						    metricsData.push(newMetric);
-					    }
-					    metricsDataTable.clear().rows.add(metricsData).draw();
-					    $.modal.close();
+			    	$("#modal-container").modal();
+			    	renderModal(metric, metricsData, function(){
+				    	if(!metric.id){
+				    		 metricsData.push(metric);
+				    	}
+				    	metricsDataTable.clear().rows.add(metricsData).draw();
 				    });
 			    }
 		    });

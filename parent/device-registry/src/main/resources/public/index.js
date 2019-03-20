@@ -22,6 +22,11 @@ $(function() {
 		}
 		return true;
 	},"Invalid format");
+	$.validator.addMethod("notInArray", function(value, element, params){
+		var values = params.provider();
+		return this.optional(element) || $.inArray(value.trim(), values) === -1;
+	}, "Value is not unique");
+	
 	// Sidebar
 	$("#sidnav-toggle").click(function() {
 		$("#page-wrapper").toggleClass("nav-open");
