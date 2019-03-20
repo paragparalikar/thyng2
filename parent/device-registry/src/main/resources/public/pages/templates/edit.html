@@ -98,7 +98,7 @@
 		    showMetricEditView(metric);
 	    };
 	    var showMetricEditView = function(metric) {
-	    	metric = metric ? metric : {};
+	    	metric = metric ? metric : {dataType: "NUMBER"};
 		    $("#modal-container").loadTemplate("pages/metrics/edit.html", metric, {
 			    success : function() {
 			    	$("#modal-container").modal();
@@ -125,6 +125,15 @@
 	    };
 	    
 	    $("#template-form").validate({
+	    	errorPlacement: function(error, element) {
+				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
+			},
+			errorElement: "span",
+			messages:{
+				inactivityPeriod:{
+					min: "Value must be more than 60"
+				}
+			},
 	        rules : {
 		        name : {
 		            remote : {

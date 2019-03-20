@@ -6,19 +6,19 @@
 		<input type="text" style="display: none;" id="metricId" data-value="id">
 		<div class="form-group">
 			<label for="metricName">Name</label> 
-			<input required minlength="3" maxlength="255" type="text" data-value="name" class="form-control" id="metricName" name="name" placeholder="Metric Name">
+			<input data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255" type="text" data-value="name" class="form-control" id="metricName" name="name" placeholder="Metric Name">
 		</div>
 		<div class="form-group">
 			<label for="metricDescription">Description</label> 
-			<input maxlength="255" type="text" data-value="description" class="form-control" id="metricDescription" placeholder="Description for the Metric">
+			<input data-rule-maxlength="255" maxlength="255" type="text" data-value="description" name="description" class="form-control" id="metricDescription" placeholder="Description for the Metric">
 		</div>
 		<div class="form-group">
 			<label for="abbreviation">Abbreviation</label> 
-			<input required minlength="1" maxlength="10" type="text" data-value="abbreviation" class="form-control" id="abbreviation" placeholder="Abbreviation for the measurement Unit">
+			<input data-rule-required="true" data-rule-minlength="1" data-rule-maxlength="10" maxlength="10" type="text" data-value="abbreviation" name="abbreviation" class="form-control" id="abbreviation" placeholder="Abbreviation for the measurement Unit">
 		</div>
 		<div class="form-group">
 			<label for="metricUnit">Unit</label> 
-			<input required maxlength="255" type="text" data-value="unit" class="form-control" id="metricUnit" placeholder="Measurement unit for this metric">
+			<input data-rule-required="true" data-rule-maxlength="255" maxlength="255" type="text" data-value="unit" name="unit" class="form-control" id="metricUnit" placeholder="Measurement unit for this metric">
 		</div>
 		<div class="form-group">
 			<label for="dataType">Data Type</label> 
@@ -47,6 +47,10 @@
 		$("#metricName").focus();
 		
 		$("#metric-form").validate({
+			errorPlacement: function(error, element) {
+				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
+			},
+			errorElement: "span",			
 			messages:{
 				name: {
 					notInArray: "Another metric exists with same name"
@@ -59,7 +63,8 @@
 							return nameValidationArray;
 						}
 					}
-				}
+				},
+				
 			},			
 			submitHandler: function(){
 				toModel(inputMetric);

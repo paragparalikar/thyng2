@@ -27,6 +27,12 @@ input, textarea, select, .form-control{
 .table tbody tr td{
 	padding: 3px;
 }
+.form-group > label{
+	width: 100%;
+}
+.form-group > label > .error{
+	float: right;
+}
 .form-control.error{
 	border-color: #ffaaaa;
 }
