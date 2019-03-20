@@ -69,7 +69,7 @@ public class Template extends AuditableEntity {
 	}
 
 	@Access(AccessType.PROPERTY)
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="template")
+	@OneToMany(cascade=CascadeType.REMOVE, fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="template")
 	public Set<Thing> getThings(){
 		return this.things;
 	}
