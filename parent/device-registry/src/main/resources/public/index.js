@@ -5,6 +5,11 @@ $(function() {
 			return key + "=" + val;
 		}).join("\n");
 	});
+	$(document).on("submit","form",function(event){
+		alert("preventing");
+		event.preventDefault();
+		return false;
+	});
 	$(document).on("keypress", ":input:not(textarea)", function(event) {
 	    return event.keyCode != 13;
 	});

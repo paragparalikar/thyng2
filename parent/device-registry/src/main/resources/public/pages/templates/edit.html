@@ -88,7 +88,7 @@
 
 <script>
 	render = (function($) {
-		var metricsData = null;
+		var template = null;
 	    var metricsDataTable = null;
 	   
 	    var showMatricEditorModal = function(event, source, originalEvent, index) {
@@ -102,11 +102,11 @@
 		    $("#modal-container").loadTemplate("pages/metrics/edit.html", metric, {
 			    success : function() {
 			    	$("#modal-container").modal();
-			    	renderModal(metric, metricsData, function(){
+			    	renderModal(metric, template.metrics, function(){
 				    	if(!metric.id){
-				    		 metricsData.push(metric);
+				    		template.metrics.push(metric);
 				    	}
-				    	metricsDataTable.clear().rows.add(metricsData).draw();
+				    	metricsDataTable.clear().rows.add(template.metrics).draw();
 				    });
 			    }
 		    });
@@ -126,7 +126,7 @@
 	    
 	    $("#template-form").validate({
 	    	errorPlacement: function(error, element) {
-				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
+				$(element).closest("form").find( "label[for='"+element.attr( "id" )+"']").append(error);
 			},
 			errorElement: "span",
 			messages:{
@@ -153,6 +153,7 @@
 		        }
 	        },
 	        submitHandler : function() {
+	        	alert("sending template data");
 		        templateService.save(JSON.stringify(toModel()));
 	        }
 	    });
@@ -170,9 +171,6 @@
 		        var pair = item.split("=");
 		        template.properties[pair[0]] = pair[1];
 	        });
-	        for (var index = 0; index < metricsDataTable.rows().data().length; index++) {
-		        template.metrics.push(metricsDataTable.rows().data()[index].clone());
-	        }
 	    	return template;
 	    };
 	    
@@ -202,7 +200,6 @@
 	    };
 	    
 	    var showMetricsDataTable = function(metrics) {
-		    metricsData = metrics;
 		    metricsDataTable = $("#metrics-table").DataTable({
                 rowId : "id",
                 searching : false,
@@ -247,11 +244,13 @@
 	    
 	    var load = function(id){
 	    	if(id && id > 0){
-    		 	templateService.findOne(id, function(template, status){
+    		 	templateService.findOne(id, function(data, status){
+    		 		template = data;
     		 		toView(template);
    				});
 	    	}else{
-	    		toView({metrics:[]});
+	    		template = {metrics:[]};
+	    		toView(template);
 	    	}
 	    };
 	    
