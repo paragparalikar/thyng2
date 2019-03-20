@@ -18,8 +18,8 @@ import com.thyng.model.entity.Template;
 import com.thyng.model.entity.Thing;
 import com.thyng.model.enumeration.DataType;
 import com.thyng.repository.data.jpa.OrganisationRepository;
-import com.thyng.repository.data.jpa.TemplateRepository;
 import com.thyng.repository.data.jpa.ThingRepository;
+import com.thyng.service.TemplateService;
 
 @Profile("dev")
 @Configuration
@@ -50,7 +50,7 @@ public class DevConfiguration{
 		
 	@Bean
 	@Order(3)
-	public CommandLineRunner createTemplates(TemplateRepository templateRepository){
+	public CommandLineRunner createTemplates(TemplateService templateService){
 		return args -> {
 			for(int index = 0; index < 25; index++){
 				final Template template = Template.builder()
@@ -65,7 +65,7 @@ public class DevConfiguration{
 				template.setMetrics(buildMetrics(template));
 				templates.add(template);
 			}
-			templateRepository.saveAll(templates);
+			templates.forEach(templateService::save);
 		};
 	}
 	

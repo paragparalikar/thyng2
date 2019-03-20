@@ -3,6 +3,8 @@ package com.thyng.model.entity;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -37,10 +39,8 @@ public class Template extends AuditableEntity {
 
 	private String description;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true, mappedBy="template")
 	private Set<Metric> metrics;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="template")
 	private Set<Thing> things;
 	
 	private Integer inactivityPeriod; // seconds
@@ -50,5 +50,39 @@ public class Template extends AuditableEntity {
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Map<String, String> properties;
+	
+	@Access(AccessType.PROPERTY)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true, mappedBy="template")
+	public Set<Metric> getMetrics(){
+		return metrics;
+	}
+	
+	public void setMetrics(Set<Metric> metrics){
+		if(null == this.metrics){
+			this.metrics = metrics;
+		}else{
+			this.metrics.clear();
+			if(null != metrics){
+				this.metrics.addAll(metrics);
+			}
+		}
+	}
 
+	@Access(AccessType.PROPERTY)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, orphanRemoval=true, mappedBy="template")
+	public Set<Thing> getThings(){
+		return this.things;
+	}
+	
+	public void setThings(Set<Thing> things){
+		if(null == this.things){
+			this.things = things;
+		}else{
+			this.things.clear();
+			if(null != things){
+				this.things.addAll(things);
+			}
+		}
+	}
+	
 }

@@ -153,20 +153,16 @@
 		        }
 	        },
 	        submitHandler : function() {
-	        	alert("sending template data");
 		        templateService.save(JSON.stringify(toModel()));
 	        }
 	    });
 	    
-	    var toModel = function(template){
-			template = template ? template : {};	    	
+	    var toModel = function(){
 	    	template.id = $("#templateId").val();
 	    	template.name = $("#templateName").val();
 		    template.description = $("#templateDescription").val();
 		    template.tags = $("#templateTags").val().split(",");
 		    template.inactivityPeriod = $("#inactivityPeriod").val();
-		    template.properties = {};
-		    template.metrics = [];
 		    $("#templateProperties").val().split("\n").forEach(function(item) {
 		        var pair = item.split("=");
 		        template.properties[pair[0]] = pair[1];
@@ -249,7 +245,7 @@
     		 		toView(template);
    				});
 	    	}else{
-	    		template = {metrics:[]};
+	    		template = {metrics:[], properties:{}};
 	    		toView(template);
 	    	}
 	    };
