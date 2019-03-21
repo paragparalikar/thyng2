@@ -1,0 +1,83 @@
+<div class="modal-content" style="width: 50em; height: 30em;">
+	<div class="modal-header">
+		<h4 class="modal-title">Thing Details</h4>
+	</div>
+	<div class="modal-body">
+		<ul class="nav nav-tabs" role="tablist" data-tabs="tabs">
+			<li class="nav-item active">
+				<a class="nav-link active" id="thing-details-tab" data-toggle="tab" href="#thing-details-tab-content" role="tab" aria-controls="thing-details" aria-selected="true">Details</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="location-tab" data-toggle="tab" href="#location-tab-content" role="tab" aria-controls="location" aria-selected="false">Location</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" id="activity-tab" data-toggle="tab" href="#activity-tab-content" role="tab" aria-controls="activity" aria-selected="false">Activity</a>
+			</li>
+		</ul>
+		
+		<div class="tab-content">
+			<div class="tab-pane active" id="thing-details-tab-content" role="tabpanel" aria-labelledby="thing-details-tab">
+				<table style="width:100%">
+					<tr>
+						<td colspan="2">
+							<div class="form-group">
+								<label for="thingKey">Key</label> 
+								<input type="text" readonly="readonly" disabled="disabled" data-value="key" class="form-control" id="thingKey">
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td width="50%" style="padding: 0 1em 0 0;">
+							<div class="form-group">
+								<label for="thingName">Name</label> 
+								<input type="text" readonly="readonly" disabled="disabled" data-value="name" class="form-control" id="thingName">
+							</div>
+							<div class="form-group">
+								<label for="templateName">Template</label> 
+								<input type="text" readonly="readonly" disabled="disabled" data-value="templateName" class="form-control" id="templateName">
+							</div>
+							<div class="form-group">
+								<label for="thingDescription">Description</label> 
+								<input type="text" readonly="readonly" disabled="disabled" data-value="description" class="form-control" id="thingDescription">
+							</div>
+						</td>
+						<td width="50%"  style="padding: 0 0 0 1em;">
+							<div class="form-group">
+								<label for="tags">Tags</label> 
+								<input type="text" readonly="readonly" disabled="disabled" data-value="tags" class="form-control" id="tags">
+							</div>
+							<div class="form-group">
+								<label for="properties">Properties</label> 
+								<textarea readonly="readonly" disabled="disabled" data-value="properties" data-format="MapFormatter" data-format-target="value" class="form-control" id="properties" rows="4"></textarea>
+							</div>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="tab-pane" id="location-tab-content" role="tabpanel" aria-labelledby="location-tab">
+				<div class="form-group">
+					<label for="altitude">Altitude</label> 
+					<input type="text" readonly="readonly" disabled="disabled" data-value="altitude" class="form-control" id="altitude">
+				</div>
+				<div class="form-group">
+					<label for="latitude">Latitude</label> 
+					<input type="text" readonly="readonly" disabled="disabled" data-value="latitude" class="form-control" id="latitude">
+				</div>
+				<div class="form-group">
+					<label for="longitude">Longitude</label> 
+					<input type="text" readonly="readonly" disabled="disabled" data-value="longitude" class="form-control" id="longitude">
+				</div>
+			</div>
+			<div class="tab-pane" id="activity-tab-content" role="tabpanel" aria-labelledby="activity-tab">
+				<div class="form-group">
+					<label for="lastEvent">Last Event</label> 
+					<input type="text" readonly="readonly" disabled="disabled" data-value="lastEvent" class="form-control" id="lastEvent">
+				</div>
+				<div class="form-group">
+					<label for="lastBeat">Last Heartbeat</label> 
+					<input type="text" readonly="readonly" disabled="disabled" data-value="lastBeat" class="form-control" id="lastBeat">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

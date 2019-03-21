@@ -43,11 +43,10 @@ $.router.add("#things/:id", function(params){
 });
 
 $.subscribe("show-thing-view-modal", function(event, id){
-	thingService.findOne(id, function(template, status){
-		$("#modal-container").loadTemplate("pages/things/view.html", template, {
+	thingService.findOne(id, function(thing, status){
+		$("#modal-container").loadTemplate("pages/things/view.html", thing, {
 			success : function(){
 				$("#modal-container").modal();
-				showMetricsDataTable(template.metrics);
 			},
 	    	error: errorCallback
 		});
