@@ -17,6 +17,7 @@
         this.reRouteCallback = reRouteCallback;
         this.parameters = null;
         this.data = null;
+        this.payload = null;
     };
     Route.prototype.init = function(){
         this.parts = this.split(this.path);
@@ -85,22 +86,30 @@
             return true;
         });
     };
+    Router.prototype.go = function(newPath, oldPath){
+    	oldPath = oldPath ? oldPath : window.location.hash; 
+    	$.router.reRouteCallback(oldPath);
+    	$.router.routeCallback(newPath);
+    };
     Router.prototype.start = function(config){
         this.init(config);
+        var router = this;
         $(window).hashchange(function(event){
+        	var oldPath = null;
+            var newPath = null;
             if(event && event.originalEvent){
                 root = window.location.origin + window.location.pathname;
                 if(event.originalEvent.oldURL){
                     oldPath = event.originalEvent.oldURL.substring(root.length);
-                    $.router.reRouteCallback(oldPath);
                 }
                 if(event.originalEvent.newURL){
-                    newPath = event.originalEvent.newURL.substring(root.length);
-                    $.router.routeCallback(newPath);
+                    var newPath = event.originalEvent.newURL.substring(root.length);
                 }
             }else{
-                $.router.routeCallback(window.location.hash);
+                newPath = window.location.hash;
             }
+            oldPath = oldPath ? oldPath : "#initial"; 
+            router.go(newPath, oldPath);
         });
     };
 

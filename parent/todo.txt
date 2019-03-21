@@ -1,0 +1,9 @@
+- Pass template object from list to edit view, so there is no need to fetch it again from server
+- Success toast on delete template
+- Global failure toast for all server calls and load template
+- provide global failure toast to all server calls
+- Every Thing should have a key - GeneratedValue(UUID), updatable=false, optional=false
+- Return template ID on save server call, so next call triggers update not insert
+- Make showViewTemplateModal global function, so it can be invoked from other pages as well
+- Space - Composite pattern to allow organizations organize their things and provide granular access
+ 

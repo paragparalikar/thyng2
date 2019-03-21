@@ -1,25 +1,26 @@
 var templateService = {
-	findAll : function(successCallback) {
-		$.get(window.location.origin + "/api/v1/templates", successCallback);
+	findAll : function(success, error, always) {
+		$.get(window.location.origin + "/api/v1/templates")
+		.done(success).fail(error ? error : errorCallback).always(always);
 	},
-	findOne : function(id, successCallback) {
-		$.get(window.location.origin + "/api/v1/templates/" + id, successCallback);
+	findOne : function(id, success, error, always) {
+		$.get(window.location.origin + "/api/v1/templates/" + id)
+		.done(success).fail(error ? error : errorCallback).always(always);
 	},
-	save: function(template, callback){
+	save: function(template, success, error, always){
 		$.ajax({
 			url: window.location.origin + "/api/v1/templates",
 			type: "POST",
 			contentType:"application/json; charset=utf-8",
 			data: template,
-			success: callback
-		});
+		}).done(success).fail(error ? error : errorCallback).always(always);
 	},
-	deleteById : function(id, callback){
+	deleteById : function(id, success, error, always){
 		$.ajax({
 			url: window.location.origin + "/api/v1/templates/" + id,
 			type: "DELETE",
 			success: callback
-		});
+		}).done(success).fail(error ? error : errorCallback).always(always);
 	}
 }
 
@@ -31,7 +32,7 @@ $.router.add("#templates", function(){
     });
 });
 
-$.router.add("#templates/:id", function(){
+$.router.add("#templates/:id", function(params){
 	var id = arguments[0];
 	$("#template-container").loadTemplate("pages/templates/edit.html", null, {
 		success : function(){
