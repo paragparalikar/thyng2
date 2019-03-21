@@ -3,11 +3,11 @@
         <table id="things" class="table table-bordered table-striped" style="width: 100%">
             <thead>
                 <tr>
-                	<th>&nbsp;</th>
                     <th>Name</th>
                     <th>Template</th>
                     <th>Description</th>
                     <th>Tags</th>
+                    <th>Alive</th>
                     <th>
                         <a href="#things/0" class="btn btn-primary btn-sm" id="newThingButton">
                             <span class="fa fa-plus"></span> New Thing
@@ -40,18 +40,13 @@
 		
 		var showThingsDataTable = function(){
 			thingService.findAll(function (things) {
-		        templatesDataTable = $("#things").DataTable({
+				thingsDataTable = $("#things").DataTable({
 		            rowId: "id",
 		            language: {
 		                processing: "Loading ..."
 		            },
 		            processing: true,
 		            columns: [
-		                {
-		                	render: function(data, type, row, meta){
-		                		return row.alive ? "Alive" : "Dead";
-		                	}
-		                },
 		                {
 		                    data: "name",
 		                    mRender: function (data, type, row) {
@@ -65,6 +60,12 @@
 		                },
 		                { data: "description" },
 		                { data: "tags" },
+		                {
+		                	data: "alive",
+		                	render: function(data, type, row, meta){
+		                		return row.alive ? "<i class='fa fa-check text-success'></i> " : "<i class='fa fa-times text-danger'></i> ";
+		                	}
+		                },
 		                {
 		                    mRender: function (data, type, row, meta) {
 		                        return '<div class="btn-group" role="group">' +
@@ -80,6 +81,11 @@
 		            columnDefs: [{
 		                targets: -1,
 		                orderable: false,
+		                className: "text-center"
+		            },
+		            {
+		                targets: -2,
+		                orderable: true,
 		                className: "text-center"
 		            }],
 		            data: things
