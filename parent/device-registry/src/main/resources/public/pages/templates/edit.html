@@ -91,10 +91,10 @@
 		var template = null;
 	    var metricsDataTable = null;
 	   
-	    var showMatricEditorModal = function(event, source, originalEvent, index) {
+	    var showMatricEditorModal = function(event, source, originalEvent, id) {
 		    source.blur();
 		    originalEvent.preventDefault();
-		    metric = metricsDataTable.row(index).data();
+		    metric = metricsDataTable.row("#"+id).data();
 		    showMetricEditView(metric);
 	    };
 	    var showMetricEditView = function(metric) {
@@ -112,14 +112,15 @@
 		    	error: errorCallback
 		    });
 	    };
-	    var showMetricDeleteConfirmation = function(event, source, originalEvent, index) {
+	    var showMetricDeleteConfirmation = function(event, source, originalEvent, id) {
 		    source.blur();
 		    originalEvent.preventDefault();
-		    row = metricsDataTable.row(index);
-		    metric = row.data();
+		    var row = metricsDataTable.row("#"+id);
+		    var metric = row.data();
 		    $.publish("show-confirmation-modal", [ {
 			    message : "Are you sure you want to delete metric " + metric.name + " ?"
 		    }, function() {
+		    	template.metrics.splice(template.metrics.indexOf(metric), 1);		    	
 			    row.remove().draw();
 			    $.modal.close();
 		    } ]);
@@ -155,7 +156,6 @@
 	        },
 	        submitHandler : function() {
 		        templateService.save(JSON.stringify(toModel()), function(data){
-		        	alert(JSON.stringify(data));
 		        	toast('Template has been saved successfully');
 		        	template = data;
 		        	toView(template);
@@ -224,9 +224,9 @@
 	                   {data : "description"},
 	                   {render : function(data, type, full, meta) {
 	                     return '<div class="btn-group" role="group">'
-	                             + '<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#metrics-table\').trigger(\'edit-metric\', [this, event, ' + meta.row + ']);">'
+	                             + '<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#metrics-table\').trigger(\'edit-metric\', [this, event, ' + full.id + ']);">'
 	                             + '<span class="fa fa-edit"></span> Edit' + '</button>'
-	                             + '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#metrics-table\').trigger(\'delete-metric\', [this, event, ' + meta.row + ']);">'
+	                             + '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#metrics-table\').trigger(\'delete-metric\', [this, event, ' + full.id + ']);">'
 	                             + '<span class="fa fa-trash"></span> Delete' + '</button>' + '</div>';
 	                    }
 	                   }]

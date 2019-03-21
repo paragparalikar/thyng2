@@ -19,7 +19,6 @@ var templateService = {
 		$.ajax({
 			url: window.location.origin + "/api/v1/templates/" + id,
 			type: "DELETE",
-			success: callback
 		}).done(success).fail(error ? error : errorCallback).always(always);
 	}
 }

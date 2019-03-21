@@ -37,6 +37,7 @@ public class TemplateService {
 		final Set<Metric> metrics = new HashSet<>(template.getMetrics());
 		template.setMetrics(null);
 		final Template managedTemplate = templateRepository.save(template);
+		managedTemplate.getMetrics().clear();
 		for(Metric metric : metrics){
 			metric.setTemplate(managedTemplate);
 			final Metric managedMetric = metricRepository.save(metric);
