@@ -22,12 +22,6 @@
 	render = (function($){
 		var templatesDataTable = null;
 		
-		 var showViewTemplateModal = function (event, source, originalEvent, id) {
-			 source.blur();
-			 originalEvent.preventDefault();
-	        $.publish("show-template-view-modal", id);
-	    };
-		
 		var showDeleteTemplateConfirmationModal = function(event, element, originalEvent, id){
 			element.blur();
 			originalEvent.preventDefault();
@@ -36,6 +30,7 @@
 	            message: "Are you sure you want to delete template " + row.data().name + " ?"
 	        }, function () {
 	            templateService.deleteById(id, function () {
+	            	toast('Template has been deleted successfully');
 	                row.remove().draw();
 	                $.modal.close();
 	            });
@@ -54,7 +49,7 @@
 		                {
 		                    data: "name",
 		                    mRender: function (data, type, row) {
-		                        return '<a href="#" onclick="$(\'#templates\').trigger(\'view-template\', [this, event,'+row.id+']);">' + data + '</a>';
+		                        return '<a href="#" onclick="event.preventDefault(); this.blur(); $.publish(\'show-template-view-modal\','+row.id+');">' + data + '</a>';
 		                    }
 		                },
 		                { data: "inactivityPeriod" },
@@ -85,7 +80,6 @@
 		return function(){
 			$("#page-title").html("Templates");
 			showTemplatesDataTable();
-			$("#templates").on("view-template", showViewTemplateModal);
 			$("#templates").on("delete-template", showDeleteTemplateConfirmationModal);
 		}
 	})(jQuery);

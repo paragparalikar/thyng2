@@ -28,7 +28,8 @@ $.router.add("#templates", function(){
     $("#template-container").loadTemplate("pages/templates/list.html", null, {
     	success: function(){
     		render();
-    	}
+    	},
+    	error: errorCallback
     });
 });
 
@@ -37,7 +38,8 @@ $.router.add("#templates/:id", function(params){
 	$("#template-container").loadTemplate("pages/templates/edit.html", null, {
 		success : function(){
 			render(id);
-		}
+		},
+    	error: errorCallback
 	});
 });
 
@@ -47,7 +49,8 @@ $.subscribe("show-template-view-modal", function(event, id){
 			success : function(){
 				$("#modal-container").modal();
 				showMetricsDataTable(template.metrics);
-			}
+			},
+	    	error: errorCallback
 		});
 	});
 });

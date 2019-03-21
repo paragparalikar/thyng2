@@ -108,7 +108,8 @@
 				    	}
 				    	metricsDataTable.clear().rows.add(template.metrics).draw();
 				    });
-			    }
+			    },
+		    	error: errorCallback
 		    });
 	    };
 	    var showMetricDeleteConfirmation = function(event, source, originalEvent, index) {
@@ -154,13 +155,7 @@
 	        },
 	        submitHandler : function() {
 		        templateService.save(JSON.stringify(toModel()), function(){
-		        	$.toast({
-		        		heading: 'Success',
-		        	    text: 'Template has been saved successfully',
-		        	    showHideTransition: 'slide',
-		        	    position: 'top-right',
-		        	    icon: 'success'
-		        	});
+		        	toast('Template has been saved successfully');
 		        });
 	        }
 	    });
