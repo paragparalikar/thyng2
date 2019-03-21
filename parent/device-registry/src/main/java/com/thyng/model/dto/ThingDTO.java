@@ -3,17 +3,27 @@ package com.thyng.model.dto;
 import java.util.Map;
 import java.util.Set;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import lombok.Data;
 
 @Data
 public class ThingDTO {
 
 	private Long id;
+	
+	private String key;
 
 	private Long templateId;
+	
+	private String templateName;
 
+	@NotBlank
+	@Size(min=3, max=255)
 	private String name;
 
+	@Size(max=255)
 	private String description;
 
 	private Boolean alive;
@@ -30,6 +40,7 @@ public class ThingDTO {
 
 	private Long lastBeat;
 	
+	@Size(max=10)
 	private Set<String> tags;
 
 	private Map<String, String> properties;

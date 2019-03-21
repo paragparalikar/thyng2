@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.thyng.model.entity.Metric;
 import com.thyng.model.entity.Template;
-import com.thyng.model.exception.TemplateNotFoundException;
+import com.thyng.model.exception.NotFoundException;
 import com.thyng.repository.data.jpa.MetricRepository;
 import com.thyng.repository.data.jpa.TemplateRepository;
 
@@ -29,7 +29,7 @@ public class TemplateService {
 	}
 	
 	public Template findById(Long id){
-		return templateRepository.findById(id).orElseThrow(() -> new TemplateNotFoundException());
+		return templateRepository.findById(id).orElseThrow(() -> new NotFoundException());
 	}
 	
 	@Transactional
