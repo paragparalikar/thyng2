@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thyng.model.dto.TemplateDTO;
@@ -44,12 +45,14 @@ public class TemplateController {
 	}
 	
 	@PostMapping
-	public void save(@RequestBody @Valid TemplateDTO dto){
+	@ResponseBody
+	public TemplateDTO save(@RequestBody @Valid TemplateDTO dto){
 		if(templateService.existsByIdNotAndNameIgnoreCase(null == dto.getId() ? 0 : dto.getId(), dto.getName())){
 			throw new IllegalArgumentException(MSG_UNIQUE_NAME);
 		}
 		final Template template = templateMapper.toEntity(dto);
-		templateService.save(template);
+		final Template managedTemplate = templateService.save(template);
+		return templateMapper.toDTO(managedTemplate);
 	}
 
 	@DeleteMapping("/{id}")

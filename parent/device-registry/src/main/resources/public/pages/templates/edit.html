@@ -154,8 +154,11 @@
 		        }
 	        },
 	        submitHandler : function() {
-		        templateService.save(JSON.stringify(toModel()), function(){
+		        templateService.save(JSON.stringify(toModel()), function(data){
+		        	alert(JSON.stringify(data));
 		        	toast('Template has been saved successfully');
+		        	template = data;
+		        	toView(template);
 		        });
 	        }
 	    });
@@ -199,32 +202,36 @@
 	    };
 	    
 	    var showMetricsDataTable = function(metrics) {
-		    metricsDataTable = $("#metrics-table").DataTable({
-                rowId : "id",
-                searching : false,
-                ordering : false,
-                paging : false,
-                info : false,
-                data : metrics,
-                columnDefs : [ {
-                    targets : -1,
-                    className : "text-center"
-                } ],
-                columns : [
-                   {data : "name"},
-                   {data : "abbreviation"},
-                   {data : "unit"},
-                   {data : "dataType"},
-                   {data : "description"},
-                   {render : function(data, type, full, meta) {
-                     return '<div class="btn-group" role="group">'
-                             + '<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#metrics-table\').trigger(\'edit-metric\', [this, event, ' + meta.row + ']);">'
-                             + '<span class="fa fa-edit"></span> Edit' + '</button>'
-                             + '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#metrics-table\').trigger(\'delete-metric\', [this, event, ' + meta.row + ']);">'
-                             + '<span class="fa fa-trash"></span> Delete' + '</button>' + '</div>';
-                    }
-                   }]
-            });
+	    	if(metricsDataTable){
+	    		metricsDataTable.clear().rows.add(template.metrics).draw();
+	    	}else{
+	    		metricsDataTable = $("#metrics-table").DataTable({
+	                rowId : "id",
+	                searching : false,
+	                ordering : false,
+	                paging : false,
+	                info : false,
+	                data : metrics,
+	                columnDefs : [ {
+	                    targets : -1,
+	                    className : "text-center"
+	                } ],
+	                columns : [
+	                   {data : "name"},
+	                   {data : "abbreviation"},
+	                   {data : "unit"},
+	                   {data : "dataType"},
+	                   {data : "description"},
+	                   {render : function(data, type, full, meta) {
+	                     return '<div class="btn-group" role="group">'
+	                             + '<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#metrics-table\').trigger(\'edit-metric\', [this, event, ' + meta.row + ']);">'
+	                             + '<span class="fa fa-edit"></span> Edit' + '</button>'
+	                             + '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#metrics-table\').trigger(\'delete-metric\', [this, event, ' + meta.row + ']);">'
+	                             + '<span class="fa fa-trash"></span> Delete' + '</button>' + '</div>';
+	                    }
+	                   }]
+	            });
+	    	}
 	    };
 	   	
 	    var bindEventHandlers = function(){
