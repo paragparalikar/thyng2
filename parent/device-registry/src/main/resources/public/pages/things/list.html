@@ -1,0 +1,97 @@
+<div class="card">
+    <div class="card-body">
+        <table id="things" class="table table-bordered table-striped" style="width: 100%">
+            <thead>
+                <tr>
+                	<th>&nbsp;</th>
+                    <th>Name</th>
+                    <th>Template</th>
+                    <th>Description</th>
+                    <th>Tags</th>
+                    <th>
+                        <a href="#things/0" class="btn btn-primary btn-sm" id="newThingButton">
+                            <span class="fa fa-plus"></span> New Thing
+                        </a>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+	render = (function($){
+		var thingsDataTable = null;
+		
+		var showDeleteThingConfirmationModal = function(event, element, originalEvent, id){
+			element.blur();
+			originalEvent.preventDefault();
+			row = thingsDataTable.row("#" + id);
+	        $.publish("show-confirmation-modal", [{
+	            message: "Are you sure you want to delete thing " + row.data().name + " ?"
+	        }, function () {
+	            thingService.deleteById(id, function () {
+	            	toast('Thing has been deleted successfully');
+	                row.remove().draw();
+	                $.modal.close();
+	            });
+	        }]);
+		};
+		
+		var showThingsDataTable = function(){
+			thingService.findAll(function (things) {
+		        templatesDataTable = $("#things").DataTable({
+		            rowId: "id",
+		            language: {
+		                processing: "Loading ..."
+		            },
+		            processing: true,
+		            columns: [
+		                {
+		                	render: function(data, type, row, meta){
+		                		return row.alive ? "Alive" : "Dead";
+		                	}
+		                },
+		                {
+		                    data: "name",
+		                    mRender: function (data, type, row) {
+		                        return '<a href="#" onclick="event.preventDefault(); this.blur(); $.publish(\'show-thing-view-modal\','+row.id+');">' + data + '</a>';
+		                    }
+		                },
+		                { 
+		                	render: function(data, type, row, meta){
+		                		return '<a href="#" onclick="event.preventDefault(); this.blur(); $.publish(\'show-template-view-modal\','+row.templateId+');">' + row.templateName + '</a>';
+		                	}
+		                },
+		                { data: "description" },
+		                { data: "tags" },
+		                {
+		                    mRender: function (data, type, row, meta) {
+		                        return '<div class="btn-group" role="group">' +
+		                            '<a class="btn btn-warning btn-xs" href="#things/' + row.id + '">' +
+		                                '<span class="fa fa-edit"></span> Edit' +
+		                            '</a>' +
+		                            '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
+		                            	'<span class="fa fa-trash"></span> Delete' +
+		                            '</button>' +
+		                            '</div>';
+		                    }
+		                }],
+		            columnDefs: [{
+		                targets: -1,
+		                orderable: false,
+		                className: "text-center"
+		            }],
+		            data: things
+		        });
+		    });
+		};
+		
+		return function(){
+			$("#page-title").html("Things");
+			showThingsDataTable();
+			$("#things").on("delete-thing", showDeleteThingConfirmationModal);
+		}
+	})(jQuery);
+
+</script>

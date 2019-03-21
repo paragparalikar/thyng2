@@ -1,30 +1,30 @@
-var templateService = {
+var thingService = {
 	findAll : function(success, error, always) {
-		$.get(window.location.origin + "/api/v1/templates")
+		$.get(window.location.origin + "/api/v1/things")
 		.done(success).fail(error ? error : errorCallback).always(always);
 	},
 	findOne : function(id, success, error, always) {
-		$.get(window.location.origin + "/api/v1/templates/" + id)
+		$.get(window.location.origin + "/api/v1/things/" + id)
 		.done(success).fail(error ? error : errorCallback).always(always);
 	},
-	save: function(template, success, error, always){
+	save: function(thing, success, error, always){
 		$.ajax({
-			url: window.location.origin + "/api/v1/templates",
+			url: window.location.origin + "/api/v1/things",
 			type: "POST",
 			contentType:"application/json; charset=utf-8",
-			data: template,
+			data: thing,
 		}).done(success).fail(error ? error : errorCallback).always(always);
 	},
 	deleteById : function(id, success, error, always){
 		$.ajax({
-			url: window.location.origin + "/api/v1/templates/" + id,
+			url: window.location.origin + "/api/v1/things/" + id,
 			type: "DELETE",
 		}).done(success).fail(error ? error : errorCallback).always(always);
 	}
 };
 
-$.router.add("#templates", function(){
-    $("#template-container").loadTemplate("pages/templates/list.html", null, {
+$.router.add("#things", function(){
+    $("#template-container").loadTemplate("pages/things/list.html", null, {
     	success: function(){
     		render();
     	},
@@ -32,9 +32,9 @@ $.router.add("#templates", function(){
     });
 });
 
-$.router.add("#templates/:id", function(params){
+$.router.add("#things/:id", function(params){
 	var id = arguments[0];
-	$("#template-container").loadTemplate("pages/templates/edit.html", null, {
+	$("#template-container").loadTemplate("pages/things/edit.html", null, {
 		success : function(){
 			render(id);
 		},
@@ -42,9 +42,9 @@ $.router.add("#templates/:id", function(params){
 	});
 });
 
-$.subscribe("show-template-view-modal", function(event, id){
-	templateService.findOne(id, function(template, status){
-		$("#modal-container").loadTemplate("pages/templates/view.html", template, {
+$.subscribe("show-thing-view-modal", function(event, id){
+	thingService.findOne(id, function(template, status){
+		$("#modal-container").loadTemplate("pages/things/view.html", template, {
 			success : function(){
 				$("#modal-container").modal();
 				showMetricsDataTable(template.metrics);
