@@ -1,12 +1,8 @@
 package com.thyng.model.entity;
 
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,11 +25,5 @@ public class Tenant extends AuditableEntity{
 	private String name;
 	
 	private String description;
-	
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="tenant")
-	private Set<User> users;
-	
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="tenant")
-	private Set<Thing> things;
 	
 }

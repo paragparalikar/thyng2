@@ -20,6 +20,27 @@
 render = (function($){
 	var tenantsDataTable = null;
 	
+	var showEditTenantModal = function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		var row = tenantsDataTable.row("#" + id);
+		var tenant = row.data();
+		showEditTenantView(tenant);
+	}
+	
+	var showEditTenantView = function(tenant){
+		tenant = tenant ? tenant : {};
+		$("#modal-container").loadTemplate("public/pages/tenants/edit.html", tenant, {
+		    success : function() {
+		    	$("#modal-container").modal();
+		    	renderModal(tenant, tenantsDataTable.rows().data(), function(){
+			    	
+			    });
+		    },
+	    	error: errorCallback
+	    });
+	}
+	
 	var showDeleteTenantConfirmationModal = function(event, element, originalEvent, id){
 		element.blur();
 		originalEvent.preventDefault();
@@ -49,9 +70,9 @@ render = (function($){
 	                {
 	                    mRender: function (data, type, row, meta) {
 	                        return '<div class="btn-group" role="group">' +
-	                            '<a class="btn btn-warning btn-xs" href="#templates/' + row.id + '">' +
-	                                '<span class="fa fa-edit"></span> Edit' +
-	                            '</a>' +
+			                    '<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#tenants\').trigger(\'edit-tenant\', [this, event,'+row.id+'])">' +
+		                        	'<span class="fa fa-edit"></span> Edit' +
+		                        '</button>' +
 	                            '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#tenants\').trigger(\'delete-tenant\', [this, event,'+row.id+'])">' +
 	                            	'<span class="fa fa-trash"></span> Delete' +
 	                            '</button>' +
@@ -71,6 +92,7 @@ render = (function($){
 	return function(){
 		$("#page-title").html("Tenants");
 		showTenantsDataTable();
+		$("#tenants").on("edit-tenant", showEditTenantModal);
 		$("#tenants").on("delete-tenant", showDeleteTenantConfirmationModal);
 	}
 })(jQuery);

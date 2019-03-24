@@ -1,0 +1,99 @@
+<form class="modal-content" id="tenant-form" style="width: 30em;">
+	<div class="modal-header">
+		<h4 class="modal-title">Tenant</h4>
+	</div>
+	<div class="modal-body">
+		<input type="text" style="display: none;" id="tenant-id" data-value="id">
+		<div class="form-group">
+			<label for="tenant-name">Name</label> 
+			<input data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255" 
+			type="text" data-value="name" class="form-control" id="tenant-name" name="name" placeholder="Tenant Name">
+		</div>
+		<div class="form-group">
+			<label for="tenant-description">Description</label> 
+			<input data-rule-maxlength="255" maxlength="255" type="text" data-value="description" name="description" 
+			class="form-control" id="tenant-description" placeholder="Description for the Tenant">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<a href="#" id="tenant-cancel-button" class="btn btn-secondary">
+			<span class="fa fa-trash"></span> Cancel
+		</a>
+		<button type="submit" id="tenant-submit-button" class="btn btn-primary">
+			<span class="fa fa-save"></span> Save
+		</button>
+	</div>
+</form>
+<script>
+	renderModal = (function($){
+		var inputTenant = null;
+		var inputTenants = null;
+		var tenantCallback = null;
+		var nameValidationArray = null;
+		$("#tenant-name").focus();
+		
+		$("#tenant-form").validate({
+			errorPlacement: function(error, element) {
+				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
+			},
+			errorElement: "span",			
+			messages:{
+				name: {
+					notInArray: "Another tenant exists with same name"
+				}
+			},			
+			rules:{
+				name: {
+					notInArray : {
+						provider: function(){
+							return nameValidationArray;
+						}
+					}
+				},
+				
+			},			
+			submitHandler: function(){
+				toModel(inputTenant);
+				$.modal.close();
+				if(tenantCallback){
+					tenantCallback();
+			    }
+			}	
+		});
+		
+		var bindEventHandlers = function(){
+			$("#tenant-cancel-button").click(function (event) {
+				event.preventDefault();
+			    $.modal.close();
+			});
+		};
+		
+		var toView = function(tenant){
+			if(tenant){
+				$("#tenant-id").val(tenant.id);
+				$("#tenant-name").val(tenant.name);
+				$("#tenant-description").val(tenant.description);
+			}
+		};
+		
+		var toModel = function(tenant){
+			tenant.id = $("#tenant-id").val();
+			tenant.name= $("#tenant-name").val();
+			tenant.description= $("#tenant-description").val();
+		};
+		
+		return function(tenant, tenants, callback){
+			inputTenant = tenant;
+			inputTenants = tenants;
+			tenantCallback = callback;
+			toView(tenant);
+			bindEventHandlers();
+			
+			nameValidationArray = inputTenants ? inputTenants.map(m => m.name) : [];
+			var index = nameValidationArray.indexOf(inputTenant.name);
+			if(index > -1){
+				nameValidationArray.splice(index, 1);	
+			}
+		};
+	})(jQuery);
+</script>
