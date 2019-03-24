@@ -27,5 +27,9 @@ public class UserDTO {
 	private boolean credencialsExpired;
 	
 	private Set<Authority> authorities;
+	
+	public boolean hasAuthority(Authority authority){
+		return null != authorities && authorities.contains(authority);
+	}
 
 }

@@ -1,3 +1,7 @@
+<%@ page import="com.thyng.model.dto.UserDTO" %>
+<%@ page import="com.thyng.model.enumeration.Authority" %>
+
+<% final UserDTO user = (UserDTO)session.getAttribute("user"); %>
 <html>
 <head>
 <title>Thyng</title>
@@ -17,10 +21,14 @@
 			<div id="logo-sm">T</div>
 			<div id="logo">THYNG</div>
 			<ul>
-				<li><a class="router-link" href="#dashboard" route-title="Dashboard"><i class="fa fa-tachometer"></i> <span class="menu-text">Dashboard</span></a></li>
+				<li><a class="router-link" href="#dashboard" route-title="Dashboard"><i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span></a></li>
+				<% if(user.hasAuthority(Authority.TENANT_READ)){ %>
 				<li><a class="router-link" href="#tenants" route-title="Tenants"><i class="fa fa-clone"></i> <span class="menu-text">Tenants</span></a></li>
+				<% } if(user.hasAuthority(Authority.THING_READ)){ %>
 				<li><a class="router-link" href="#things" route-title="Things"><i class="fa fa-bell"></i> <span class="menu-text">Things</span></a></li>
+				<% } if(user.hasAuthority(Authority.USER_READ)){ %>
 				<li><a class="router-link" href="#users" route-title="Users"><i class="fa fa-user"></i> <span class="menu-text">Users</span></a></li>
+				<% } %> 
 			</ul>
 		</aside>
 		<main id="page-container"> 
@@ -51,6 +59,13 @@
 	<script src="../public/libs/jquery-tagsinput/bootstrap-tagsinput.min.js"></script>
 	<script src="../public/libs/jquery-hashchange/jquery.ba-hashchange.min.js"></script>
 	<script src="../public/libs/jquery-toast/jquery.toast.min.js"></script>
+	
+	<script>
+		user = <%=session.getAttribute("user-json")%>;
+		user.hasAuthority = function(authority){
+			return authority && user && user.authorities && -1 < user.authorities.indexOf(authority);
+		};
+	</script>
 	
 	<script src="../public/plugins/jquery/jQuery-router.js"></script>
 	<script src="../public/index.js"></script>
