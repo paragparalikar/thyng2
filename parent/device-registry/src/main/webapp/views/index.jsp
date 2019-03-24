@@ -1,6 +1,7 @@
 <html>
 <head>
 <title>Thyng</title>
+<link rel="shortcut icon" type="image/png" href="../public/images/favicon.ico"/>
 <link rel="stylesheet" href="../public/libs/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
 <link rel="stylesheet" href="../public/libs/jquery-modal/0.9.1/jquery.modal.min.css">
@@ -29,6 +30,10 @@
 				</button>
 				<h2 id="page-title" >				
 				</h2>
+				<a href="/logout" class="btn btn-secondary pull-right" id="logout-link">
+					<i class="fas fa-sign-out-alt"></i>
+				</a>
+				
 			</header>
 			<div id="template-container" class="container-fluid"></div>
 		</main>

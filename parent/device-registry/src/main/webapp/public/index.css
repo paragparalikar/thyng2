@@ -103,6 +103,18 @@ input, textarea, select, .form-control{
 	color: yellow !important;
 }
 
+#logout-link, #logout-link:FOCUS{
+	color: red;
+	background-color: transparent;
+	border-width: 0;
+	height: 100%;
+	outline: 0;
+	display: inline-block;
+	font-size: 1.2em;
+}
+#logout-link:HOVER{
+	font-size: 1.6em;
+}
 #sidnav-toggle, #sidnav-toggle:FOCUS {
 	color: #2c353e;
 	background-color: transparent;
