@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -11,7 +14,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -26,7 +31,7 @@ import lombok.Setter;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, of={"id", "name"})
+@EqualsAndHashCode(callSuper = false, of={"id", "name"})
 public class Thing extends AuditableEntity {
 
 	@Id 
@@ -37,15 +42,14 @@ public class Thing extends AuditableEntity {
 	@Column(nullable=false, unique=true, updatable=false)
 	private String key;
 	
-	@ManyToOne(optional=false)
-	private Template template;
-	
-	@ManyToOne(optional=false)
-	private Organisation organisation;
-	
 	private String name;
 	
 	private String description;
+	
+	@ManyToOne(optional=false)
+	private Tenant tenant;
+	
+	private Set<Metric> metrics;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Set<String> tags;
@@ -65,9 +69,35 @@ public class Thing extends AuditableEntity {
 	
 	private Long lastBeat;
 	
+	@PreUpdate
 	@PrePersist
 	public void prePersist(){
-		key = UUID.randomUUID().toString();
+		key = null == key ? UUID.randomUUID().toString() : key;
 	}
+	
+	public void setKey(String key){
+		throw new UnsupportedOperationException();
+	}
+	
+	public void setPath(String path){
+		throw new UnsupportedOperationException();
+	}
+	
+	@Access(AccessType.PROPERTY)
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true, mappedBy="thing")
+	public Set<Metric> getMetrics(){
+		return metrics;
+	}
+	
+	public void setMetrics(Set<Metric> metrics){
+		if(null == this.metrics){
+			this.metrics = metrics;
+		}else{
+			this.metrics.clear();
+			if(null != metrics){
+				this.metrics.addAll(metrics);
+			}
+		}
+	} 
 	
 }

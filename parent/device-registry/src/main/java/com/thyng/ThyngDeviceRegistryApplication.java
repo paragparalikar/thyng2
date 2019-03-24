@@ -16,5 +16,5 @@ public class ThyngDeviceRegistryApplication extends SpringBootServletInitializer
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(ThyngDeviceRegistryApplication.class);
 	}
-
+	
 }

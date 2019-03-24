@@ -3,22 +3,29 @@ package com.thyng.model.dto;
 import java.util.Set;
 
 import com.thyng.model.entity.Name;
+import com.thyng.model.enumeration.Authority;
 
 import lombok.Data;
 
-@Data 
+@Data
 public class UserDTO {
 
 	private Long id;
-	
+
 	private Name name;
+
+	private String email;
+
+	private String phone;
 	
-	private OrganisationDTO organisation;
+	private boolean enabled = true;
 	
-	private AddressDTO address;
+	private boolean accountExpired;
 	
-	private Set<EmailDTO> emails;
+	private boolean accountLocked;
 	
-	private Set<PhoneDTO> phones;
+	private boolean credencialsExpired;
+	
+	private Set<Authority> authorities;
 
 }

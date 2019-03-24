@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = true, of={"id", "name"})
+@EqualsAndHashCode(callSuper = false, of={"id", "name"})
 public class Metric extends AuditableEntity {
 
 	@Id
@@ -29,15 +29,17 @@ public class Metric extends AuditableEntity {
 	private Long id;
 	
 	@ManyToOne(optional=false)
-	private Template template;
+	private Thing thing;
 
 	@Column(nullable=false)
 	private String name;
 	
 	private String description;
 	
+	@Column(nullable=false)
 	private String abbreviation;
 	
+	@Column(nullable=false)
 	private String unit;
 	
 	@Column(nullable=false)

@@ -15,10 +15,6 @@ public class ThingDTO {
 	
 	private String key;
 
-	private Long templateId;
-	
-	private String templateName;
-
 	@NotBlank
 	@Size(min=3, max=255)
 	private String name;

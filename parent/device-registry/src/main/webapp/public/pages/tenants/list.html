@@ -1,0 +1,77 @@
+<div class="card">
+    <div class="card-body">
+        <table id="tenants" class="table table-bordered table-striped" style="width: 100%">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>
+                        <button class="btn btn-primary btn-sm" id="newTemplateButton">
+                            <span class="fa fa-plus"></span> New Tenant
+                        </button>
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+<script>
+render = (function($){
+	var tenantsDataTable = null;
+	
+	var showDeleteTenantConfirmationModal = function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = tenantsDataTable.row("#" + id);
+        $.publish("show-confirmation-modal", [{
+            message: "Are you sure you want to delete tenant " + row.data().name + " ?"
+        }, function () {
+            tenantService.deleteById(id, function () {
+            	toast('Tenant has been deleted successfully');
+                row.remove().draw();
+                $.modal.close();
+            });
+        }]);
+	};
+	
+	var showTenantsDataTable = function(){
+		tenantService.findAll(function (tenants) {
+	        tenantsDataTable = $("#tenants").DataTable({
+	            rowId: "id",
+	            language: {
+	                processing: "Loading ..."
+	            },
+	            processing: true,
+	            columns: [
+	                { data: "name" },
+	                { data: "description" },
+	                {
+	                    mRender: function (data, type, row, meta) {
+	                        return '<div class="btn-group" role="group">' +
+	                            '<a class="btn btn-warning btn-xs" href="#templates/' + row.id + '">' +
+	                                '<span class="fa fa-edit"></span> Edit' +
+	                            '</a>' +
+	                            '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#tenants\').trigger(\'delete-tenant\', [this, event,'+row.id+'])">' +
+	                            	'<span class="fa fa-trash"></span> Delete' +
+	                            '</button>' +
+	                            '</div>';
+	                    }
+	                }],
+	            columnDefs: [{
+	                targets: -1,
+	                orderable: false,
+	                className: "text-center"
+	            }],
+	            data: tenants
+	        });
+	    });
+	};
+	
+	return function(){
+		$("#page-title").html("Tenants");
+		showTenantsDataTable();
+		$("#tenants").on("delete-tenant", showDeleteTenantConfirmationModal);
+	}
+})(jQuery);
+</script>

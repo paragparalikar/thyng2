@@ -1,21 +1,24 @@
 package com.thyng.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.thyng.model.entity.User;
-import com.thyng.model.exception.UserNotFoundException;
+import com.thyng.model.exception.NotFoundException;
 import com.thyng.repository.data.jpa.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @Service 
 @RequiredArgsConstructor
-public class UserService {
+public class UserService implements UserDetailsService{
 
 	private final UserRepository userRepository;
 	
 	public User findById(Long id){
-		return userRepository.findById(id).orElseThrow(()-> new UserNotFoundException());
+		return userRepository.findById(id).orElseThrow(()-> new NotFoundException());
 	}
 	
 	public User save(User user){
@@ -24,6 +27,11 @@ public class UserService {
 	
 	public void deleteById(Long id){
 		userRepository.deleteById(id);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException(username));
 	}
 	
 }
