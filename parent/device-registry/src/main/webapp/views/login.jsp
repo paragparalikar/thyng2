@@ -67,11 +67,11 @@
 		<div>
 			<div class="form-group">
 				<label for="username">Email</label>
-				<input data-rule-email="true" data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255"  type="text" name="username" id="username" class="form-control" placeholder="Please enter Username">
+				<input value="0.0@gmail.com" data-rule-email="true" data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255"  type="text" name="username" id="username" class="form-control" placeholder="Please enter Email">
 			</div>
 			<div class="form-group">
 				<label for="password">Password</label>
-				<input data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255"  type="password" name="password" id="password" class="form-control" placeholder="Please enter Password">
+				<input value="thyng" data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255"  type="password" name="password" id="password" class="form-control" placeholder="Please enter Password">
 			</div>
 		</div>
 		<div>
