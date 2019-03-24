@@ -59,6 +59,10 @@ input, textarea, select, .form-control{
 	width: auto;
 	max-width: none;
 	padding: 0;
+	overflow: visible;
+}
+.modal a.close-modal{
+	z-index: 3;
 }
 .modal-content{
 	margin-bottom: 0;
