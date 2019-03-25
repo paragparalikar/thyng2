@@ -6,7 +6,7 @@
                     <th>Name</th>
                     <th>Description</th>
                     <th>
-                        <button class="btn btn-primary btn-sm" id="newTemplateButton">
+                        <button class="btn btn-primary btn-sm" id="newTenantButton">
                             <span class="fa fa-plus"></span> New Tenant
                         </button>
                     </th>
@@ -33,8 +33,24 @@ render = (function($){
 		$("#modal-container").loadTemplate("public/pages/tenants/edit.html", tenant, {
 		    success : function() {
 		    	$("#modal-container").modal();
-		    	renderModal(tenant, tenantsDataTable.rows().data(), function(){
-			    	
+		    	var data = tenantsDataTable.rows().data();
+		    	renderModal(tenant, data, function(savedTenant){
+		    		var isEdit = false;
+		    		var editIndex = -1;
+		    		for(var index = 0; index < data.length; index++){
+		    			if(savedTenant.id === data[index].id){
+		    				isEdit = true;
+		    				editIndex = index;
+		    				break;
+		    			}
+		    		}
+		    		var clonedData = data.clone();
+		    		if(isEdit){
+		    			clonedData.splice(editIndex, 1);
+		    		}else{
+		    			clonedData.push(savedTenant);
+		    		}
+		    		tenantsDataTable.clear().rows.add(clonedData).draw();
 			    });
 		    },
 	    	error: errorCallback
@@ -92,6 +108,9 @@ render = (function($){
 	return function(){
 		$("#page-title").html("Tenants");
 		showTenantsDataTable();
+		$("#newTenantButton").click(function(event){
+			showEditTenantView(null);
+		});
 		$("#tenants").on("edit-tenant", showEditTenantModal);
 		$("#tenants").on("delete-tenant", showDeleteTenantConfirmationModal);
 	}

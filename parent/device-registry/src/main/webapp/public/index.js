@@ -30,7 +30,6 @@ $(function() {
 		}).join("\n");
 	});
 	$(document).on("submit","form",function(event){
-		alert("preventing");
 		event.preventDefault();
 		return false;
 	});

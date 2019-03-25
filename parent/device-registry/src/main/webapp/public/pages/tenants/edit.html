@@ -54,10 +54,13 @@
 			},			
 			submitHandler: function(){
 				toModel(inputTenant);
-				$.modal.close();
-				if(tenantCallback){
-					tenantCallback();
-			    }
+				tenantService.save(JSON.stringify(inputTenant), function(data){
+					toast('Tenant has been saved successfully');
+					$.modal.close();
+					if(tenantCallback){
+						tenantCallback(data);
+				    }
+				});
 			}	
 		});
 		
