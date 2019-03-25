@@ -44,7 +44,7 @@ render = (function($){
 		    				break;
 		    			}
 		    		}
-		    		var clonedData = data.clone();
+		    		var clonedData = data.slice();
 		    		if(isEdit){
 		    			clonedData.splice(editIndex, 1);
 		    		}else{
