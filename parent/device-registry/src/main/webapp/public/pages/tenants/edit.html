@@ -56,7 +56,7 @@
 				<td>
 					<div class="form-group">
 						<label for="tenant-start">Start</label> 
-						<div class="input-group date" id='datetimepicker1'>
+						<div class="input-group date" id="tenant-start-datepicker">
 							<input data-rule-maxlength="255" maxlength="255" type="text" data-value="start" name="start" class="form-control" id="tenant-start" placeholder="Tenant Start Date">
 							<span class="input-group-addon">
 								<span class="fa fa-calendar"></span>
@@ -76,7 +76,7 @@
 				<td>
 					<div class="form-group">
 						<label for="tenant-expiry">Expiry</label> 
-						<div class="input-group date" id='datetimepicker2'>
+						<div class="input-group date" id="tenant-expiry-datepicker">
 							<input data-rule-maxlength="255" maxlength="255" type="text" data-value="expiry" name="expiry" class="form-control" id="tenant-expiry" placeholder="Tenant Expiry Date">
 							<span class="input-group-addon">
 								<span class="fa fa-calendar"></span>
@@ -105,18 +105,18 @@
 		var tenantCallback = null;
 		var nameValidationArray = null;
 		$("#tenant-name").focus();
-		$("#tenant-start").datetimepicker({
+		$("#tenant-start-datepicker").datetimepicker({
 			format: 'L'
 		});
-		$("#tenant-expiry").datetimepicker({
+		$("#tenant-expiry-datepicker").datetimepicker({
 			useCurrent: false,
 			format: 'L'
 		});
-		$("#tenant-start").on("dp.change", function (e) {
-            $('#tenant-expiry').data("DateTimePicker").minDate(e.date);
+		$("#tenant-start-datepicker").on("dp.change", function (e) {
+            $('#tenant-expiry-datepicker').data("DateTimePicker").minDate(e.date);
         });
-        $("#tenant-expiry").on("dp.change", function (e) {
-            $('#tenant-start').data("DateTimePicker").maxDate(e.date);
+        $("#tenant-expiry-datepicker").on("dp.change", function (e) {
+            $('#tenant-start-datepicker').data("DateTimePicker").maxDate(e.date);
         });
 		$("#tenant-form").validate({
 			errorPlacement: function(error, element) {
