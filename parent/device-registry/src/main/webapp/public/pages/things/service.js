@@ -53,3 +53,4 @@ $.subscribe("show-thing-view-modal", function(event, id){
 		});
 	});
 });
+

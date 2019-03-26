@@ -23,6 +23,22 @@
 	render = (function($){
 		var thingsDataTable = null;
 		
+		var showThingEditModal = function(event, element, originalEvent, id){
+			element.blur();
+			originalEvent.preventDefault();
+			row = thingsDataTable.row("#" + id);
+			doShowThingEditModal(row.data());
+		}
+		var doShowThingEditModal = function(thing){
+			$("#modal-container").loadTemplate("public/pages/things/edit.html", thing, {
+				success : function(){
+					$("#modal-container").modal();
+					render(thing);
+				},
+		    	error: errorCallback
+			});
+		}
+		
 		var showDeleteThingConfirmationModal = function(event, element, originalEvent, id){
 			element.blur();
 			originalEvent.preventDefault();
@@ -65,9 +81,9 @@
 		                {
 		                    mRender: function (data, type, row, meta) {
 		                        return '<div class="btn-group" role="group">' +
-		                            '<a class="btn btn-warning btn-xs" href="#things/' + row.id + '">' +
+		                            '<button class="btn btn-warning btn-xs" onclick="$(\'#things\').trigger(\'edit-thing\', [this, event,'+row.id+'])">' +
 		                                '<span class="fa fa-edit"></span> Edit' +
-		                            '</a>' +
+		                            '</button>' +
 		                            '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
 		                            	'<span class="fa fa-trash"></span> Delete' +
 		                            '</button>' +
@@ -92,6 +108,7 @@
 		return function(){
 			$("#page-title").html("Things");
 			showThingsDataTable();
+			$("#things").on("edit-thing", showThingEditModal);
 			$("#things").on("delete-thing", showDeleteThingConfirmationModal);
 		}
 	})(jQuery);
