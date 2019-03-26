@@ -67,6 +67,9 @@ input, textarea, select, .form-control{
 .modal-content{
 	margin-bottom: 0;
 }
+.modal-header{
+	border-radius: 6px;
+}
 .modal-header, .modal-footer{
 	background-color: #eeeeee;
 }

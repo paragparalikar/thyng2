@@ -38,6 +38,7 @@ $.subscribe("show-tenant-view-modal", function(event, id){
 		$("#modal-container").loadTemplate("public/pages/tenants/view.html", data, {
 			success: function(){
 				$("#modal-container").modal();
+				renderModal(data);
 			}
 		});
 	});

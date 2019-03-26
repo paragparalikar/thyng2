@@ -79,3 +79,14 @@
 		</table>
 	</div>
 </div>
+<script>
+	renderModal = (function($){
+		var toView = function(tenant){
+			$("#tenant-start").val(new Date(tenant.start).toLocaleString());
+			$("#tenant-expiry").val(new Date(tenant.expiry).toLocaleString());
+		};
+		return function(tenant){
+			toView(tenant);
+		};		
+	})(jQuery);
+</script>
