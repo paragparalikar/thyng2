@@ -13,7 +13,7 @@
 }
 </style>
 
-<div class="modal-content" style="width: 50em;">
+<div class="modal-content" style="width: 60em;">
 	<div class="modal-header">
 		<h4 class="modal-title">Tenant</h4>
 	</div>
@@ -82,8 +82,8 @@
 <script>
 	renderModal = (function($){
 		var toView = function(tenant){
-			$("#tenant-start").val(new Date(tenant.start).toLocaleString());
-			$("#tenant-expiry").val(new Date(tenant.expiry).toLocaleString());
+			$("#tenant-start").val(new Date(tenant.start).toLocaleDateString());
+			$("#tenant-expiry").val(new Date(tenant.expiry).toLocaleDateString());
 			$("#tenant-locked").prop("checked", tenant.locked);
 		};
 		return function(tenant){

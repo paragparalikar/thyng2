@@ -7,6 +7,7 @@
 <title>Thyng</title>
 <link rel="shortcut icon" type="image/png" href="../public/images/favicon.ico"/>
 <link rel="stylesheet" href="../public/libs/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="../public/libs/bootstrap/dist/css/bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
 <link rel="stylesheet" href="../public/libs/jquery-modal/0.9.1/jquery.modal.min.css">
 <link rel="stylesheet" href="../public/libs/jquery-tagsinput/bootstrap-tagsinput.css">
@@ -49,10 +50,14 @@
 	<div id="modal-container"></div>
 	<script src="../public/libs/jquery/dist/jquery.min.js"></script>
 	<script src="../public/libs/jquery/dist/jquery-migrate-1.0.0.min.js"></script>
+	<script src="../public/libs/moment/moment.js"></script>
 	<script src="../public/libs/jquery-validate/jquery.validate.min.js"></script>
 	<script src="../public/libs/jquery-tiny-pubsub/ba-tiny-pubsub.min.js"></script>
 	<script src="../public/libs/loadTemplate/jquery.loadTemplate.js"></script>
 	<script src="../public/libs/bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="../public/libs/bootstrap/dist/js/transition.min.js"></script>
+	<script src="../public/libs/bootstrap/dist/js/collapse.js"></script>
+	<script src="../public/libs/bootstrap/dist/js/bootstrap-datetimepicker.min.js"></script>
 	<script src="../public/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="../public/libs/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 	<script src="../public/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
