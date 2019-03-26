@@ -1,5 +1,9 @@
 package com.thyng.model.dto;
 
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -16,5 +20,16 @@ public class TenantDTO {
 	
 	@Size(max=255)
 	private String description;
+	
+	private Date start;
+	
+	private Date expiry;
+	
+	private boolean locked;
+	
+	@Size(max=10)
+	private Set<String> tags;
+
+	private Map<String, String> properties;
 	
 }

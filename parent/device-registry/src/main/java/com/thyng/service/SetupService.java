@@ -1,6 +1,7 @@
 package com.thyng.service;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class SetupService {
 
 	@Transactional
 	public void setup(){
-		for(int index = 0; index < 3; index++){
+		for(int index = 0; index < 4; index++){
 			final Tenant tenant = tenantRepository.save(buildTenant(index));
 			for(int userIndex = 0; userIndex < 10; userIndex++){
 				userRepository.save(buildUser(tenant, userIndex, index));
@@ -52,10 +53,37 @@ public class SetupService {
 	}
 	
 	private Tenant buildTenant(int index){
+		boolean locked = false;
+		Calendar start = Calendar.getInstance();
+		Calendar expiry = Calendar.getInstance();
+		switch(index % 4){
+		case 0 :
+			start.add(Calendar.DATE, -1);
+			expiry.add(Calendar.DATE, 1);
+			break;
+		case 1 : 
+			start.add(Calendar.DATE, 1);
+			expiry.add(Calendar.DATE, 1);
+			break;
+		case 2 : 
+			start.add(Calendar.DATE, -1);
+			break;
+		case 3 : 
+			start.add(Calendar.DATE, -1);
+			expiry.add(Calendar.DATE, 1);
+			locked = true;
+			break;
+		}
+		
 		return Tenant.builder()
 				.id(null)
 				.name("Tenant-"+index)
 				.description("Description for Tenant-"+index)
+				.tags(buildTags())
+				.properties(buildProperties())
+				.start(start.getTime())
+				.locked(locked)
+				.expiry(expiry.getTime())
 				.build();
 	}
 	
