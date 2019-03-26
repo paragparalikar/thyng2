@@ -4,6 +4,10 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Start</th>
+                    <th>Expiry</th>
+                    <th>Locked</th>
+                    <th>Tags</th>
                     <th>Description</th>
                     <th>
                         <button class="btn btn-primary btn-sm" id="newTenantButton">
@@ -82,6 +86,28 @@ render = (function($){
 	            processing: true,
 	            columns: [
 	                { data: "name" },
+	                { data: "start",
+	                	render: function(data, type, row){
+	                		if(type === "sort" || type === "type"){
+	                            return data;
+	                        }
+	                		return new Date(data).toLocaleString();
+	                	}
+	                },
+	                { data: "expiry",
+	                	render: function(data, type, row){
+	                		if(type === "sort" || type === "type"){
+	                            return data;
+	                        }
+	                		return new Date(data).toLocaleString();
+	                	}
+	                },
+	                { data: "locked",
+						render: function(data, type, row){
+							return data ? "Yes" : "No";
+						}
+	                },
+	                { data: "tags" },
 	                { data: "description" },
 	                {
 	                    mRender: function (data, type, row, meta) {
