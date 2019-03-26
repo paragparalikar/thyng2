@@ -30,8 +30,8 @@
 				</td>
 				<td>
 					<div class="form-group">
-						<label for="tenant-locked" id="tenant-locked-label">Locked</label> 
-						<input type="checkbox" data-value="locked" name="locked"  disabled="disabled" readonly="readonly" id="tenant-locked" class="pull-right">
+						<input type="checkbox" data-value="locked" name="locked" id="tenant-locked" class="pull-right" disabled="disabled" readonly="readonly">
+						<label for="tenant-locked" id="tenant-locked-label">Locked</label>
 					</div>
 				</td>
 			</tr>
@@ -84,6 +84,7 @@
 		var toView = function(tenant){
 			$("#tenant-start").val(new Date(tenant.start).toLocaleString());
 			$("#tenant-expiry").val(new Date(tenant.expiry).toLocaleString());
+			$("#tenant-locked").prop("checked", tenant.locked);
 		};
 		return function(tenant){
 			toView(tenant);

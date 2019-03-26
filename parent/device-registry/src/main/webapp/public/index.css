@@ -198,3 +198,60 @@ input, textarea, select, .form-control{
 	right: 0;
 	padding: 15px;
 }
+/* 
+
+.checkbox input[type=checkbox]{
+	opacity: 0;
+}
+.checkbox label::before{
+	content: "";
+	display: inline-block;
+	height: 1em;
+	width: 1em;
+	left: 0;
+	border-radius: 4px;
+}
+.checkbox.bg label::before{
+	height: 2em;
+	width: 2em;
+}
+.checkbox.danger label::before{
+	background-color: #d9534f;
+}
+.checkbox label::after{
+	content: "";
+    display: inline-block;
+    height: 6px;
+    width: 9px;
+    border-left: 2px solid;
+    border-bottom: 2px solid;
+    transform: rotate(-45deg);
+}
+.checkbox label {
+    position: relative;
+}
+.checkbox label::before,
+.checkbox label::after {
+    position: absolute;
+}
+Outer-box
+.checkbox label::before {
+    top: 3px;
+}
+Checkmark
+.checkbox label::after {
+    left: 4px;
+    top: 7px;
+}
+.checkbox.danger label::after {
+    border-color:white;
+}
+Hide the checkmark by default
+.checkbox input[type="checkbox"] + label::after {
+    content: none;
+}
+Unhide the checkmark on the checked state
+.checkbox input[type="checkbox"]:checked + label::after {
+    content: "";
+}
+ */
