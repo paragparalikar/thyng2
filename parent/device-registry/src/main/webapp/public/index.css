@@ -24,6 +24,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .table tbody tr td{
 	padding: 3px;
 }
+.pagination>.active>a{
+	z-index: 1;
+}
 .form-group > label{
 	width: 100%;
 }
@@ -57,6 +60,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	max-width: none;
 	padding: 0;
 	overflow: visible;
+	z-index: 4;
 }
 .modal a.close-modal{
 	z-index: 3;

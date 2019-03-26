@@ -19,6 +19,7 @@ import com.thyng.model.entity.Tenant;
 import com.thyng.model.entity.Thing;
 import com.thyng.model.entity.User;
 import com.thyng.model.enumeration.DataType;
+import com.thyng.repository.data.jpa.MetricRepository;
 import com.thyng.repository.data.jpa.TenantRepository;
 import com.thyng.repository.data.jpa.ThingRepository;
 import com.thyng.repository.data.jpa.UserRepository;
@@ -38,6 +39,8 @@ public class SetupService {
 	private final ThingRepository thingRepository;
 	
 	private final PasswordEncoder passwordEncoder;
+	
+	private final MetricRepository metricRepository;
 
 	@Transactional
 	public void setup(){
@@ -47,7 +50,9 @@ public class SetupService {
 				userRepository.save(buildUser(tenant, userIndex, index));
 			}
 			for(int thingIndex = 0; thingIndex < 50; thingIndex++){
-				thingRepository.save(buildThing(tenant, thingIndex));
+				final Thing thing = thingRepository.save(buildThing(tenant, thingIndex));
+				final Set<Metric> metrics = buildMetrics(thing);
+				metricRepository.saveAll(metrics);
 			}
 		}
 	}
@@ -95,17 +100,17 @@ public class SetupService {
 				.biDirectional(0 == (thingIndex % 2))
 				.description("Description for Thing-"+thingIndex)
 				.name("Thing-"+thingIndex)
-				.metrics(buildMetrics())
 				.tags(buildTags())
 				.properties(buildProperties())
 				.build();
 	}
 	
-	private Set<Metric> buildMetrics(){
+	private Set<Metric> buildMetrics(Thing thing){
 		final Set<Metric> metrics = new HashSet<>();
 		for(int index = 0; index < 4; index++){
 			metrics.add(Metric.builder()
 					.id(null)
+					.thing(thing)
 					.abbreviation("ABB"+index)
 					.dataType(DataType.values()[index % DataType.values().length])
 					.description("Description for Metric-"+index)

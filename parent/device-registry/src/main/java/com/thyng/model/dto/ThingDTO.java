@@ -38,6 +38,8 @@ public class ThingDTO {
 	
 	@Size(max=10)
 	private Set<String> tags;
+	
+	private Set<MetricDTO> metrics;
 
 	private Map<String, String> properties;
 
