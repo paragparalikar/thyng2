@@ -6,15 +6,16 @@ import java.util.Set;
 import org.mapstruct.Mapper;
 
 import com.thyng.model.dto.ThingDTO;
+import com.thyng.model.dto.ThingDetailsDTO;
 import com.thyng.model.entity.Thing;
 
 @Mapper(componentModel="spring")
 public interface ThingMapper {
 
-	ThingDTO toDTO(Thing thing);
+	ThingDetailsDTO toDTO(Thing thing);
 	
 	Set<ThingDTO> toDTO(Collection<Thing> things);
 	
-	Thing toEntity(ThingDTO dto);
+	Thing toEntity(ThingDetailsDTO dto);
 	
 }

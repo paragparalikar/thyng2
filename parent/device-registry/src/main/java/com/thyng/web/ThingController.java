@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thyng.model.dto.ThingDTO;
+import com.thyng.model.dto.ThingDetailsDTO;
 import com.thyng.model.entity.Thing;
 import com.thyng.model.mapper.ThingMapper;
 import com.thyng.service.ThingService;
@@ -34,13 +35,13 @@ public class ThingController {
 	}
 	
 	@GetMapping("/{id}")
-	public ThingDTO findById(@PathVariable Long id){
+	public ThingDetailsDTO findById(@PathVariable Long id){
 		return thingMapper.toDTO(thingService.findById(id));
 	}
 	
 	@PostMapping
 	@ResponseBody
-	public ThingDTO save(@RequestBody @Valid ThingDTO dto){
+	public ThingDetailsDTO save(@RequestBody @Valid ThingDetailsDTO dto){
 		final Thing thing = thingMapper.toEntity(dto);
 		final Thing managedThing = thingService.save(thing);
 		return thingMapper.toDTO(managedThing);

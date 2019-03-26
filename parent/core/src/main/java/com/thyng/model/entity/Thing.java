@@ -46,15 +46,15 @@ public class Thing extends AuditableEntity {
 	
 	private String description;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	private Tenant tenant;
 	
 	private Set<Metric> metrics;
 	
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection
 	private Set<String> tags;
 
-	@ElementCollection(fetch=FetchType.EAGER)
+	@ElementCollection
 	private Map<String, String> properties;
 	
 	private Double altitude;
@@ -84,7 +84,7 @@ public class Thing extends AuditableEntity {
 	}
 	
 	@Access(AccessType.PROPERTY)
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, orphanRemoval=true, mappedBy="thing")
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="thing")
 	public Set<Metric> getMetrics(){
 		return metrics;
 	}

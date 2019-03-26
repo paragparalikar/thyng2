@@ -21,11 +21,21 @@ public class ThingService {
 	}
 	
 	public Thing findById(Long id){
-		return thingRepository.findById(id).orElseThrow(() -> new NotFoundException());
+		final Thing thing = thingRepository.findById(id).orElseThrow(() -> new NotFoundException());
+		thing.getProperties();
+		thing.getMetrics();
+		thing.getTenant();
+		thing.getTags();
+		return thing;
 	}
 
 	public Thing findByKey(String key){
-		return thingRepository.findByKey(key).orElseThrow(() -> new NotFoundException());
+		final Thing thing = thingRepository.findByKey(key).orElseThrow(() -> new NotFoundException());
+		thing.getProperties();
+		thing.getMetrics();
+		thing.getTenant();
+		thing.getTags();
+		return thing;
 	}
 	
 	public Thing save(Thing thing){

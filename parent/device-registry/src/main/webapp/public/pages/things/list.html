@@ -6,7 +6,7 @@
                     <th>Name</th>
                     <th>Key</th>
                     <th>Description</th>
-                    <th>Tags</th>
+                    <th>BiDirectional</th>
                     <th>Alive</th>
                     <th>
                         <a href="#things/0" class="btn btn-primary btn-sm" id="newThingButton">
@@ -71,11 +71,16 @@
 		                },
 		                { data: "key" },
 		                { data: "description" },
-		                { data: "tags" },
+		                { 
+		                	data: "biDirectional",
+		                	render: function(data, type, row, meta){
+		                		return data ? "<i class='fa fa-check text-success'></i> " : "<i class='fa fa-times text-danger'></i> ";
+		                	}
+	                	},
 		                {
 		                	data: "alive",
 		                	render: function(data, type, row, meta){
-		                		return row.alive ? "<i class='fa fa-check text-success'></i> " : "<i class='fa fa-times text-danger'></i> ";
+		                		return data ? "<i class='fa fa-check text-success'></i> " : "<i class='fa fa-times text-danger'></i> ";
 		                	}
 		                },
 		                {
@@ -97,6 +102,11 @@
 		            },
 		            {
 		                targets: -2,
+		                orderable: true,
+		                className: "text-center"
+		            },
+		            {
+		                targets: -3,
 		                orderable: true,
 		                className: "text-center"
 		            }],
