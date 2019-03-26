@@ -16,8 +16,8 @@ public class ThingService {
 
 	private final ThingRepository thingRepository;
 	
-	public List<Thing> findAll(){
-		return thingRepository.findAll();
+	public List<Thing> findByTenantId(Long tenantId){
+		return thingRepository.findByTenantId(tenantId);
 	}
 	
 	public Thing findById(Long id){
