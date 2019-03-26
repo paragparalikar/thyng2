@@ -136,6 +136,9 @@
 						}
 					}
 				},
+		        properties: {
+		        	propertiesMap : true
+		        }
 				
 			},			
 			submitHandler: function(){
@@ -162,8 +165,8 @@
 				$("#tenant-id").val(tenant.id);
 				$("#tenant-name").val(tenant.name);
 				$("#tenant-description").val(tenant.description);
-				$("#tenant-start").val(new Date(tenant.start).toLocaleDateString());
-				$("#tenant-expiry").val(new Date(tenant.expiry).toLocaleDateString());
+				$("#tenant-start").val(tenant.start ? new Date(tenant.start).toLocaleDateString() : new Date().toLocaleDateString());
+				$("#tenant-expiry").val(tenant.expiry ? new Date(tenant.expiry).toLocaleDateString() : new Date().toLocaleDateString());
 				$("#tenant-locked").prop("checked", tenant.locked);
 				 $("#tenant-tags").tagsinput({
 			    	  trimValue: true,
@@ -192,6 +195,7 @@
 			tenant.expiry = new Date($("#tenant-expiry").val()).getTime();
 			tenant.locked = $("#tenant-locked").prop("checked");
 			tenant.tags = $("#tenant-tags").val().split(",");
+			tenant.properties = {};
 		    $("#tenant-properties").val().split("\n").forEach(function(item) {
 		        var pair = item.split("=");
 		        tenant.properties[pair[0]] = pair[1];
