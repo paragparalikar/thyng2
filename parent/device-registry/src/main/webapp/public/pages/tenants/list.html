@@ -85,7 +85,14 @@ render = (function($){
 	            },
 	            processing: true,
 	            columns: [
-	                { data: "name" },
+	                { data: "name",
+						render: function(data, type, row){
+							if(type === "sort" || type === "type"){
+	                            return data;
+	                        }
+							return "<a href='#' onclick='this.blur(); event.preventDefault(); $.publish(\"show-tenant-view-modal\", "+row.id+");'>"+data+"</a>";
+						}	                	
+                	},
 	                { data: "start",
 	                	render: function(data, type, row){
 	                		if(type === "sort" || type === "type"){

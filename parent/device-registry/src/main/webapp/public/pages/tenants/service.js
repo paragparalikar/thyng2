@@ -32,3 +32,13 @@ $.router.add("#tenants", function(){
     	error: errorCallback
     });
 });
+
+$.subscribe("show-tenant-view-modal", function(event, id){
+	tenantService.findOne(id, function(data){
+		$("#modal-container").loadTemplate("public/pages/tenants/view.html", data, {
+			success: function(){
+				$("#modal-container").modal();
+			}
+		});
+	});
+});
