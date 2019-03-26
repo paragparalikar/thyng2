@@ -57,7 +57,7 @@
 					<div class="form-group">
 						<label for="tenant-start">Start</label> 
 						<div class="input-group date" id="tenant-start-datepicker">
-							<input data-rule-maxlength="255" maxlength="255" type="text" data-value="start" name="start" class="form-control" id="tenant-start" placeholder="Tenant Start Date">
+							<input data-rule-required="true" data-rule-maxlength="255" maxlength="255" type="text" data-value="start" name="start" class="form-control" id="tenant-start" placeholder="Tenant Start Date">
 							<span class="input-group-addon">
 								<span class="fa fa-calendar"></span>
 							</span>
@@ -77,7 +77,7 @@
 					<div class="form-group">
 						<label for="tenant-expiry">Expiry</label> 
 						<div class="input-group date" id="tenant-expiry-datepicker">
-							<input data-rule-maxlength="255" maxlength="255" type="text" data-value="expiry" name="expiry" class="form-control" id="tenant-expiry" placeholder="Tenant Expiry Date">
+							<input data-rule-required="true" data-rule-maxlength="255" maxlength="255" type="text" data-value="expiry" name="expiry" class="form-control" id="tenant-expiry" placeholder="Tenant Expiry Date">
 							<span class="input-group-addon">
 								<span class="fa fa-calendar"></span>
 							</span>
@@ -105,10 +105,10 @@
 		var tenantCallback = null;
 		var nameValidationArray = null;
 		$("#tenant-name").focus();
-		$("#tenant-start-datepicker").datetimepicker({
+		var tenantStartDatetimePicker = $("#tenant-start-datepicker").datetimepicker({
 			format: 'L'
 		});
-		$("#tenant-expiry-datepicker").datetimepicker({
+		var tenantExpiryDatetimePicker = $("#tenant-expiry-datepicker").datetimepicker({
 			useCurrent: false,
 			format: 'L'
 		});
@@ -188,6 +188,14 @@
 			tenant.id = $("#tenant-id").val();
 			tenant.name= $("#tenant-name").val();
 			tenant.description= $("#tenant-description").val();
+			tenant.start = new Date($("#tenant-start").val()).getTime();
+			tenant.expiry = new Date($("#tenant-expiry").val()).getTime();
+			tenant.locked = $("#tenant-locked").prop("checked");
+			tenant.tags = $("#tenant-tags").val().split(",");
+		    $("#tenant-properties").val().split("\n").forEach(function(item) {
+		        var pair = item.split("=");
+		        tenant.properties[pair[0]] = pair[1];
+	        });
 		};
 		
 		return function(tenant, tenants, callback){

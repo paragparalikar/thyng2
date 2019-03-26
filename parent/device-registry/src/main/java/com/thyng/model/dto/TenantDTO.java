@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -21,8 +22,10 @@ public class TenantDTO {
 	@Size(max=255)
 	private String description;
 	
+	@NotNull
 	private Date start;
 	
+	@NotNull
 	private Date expiry;
 	
 	private boolean locked;
