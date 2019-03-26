@@ -4,7 +4,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Template</th>
+                    <th>Key</th>
                     <th>Description</th>
                     <th>Tags</th>
                     <th>Alive</th>
@@ -53,11 +53,7 @@
 		                        return '<a href="#" onclick="event.preventDefault(); this.blur(); $.publish(\'show-thing-view-modal\','+row.id+');">' + data + '</a>';
 		                    }
 		                },
-		                { 
-		                	render: function(data, type, row, meta){
-		                		return '<a href="#" onclick="event.preventDefault(); this.blur(); $.publish(\'show-template-view-modal\','+row.templateId+');">' + row.templateName + '</a>';
-		                	}
-		                },
+		                { data: "key" },
 		                { data: "description" },
 		                { data: "tags" },
 		                {

@@ -47,6 +47,7 @@ $.subscribe("show-thing-view-modal", function(event, id){
 		$("#modal-container").loadTemplate("public/pages/things/view.html", thing, {
 			success : function(){
 				$("#modal-container").modal();
+				renderModal(thing);
 			},
 	    	error: errorCallback
 		});
