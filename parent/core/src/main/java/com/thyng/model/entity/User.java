@@ -108,6 +108,9 @@ public class User extends AuditableEntity implements UserDetails, CredentialsCon
 		if(authorities.isEmpty()){
 			authorities.addAll(Arrays.asList(Authority.values()));
 		}
+		authorities.remove(Authority.TENANT_CREATE);
+		authorities.remove(Authority.TENANT_UPDATE);
+		authorities.remove(Authority.TENANT_DELETE);
 		return authorities;
 	}
 	

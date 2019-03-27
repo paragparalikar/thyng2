@@ -25,7 +25,7 @@ tenantService = {
 };
 
 $.router.add("#tenants", function(){
-    $("#template-container").loadTemplate("public/pages/tenants/list.html", null, {
+    $("#template-container").loadTemplate("list-tenants", null, {
     	success: function(){
     		render();
     	},

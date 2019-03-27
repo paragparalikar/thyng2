@@ -1,3 +1,9 @@
+<%@ page import="com.thyng.model.dto.UserDTO" %>
+<%@ page import="com.thyng.model.enumeration.Authority" %>
+<% 
+	final UserDTO user = (UserDTO)session.getAttribute("user");
+	final boolean hasWriteAccess = user.hasAuthority(Authority.TENANT_CREATE) || user.hasAuthority(Authority.TENANT_UPDATE) || user.hasAuthority(Authority.TENANT_DELETE);
+%>
 <div class="card">
     <div class="card-body">
         <table id="tenants" class="table table-bordered table-striped" style="width: 100%">
@@ -9,11 +15,15 @@
                     <th>Locked</th>
                     <th>Tags</th>
                     <th>Description</th>
+                    <% if(hasWriteAccess){ %>
                     <th>
+                    	<%if(user.hasAuthority(Authority.TENANT_CREATE)){ %>
                         <button class="btn btn-primary btn-sm" id="newTenantButton">
                             <span class="fa fa-plus"></span> New Tenant
                         </button>
+                        <%} %>
                     </th>
+                    <%} %>
                 </tr>
             </thead>
         </table>
@@ -115,9 +125,11 @@ render = (function($){
 						}
 	                },
 	                { data: "tags" },
-	                { data: "description" },
-	                {
-	                    mRender: function (data, type, row, meta) {
+	                { data: "description" }
+	                
+	                <% if(hasWriteAccess){%>
+	                ,{
+	                    render: function (data, type, row, meta) {
 	                        return '<div class="btn-group" role="group">' +
 			                    '<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#tenants\').trigger(\'edit-tenant\', [this, event,'+row.id+'])">' +
 		                        	'<span class="fa fa-edit"></span> Edit' +
@@ -127,12 +139,14 @@ render = (function($){
 	                            '</button>' +
 	                            '</div>';
 	                    }
-	                }],
+	                }<% } %>],
+	            <% if(hasWriteAccess){%>
 	            columnDefs: [{
 	                targets: -1,
 	                orderable: false,
 	                className: "text-center"
 	            }],
+	            <% } %>
 	            data: tenants
 	        });
 	    });
