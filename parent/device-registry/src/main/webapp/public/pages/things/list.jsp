@@ -1,3 +1,9 @@
+<%@ page import="com.thyng.model.dto.UserDTO" %>
+<%@ page import="com.thyng.model.enumeration.Authority" %>
+<% 
+	final UserDTO user = (UserDTO)session.getAttribute("user");
+	final boolean hasWriteAccess = user.hasAuthority(Authority.THING_CREATE) || user.hasAuthority(Authority.THING_UPDATE) || user.hasAuthority(Authority.THING_DELETE);
+%>
 <div class="card">
     <div class="card-body">
         <table id="things" class="table table-bordered table-striped" style="width: 100%">
@@ -8,11 +14,15 @@
                     <th>Description</th>
                     <th>BiDirectional</th>
                     <th>Alive</th>
+                    <% if(hasWriteAccess){ %>
                     <th>
-                        <a href="#things/0" class="btn btn-primary btn-sm" id="newThingButton">
+                    	<%if(user.hasAuthority(Authority.THING_CREATE)){ %>
+                        <button class="btn btn-primary btn-sm" id="newThingButton">
                             <span class="fa fa-plus"></span> New Thing
-                        </a>
+                        </button>
+                        <%} %>
                     </th>
+                    <%} %>
                 </tr>
             </thead>
         </table>
@@ -30,7 +40,7 @@
 			doShowThingEditModal(row.data());
 		}
 		var doShowThingEditModal = function(thing){
-			$("#modal-container").loadTemplate("public/pages/things/edit.html", thing, {
+			$("#modal-container").loadTemplate("edit-thing", thing, {
 				success : function(){
 					$("#modal-container").modal();
 					render(thing);
@@ -66,7 +76,7 @@
 		                {
 		                    data: "name",
 		                    mRender: function (data, type, row) {
-		                        return '<a href="#" onclick="event.preventDefault(); this.blur(); $.publish(\'show-thing-view-modal\','+row.id+');">' + data + '</a>';
+		                        return user.hasAuthority("THING_VIEW") ? '<a href="#" onclick="event.preventDefault(); this.blur(); $.publish(\'show-thing-view-modal\','+row.id+');">' + data + '</a>' : data;
 		                    }
 		                },
 		                { data: "key" },
@@ -82,19 +92,23 @@
 		                	render: function(data, type, row, meta){
 		                		return data ? "<i class='fa fa-check text-success'></i> " : "<i class='fa fa-times text-danger'></i> ";
 		                	}
-		                },
-		                {
+		                }
+	                	<% if(hasWriteAccess){%>
+		                ,{
 		                    mRender: function (data, type, row, meta) {
-		                        return '<div class="btn-group" role="group">' +
-		                            '<button class="btn btn-warning btn-xs" onclick="$(\'#things\').trigger(\'edit-thing\', [this, event,'+row.id+'])">' +
+		                    	var editHtml = user.hasAuthority("THING_UPDATE") ? 
+		                    		'<button class="btn btn-warning btn-xs" onclick="$(\'#things\').trigger(\'edit-thing\', [this, event,'+row.id+'])">' +
 		                                '<span class="fa fa-edit"></span> Edit' +
-		                            '</button>' +
-		                            '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
+		                            '</button>' : "";
+		                        var deleteHtml = user.hasAuthority("THING_DELETE") ?
+		                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
 		                            	'<span class="fa fa-trash"></span> Delete' +
-		                            '</button>' +
-		                            '</div>';
+		                            '</button>' : "";
+		                        return '<div class="btn-group" role="group">' + editHtml + deleteHtml + '</div>';
 		                    }
-		                }],
+		                }
+		                <%}%>
+		                ],
 		            columnDefs: [{
 		                targets: -1,
 		                orderable: false,
@@ -104,12 +118,15 @@
 		                targets: -2,
 		                orderable: true,
 		                className: "text-center"
-		            },
-		            {
+		            }
+		            <% if(hasWriteAccess){%>
+		            ,{
 		                targets: -3,
 		                orderable: true,
 		                className: "text-center"
-		            }],
+		            }
+		            <%}%>
+		            ],
 		            data: things
 		        });
 		    });

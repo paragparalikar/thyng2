@@ -1,7 +1,3 @@
-- create and update should be two different operations from UI to db
-- Every html page should be a jsp
-
-- Tenants CRUD
 - Things CRUD
 - Users CRUD
 - ThingGroups CRUD

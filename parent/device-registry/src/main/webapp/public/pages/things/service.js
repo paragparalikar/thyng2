@@ -24,7 +24,7 @@ var thingService = {
 };
 
 $.router.add("#things", function(){
-    $("#template-container").loadTemplate("public/pages/things/list.html", null, {
+    $("#template-container").loadTemplate("list-things", null, {
     	success: function(){
     		render();
     	},
@@ -34,7 +34,7 @@ $.router.add("#things", function(){
 
 $.router.add("#things/:id", function(params){
 	var id = arguments[0];
-	$("#template-container").loadTemplate("public/pages/things/edit.html", null, {
+	$("#template-container").loadTemplate("edit-thing", null, {
 		success : function(){
 			render(id);
 		},
@@ -44,7 +44,7 @@ $.router.add("#things/:id", function(params){
 
 $.subscribe("show-thing-view-modal", function(event, id){
 	thingService.findOne(id, function(thing, status){
-		$("#modal-container").loadTemplate("public/pages/things/view.html", thing, {
+		$("#modal-container").loadTemplate("view-thing", thing, {
 			success : function(){
 				$("#modal-container").modal();
 				renderModal(thing);
