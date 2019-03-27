@@ -28,6 +28,10 @@ public class UserService implements UserDetailsService{
 	public void deleteById(Long id){
 		userRepository.deleteById(id);
 	}
+	
+	public boolean existsByIdAndTenantId(Long id, Long tenantId){
+		return userRepository.existsByIdAndTenantId(id, tenantId);
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

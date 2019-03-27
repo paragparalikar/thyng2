@@ -1,4 +1,4 @@
-package com.thyng;
+package com.thyng.web;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -31,7 +31,7 @@ public class WebConfiguration implements WebMvcConfigurer{
 	
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
-		registry.jsp("/views/", ".jsp");
+		registry.jsp("/public/", ".jsp");
 	}
 	
 	@Bean

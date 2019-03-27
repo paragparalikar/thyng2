@@ -3,12 +3,15 @@ package com.thyng.web;
 import java.util.Set;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,22 +39,29 @@ public class ThingController {
 		return thingMapper.toDTO(thingService.findByTenantId(user.getTenant().getId()));
 	}
 	
-	//TODO modify all below methods to take tenant into concideration
 	@GetMapping("/{id}")
-	public ThingDetailsDTO findById(@PathVariable Long id, @AuthenticationPrincipal User user){
+	public ThingDetailsDTO findById(@PathVariable @NotNull @Positive Long id){
 		return thingMapper.toDTO(thingService.findById(id));
 	}
 	
 	@PostMapping
 	@ResponseBody
-	public ThingDetailsDTO save(@RequestBody @Valid ThingDetailsDTO dto, @AuthenticationPrincipal User user){
+	public ThingDetailsDTO create(@RequestBody @NotNull @Valid ThingDetailsDTO dto){
 		final Thing thing = thingMapper.toEntity(dto);
-		final Thing managedThing = thingService.save(thing);
+		final Thing managedThing = thingService.create(thing);
+		return thingMapper.toDTO(managedThing);
+	}
+	
+	@PutMapping
+	@ResponseBody
+	public ThingDetailsDTO update(@RequestBody @NotNull @Valid ThingDetailsDTO dto){
+		final Thing thing = thingMapper.toEntity(dto);
+		final Thing managedThing = thingService.update(thing);
 		return thingMapper.toDTO(managedThing);
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteById(@PathVariable Long id, @AuthenticationPrincipal User user){
+	public void deleteById(@PathVariable @NotNull @Positive Long id){
 		thingService.deleteById(id);
 	}
 

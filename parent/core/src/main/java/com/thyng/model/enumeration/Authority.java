@@ -9,9 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
  */
 public enum Authority implements GrantedAuthority{
 
-	TENANT_READ, TENANT_WRITE,
-	USER_READ, USER_WRITE,
-	THING_READ, THING_WRITE;
+	TENANT_LIST, TENANT_VIEW, TENANT_UPDATE, TENANT_CREATE, TENANT_DELETE,
+	USER_LIST, USER_VIEW, USER_UPDATE, USER_CREATE, USER_DELETE,
+	THING_LIST, THING_VIEW, THING_UPDATE, THING_CREATE, THING_DELETE;
 
 	@Override
 	public String getAuthority() {

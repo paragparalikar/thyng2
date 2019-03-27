@@ -4,14 +4,17 @@ import java.util.List;
 import java.util.Set;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thyng.model.dto.TenantDTO;
@@ -37,24 +40,31 @@ public class TenantController {
 	}
 	
 	@GetMapping("/{id}")
-	public TenantDTO findById(@PathVariable Long id){
+	public TenantDTO findById(@PathVariable @NotNull Long id){
 		final Tenant tenant = tenantService.findById(id);
 		return tenantMapper.toDTO(tenant);
 	}
 	
 	@PostMapping
-	public TenantDTO save(@RequestBody @Valid TenantDTO dto){
-		if(tenantService.existsByIdNotAndName(null == dto.getId() ? 0 : dto.getId(), dto.getName())){ 
-			throw new IllegalArgumentException("This name is already taken");
-		}
+	@ResponseBody
+	public TenantDTO create(@RequestBody @NotNull @Valid TenantDTO dto){
+		assert null == dto.getId() : "Id must be null";
 		final Tenant tenant = tenantMapper.toEntity(dto);
-		final Tenant managedTenant = tenantService.save(tenant);
+		final Tenant managedTenant = tenantService.create(tenant);
 		return tenantMapper.toDTO(managedTenant);
 	}
 	
+	@PutMapping
+	@ResponseBody
+	public TenantDTO update(@RequestBody @NotNull @Valid TenantDTO dto){
+		assert null != dto.getId() : "Id must not be null";
+		final Tenant tenant = tenantMapper.toEntity(dto);
+		final Tenant managedTenant = tenantService.update(tenant);
+		return tenantMapper.toDTO(managedTenant);
+	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteById(@PathVariable Long id){
+	public void deleteById(@PathVariable @NotNull Long id){
 		tenantService.deleteById(id);
 	}
 	

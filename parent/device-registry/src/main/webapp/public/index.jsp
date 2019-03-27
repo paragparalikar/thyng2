@@ -6,9 +6,10 @@
 <head>
 <title>Thyng</title>
 <link rel="shortcut icon" type="image/png" href="../public/images/favicon.ico"/>
+<link rel="stylesheet" href="../public/libs/fontawesome/css/solid.min.css">
+<link rel="stylesheet" href="../public/libs/fontawesome/css/fontawesome.min.css">
 <link rel="stylesheet" href="../public/libs/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="../public/libs/bootstrap/dist/css/bootstrap-datetimepicker.min.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
 <link rel="stylesheet" href="../public/libs/jquery-modal/0.9.1/jquery.modal.min.css">
 <link rel="stylesheet" href="../public/libs/jquery-tagsinput/bootstrap-tagsinput.css">
 <link rel="stylesheet" href="../public/libs/datatables.net-bs/css/dataTables.bootstrap.min.css">
@@ -23,11 +24,11 @@
 			<div id="logo">THYNG</div>
 			<ul>
 				<li><a class="router-link" href="#dashboard" route-title="Dashboard"><i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span></a></li>
-				<% if(user.hasAuthority(Authority.TENANT_READ)){ %>
+				<% if(user.hasAuthority(Authority.TENANT_LIST)){ %>
 				<li><a class="router-link" href="#tenants" route-title="Tenants"><i class="fa fa-clone"></i> <span class="menu-text">Tenants</span></a></li>
-				<% } if(user.hasAuthority(Authority.THING_READ)){ %>
+				<% } if(user.hasAuthority(Authority.THING_LIST)){ %>
 				<li><a class="router-link" href="#things" route-title="Things"><i class="fa fa-bell"></i> <span class="menu-text">Things</span></a></li>
-				<% } if(user.hasAuthority(Authority.USER_READ)){ %>
+				<% } if(user.hasAuthority(Authority.USER_LIST)){ %>
 				<li><a class="router-link" href="#users" route-title="Users"><i class="fa fa-user"></i> <span class="menu-text">Users</span></a></li>
 				<% } %> 
 			</ul>
@@ -64,7 +65,6 @@
 	<script src="../public/libs/jquery-tagsinput/bootstrap-tagsinput.min.js"></script>
 	<script src="../public/libs/jquery-hashchange/jquery.ba-hashchange.min.js"></script>
 	<script src="../public/libs/jquery-toast/jquery.toast.min.js"></script>
-	
 	<script>
 		user = <%=session.getAttribute("user-json")%>;
 		user.hasAuthority = function(authority){

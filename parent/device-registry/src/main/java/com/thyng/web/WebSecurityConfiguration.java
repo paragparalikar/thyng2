@@ -1,4 +1,4 @@
-package com.thyng;
+package com.thyng.web;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ import com.thyng.service.UserService;
 
 @Configuration
 @EnableWebSecurity 
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 
 	@Autowired
 	private UserService userService;

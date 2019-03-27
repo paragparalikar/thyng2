@@ -111,4 +111,10 @@ public class User extends AuditableEntity implements UserDetails, CredentialsCon
 		return authorities;
 	}
 	
+	public boolean hasAuthority(String authority){
+		return null != authority && getAuthorities().stream()
+				.filter(auth -> null != auth && auth.name().trim().equalsIgnoreCase(authority.trim()))
+				.findFirst().isPresent();
+	}
+	
 }

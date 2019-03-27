@@ -7,6 +7,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.thyng.model.enumeration.DataType;
 
@@ -31,17 +34,25 @@ public class Metric extends AuditableEntity {
 	@ManyToOne(optional=false)
 	private Thing thing;
 
+	@NotBlank
+	@Size(min=3, max=255)
 	@Column(nullable=false)
 	private String name;
 	
+	@Size(max=255)
 	private String description;
 	
+	@NotBlank
+	@Size(max=255)
 	@Column(nullable=false)
 	private String abbreviation;
 	
+	@NotBlank
+	@Size(max=255)
 	@Column(nullable=false)
 	private String unit;
 	
+	@NotNull
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private DataType dataType; 

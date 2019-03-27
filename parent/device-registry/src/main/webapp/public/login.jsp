@@ -3,7 +3,8 @@
 <head>
 <link rel="shortcut icon" type="image/png" href="../public/images/favicon.ico"/>
 <link rel="stylesheet" href="../public/libs/bootstrap/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+<link rel="stylesheet" href="../public/libs/fontawesome/css/solid.min.css">
+<link rel="stylesheet" href="../public/libs/fontawesome/css/fontawesome.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 <style>
 	.card{

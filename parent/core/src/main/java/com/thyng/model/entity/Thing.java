@@ -17,6 +17,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -42,20 +46,24 @@ public class Thing extends AuditableEntity {
 	@Column(nullable=false, unique=true, updatable=false)
 	private String key;
 	
+	@NotBlank
+	@Size(min=3, max=255)
 	private String name;
 	
+	@Size(max=255)
 	private String description;
 	
+	@Valid
 	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	private Tenant tenant;
 	
-	private Set<Metric> metrics;
+	private Set<@NotNull @Valid Metric> metrics;
 	
 	@ElementCollection
-	private Set<String> tags;
+	private Set<@NotBlank String> tags;
 
 	@ElementCollection
-	private Map<String, String> properties;
+	private Map<@NotBlank String,@NotBlank  String> properties;
 	
 	private Double altitude;
 	private Double latitude;

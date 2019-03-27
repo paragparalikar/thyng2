@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,15 +32,18 @@ public class Tenant extends AuditableEntity{
 	@GeneratedValue
 	private Long id;
 	
+	@NotBlank
+	@Size(min=3, max=255)
 	private String name;
 	
+	@Size(max=255)
 	private String description;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<String> tags;
+	private Set<@NotBlank String> tags;
 
 	@ElementCollection(fetch=FetchType.EAGER)
-	private Map<String, String> properties;
+	private Map<@NotBlank String,@NotBlank  String> properties;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date start;
