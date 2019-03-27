@@ -24,18 +24,6 @@ public class ThingDetailsDTO {
 
 	private Boolean alive;
 
-	private Boolean biDirectional;
-
-	private Double altitude;
-
-	private Double latitude;
-	
-	private Double longitude;
-	
-	private Long lastEvent;
-
-	private Long lastBeat;
-	
 	@Size(max=10)
 	private Set<String> tags;
 	

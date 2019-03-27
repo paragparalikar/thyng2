@@ -65,17 +65,7 @@ public class Thing extends AuditableEntity {
 	@ElementCollection
 	private Map<@NotBlank String,@NotBlank  String> properties;
 	
-	private Double altitude;
-	private Double latitude;
-	private Double longitude;
-	
 	private Boolean alive;
-	
-	private Boolean biDirectional;
-	
-	private Long lastEvent;
-	
-	private Long lastBeat;
 	
 	@PreUpdate
 	@PrePersist

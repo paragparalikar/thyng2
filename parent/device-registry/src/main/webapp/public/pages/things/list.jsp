@@ -12,7 +12,6 @@
                     <th>Name</th>
                     <th>Key</th>
                     <th>Description</th>
-                    <th>BiDirectional</th>
                     <th>Alive</th>
                     <% if(hasWriteAccess){ %>
                     <th>
@@ -76,17 +75,11 @@
 		                {
 		                    data: "name",
 		                    mRender: function (data, type, row) {
-		                        return user.hasAuthority("THING_VIEW") ? '<a href="#" onclick="event.preventDefault(); this.blur(); $.publish(\'show-thing-view-modal\','+row.id+');">' + data + '</a>' : data;
+		                        return user.hasAuthority("THING_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
 		                    }
 		                },
 		                { data: "key" },
 		                { data: "description" },
-		                { 
-		                	data: "biDirectional",
-		                	render: function(data, type, row, meta){
-		                		return data ? "<i class='fa fa-check text-success'></i> " : "<i class='fa fa-times text-danger'></i> ";
-		                	}
-	                	},
 		                {
 		                	data: "alive",
 		                	render: function(data, type, row, meta){

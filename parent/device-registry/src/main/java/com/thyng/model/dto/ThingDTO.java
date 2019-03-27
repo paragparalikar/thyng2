@@ -15,6 +15,4 @@ public class ThingDTO {
 
 	private Boolean alive;
 
-	private Boolean biDirectional;
-
 }

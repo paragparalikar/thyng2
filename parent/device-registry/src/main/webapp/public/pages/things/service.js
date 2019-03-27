@@ -31,6 +31,17 @@ $.router.add("#things", function(){
     	error: errorCallback
     });
 });
+$.router.add("#things/view/:id", function(params){
+	var id = arguments[0];
+    $("#template-container").loadTemplate("view-thing", null, {
+    	success: function(){
+    		thingService.findOne(id, function(thing){
+    			render(thing);
+    		});
+    	},
+    	error: errorCallback
+    });
+});
 
 $.router.add("#things/:id", function(params){
 	var id = arguments[0];

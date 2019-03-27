@@ -97,7 +97,6 @@ public class SetupService {
 				.id(null)
 				.tenant(tenant)
 				.alive(0 == (thingIndex % 3))
-				.biDirectional(0 == (thingIndex % 2))
 				.description("Description for Thing-"+thingIndex)
 				.name("Thing-"+thingIndex)
 				.tags(buildTags())
