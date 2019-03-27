@@ -44,7 +44,7 @@ render = (function($){
 	
 	var showEditTenantView = function(tenant){
 		tenant = tenant ? tenant : {};
-		$("#modal-container").loadTemplate("public/pages/tenants/edit.html", tenant, {
+		$("#modal-container").loadTemplate("edit-tenant", tenant, {
 		    success : function() {
 		    	$("#modal-container").modal();
 		    	var data = tenantsDataTable.rows().data();

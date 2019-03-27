@@ -27,7 +27,6 @@ public class WebConfiguration implements WebMvcConfigurer{
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/list-tenants").setViewName("pages/tenants/list");
-        registry.addViewController("/list-tenants").setViewName("pages/tenants/list");
         registry.addViewController("/view-tenant").setViewName("pages/tenants/view");
         registry.addViewController("/edit-tenant").setViewName("pages/tenants/edit");
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);

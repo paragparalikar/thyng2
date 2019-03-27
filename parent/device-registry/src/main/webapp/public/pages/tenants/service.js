@@ -35,7 +35,7 @@ $.router.add("#tenants", function(){
 
 $.subscribe("show-tenant-view-modal", function(event, id){
 	tenantService.findOne(id, function(data){
-		$("#modal-container").loadTemplate("public/pages/tenants/view.html", data, {
+		$("#modal-container").loadTemplate("view-tenant", data, {
 			success: function(){
 				$("#modal-container").modal();
 				renderModal(data);
