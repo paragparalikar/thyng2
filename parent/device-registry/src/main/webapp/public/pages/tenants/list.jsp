@@ -100,7 +100,7 @@ render = (function($){
 							if(type === "sort" || type === "type"){
 	                            return data;
 	                        }
-							return "<a href='#' onclick='this.blur(); event.preventDefault(); $.publish(\"show-tenant-view-modal\", "+row.id+");'>"+data+"</a>";
+							return user.hasAuthority("TENANT_CREATE") ? "<a href='#' onclick='this.blur(); event.preventDefault(); $.publish(\"show-tenant-view-modal\", "+row.id+");'>"+data+"</a>" : data;
 						}	                	
                 	},
 	                { data: "start",
@@ -130,14 +130,15 @@ render = (function($){
 	                <% if(hasWriteAccess){%>
 	                ,{
 	                    render: function (data, type, row, meta) {
-	                        return '<div class="btn-group" role="group">' +
-			                    '<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#tenants\').trigger(\'edit-tenant\', [this, event,'+row.id+'])">' +
+	                    	var editHtml = user.hasAuthority("TENANT_UPDATE") ? 
+	                    		'<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#tenants\').trigger(\'edit-tenant\', [this, event,'+row.id+'])">' +
 		                        	'<span class="fa fa-edit"></span> Edit' +
-		                        '</button>' +
-	                            '<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#tenants\').trigger(\'delete-tenant\', [this, event,'+row.id+'])">' +
+		                        '</button>' : "";
+		                    var deleteHtml = user.hasAuthority("TENANT_DELETE") ? 
+		                    	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#tenants\').trigger(\'delete-tenant\', [this, event,'+row.id+'])">' +
 	                            	'<span class="fa fa-trash"></span> Delete' +
-	                            '</button>' +
-	                            '</div>';
+	                            '</button>' : "";
+	                        return '<div class="btn-group" role="group">' + editHtml + deleteHtml + '</div>';
 	                    }
 	                }<% } %>],
 	            <% if(hasWriteAccess){%>
