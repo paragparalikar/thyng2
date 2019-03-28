@@ -98,7 +98,17 @@
 <script>
 	render = (function($) {
 	    var toView = function(tenant) {
-		    $("#tenant-locked").prop("checked", tenant.locked);
+	    	if(tenant){
+	    		$("#tenant-id").val(tenant.id);
+	    		$("#tenant-name").val(tenant.name);
+	    		$("#tenant-tags").val(tenant.tags);
+	    		$("#tenant-description").val(tenant.description);
+			    $("#tenant-locked").prop("checked", tenant.locked);
+			    
+			    $("#tenant-properties").val(tenantService.formatProperties(tenant.properties));
+			    $("#tenant-start").val(tenant.start ? new Date(tenant.start).toLocaleDateString() : new Date().toLocaleDateString());
+				$("#tenant-expiry").val(tenant.expiry ? new Date(tenant.expiry).toLocaleDateString() : new Date().toLocaleDateString());
+	    	}
 	    };
 	    return function(tenant) {
 		    $("#page-title").text("Tenant Details");

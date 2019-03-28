@@ -23,6 +23,19 @@ $(function() {
     	    icon: 'error'
     	});
 	};
+	addTags = function(element, tags){
+		element.tagsinput({
+	    	  trimValue: true,
+	    	  maxChars: 255,
+	    	  maxTags: 10,
+	    	  confirmKeys: [13, 32, 44, 186, 188]
+	    });
+	    if(tags){
+	    	tags.forEach(function(tag){
+	    		element.tagsinput("add",tag);
+	    	});
+	    }
+	};
 	// loadTemplates
 	$.addTemplateFormatter("MapFormatter", function(value, template) {
 		return $.map(value, function(val, key) {

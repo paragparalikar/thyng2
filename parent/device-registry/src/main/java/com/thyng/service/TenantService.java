@@ -2,6 +2,7 @@ package com.thyng.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -18,9 +19,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @Validated
+@Transactional
 @RequiredArgsConstructor
 public class TenantService {
 
+	private final UserService userService;
+	private final ThingService thingService;
 	private final TenantRepository tenantRepository;
 	
 	@PreAuthorize("hasPermission(null, 'TENANT', 'LIST')")
@@ -45,8 +49,11 @@ public class TenantService {
 		return tenantRepository.save(tenant);
 	}
 	
+	@Transactional
 	@PreAuthorize("hasPermission(#id, 'TENANT', 'DELETE')")
 	public void deleteById(@NotNull @Positive Long id){
+		userService.deleteByTenantId(id);
+		thingService.deleteByTenantId(id);
 		tenantRepository.deleteById(id);
 	}
 	

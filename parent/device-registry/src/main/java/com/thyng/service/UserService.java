@@ -29,6 +29,10 @@ public class UserService implements UserDetailsService{
 		userRepository.deleteById(id);
 	}
 	
+	public void deleteByTenantId(Long tenantId){
+		userRepository.deleteByTenantId(tenantId);
+	}
+	
 	public boolean existsByIdAndTenantId(Long id, Long tenantId){
 		return userRepository.existsByIdAndTenantId(id, tenantId);
 	}

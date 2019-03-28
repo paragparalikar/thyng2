@@ -155,22 +155,8 @@
 				$("#tenant-start").val(tenant.start ? new Date(tenant.start).toLocaleDateString() : new Date().toLocaleDateString());
 				$("#tenant-expiry").val(tenant.expiry ? new Date(tenant.expiry).toLocaleDateString() : new Date().toLocaleDateString());
 				$("#tenant-locked").prop("checked", tenant.locked);
-				 $("#tenant-tags").tagsinput({
-			    	  trimValue: true,
-			    	  maxChars: 255,
-			    	  maxTags: 10,
-			    	  confirmKeys: [13, 32, 44, 186, 188]
-			    });
-			    if(tenant.tags){
-			    	tenant.tags.forEach(function(tag){
-			    		$("#tenant-tags").tagsinput("add",tag);
-			    	});
-			    }
-			    if(tenant.properties){
-			    	$("#tenant-properties").val($.map(tenant.properties, function(val, key) {
-						return key + "=" + val;
-					}).join("\n"));
-			    }
+				$("#tenant-properties").val(tenantService.formatProperties(tenant.properties));
+				addTags($("#tenant-tags"), tenant.tags);
 			}
 		};
 		
@@ -182,11 +168,7 @@
 			tenant.expiry = new Date($("#tenant-expiry").val()).getTime();
 			tenant.locked = $("#tenant-locked").prop("checked");
 			tenant.tags = $("#tenant-tags").val().split(",");
-			tenant.properties = {};
-		    $("#tenant-properties").val().split("\n").forEach(function(item) {
-		        var pair = item.split("=");
-		        tenant.properties[pair[0]] = pair[1];
-	        });
+			tenant.properties = tenantService.parseProperties($("#tenant-properties").val());
 		};
 		
 		return function(tenant){

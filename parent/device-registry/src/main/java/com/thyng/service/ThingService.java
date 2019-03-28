@@ -57,4 +57,9 @@ public class ThingService {
 	public void deleteById(@NotNull @Positive Long id){
 		thingRepository.deleteById(id);
 	}
+	
+	@PreAuthorize("hasPermission(#tenantId, 'TENANT', 'DELETE')")
+	public void deleteByTenantId(Long tenantId){
+		thingRepository.deleteByTenantId(tenantId);
+	}
 }
