@@ -155,7 +155,7 @@
 				$("#tenant-start").val(tenant.start ? new Date(tenant.start).toLocaleDateString() : new Date().toLocaleDateString());
 				$("#tenant-expiry").val(tenant.expiry ? new Date(tenant.expiry).toLocaleDateString() : new Date().toLocaleDateString());
 				$("#tenant-locked").prop("checked", tenant.locked);
-				$("#tenant-properties").val(tenantService.formatProperties(tenant.properties));
+				$("#tenant-properties").val(formatProperties(tenant.properties));
 				addTags($("#tenant-tags"), tenant.tags);
 			}
 		};
@@ -168,7 +168,7 @@
 			tenant.expiry = new Date($("#tenant-expiry").val()).getTime();
 			tenant.locked = $("#tenant-locked").prop("checked");
 			tenant.tags = $("#tenant-tags").val().split(",");
-			tenant.properties = tenantService.parseProperties($("#tenant-properties").val());
+			tenant.properties = parseProperties($("#tenant-properties").val());
 		};
 		
 		return function(tenant){

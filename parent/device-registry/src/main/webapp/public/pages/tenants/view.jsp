@@ -105,7 +105,7 @@
 	    		$("#tenant-description").val(tenant.description);
 			    $("#tenant-locked").prop("checked", tenant.locked);
 			    
-			    $("#tenant-properties").val(tenantService.formatProperties(tenant.properties));
+			    $("#tenant-properties").val(formatProperties(tenant.properties));
 			    $("#tenant-start").val(tenant.start ? new Date(tenant.start).toLocaleDateString() : new Date().toLocaleDateString());
 				$("#tenant-expiry").val(tenant.expiry ? new Date(tenant.expiry).toLocaleDateString() : new Date().toLocaleDateString());
 	    	}

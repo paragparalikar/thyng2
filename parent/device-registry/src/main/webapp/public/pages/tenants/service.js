@@ -20,21 +20,6 @@ tenantService = {
 				url: window.location.origin + "/api/v1/tenants/" + id,
 				type: "DELETE",
 			}).done(success).fail(error ? error : errorCallback).always(always);
-		},
-		formatProperties: function(props, delimiter){
-			return props ? $.map(props, function(val, key) {
-				return key + "=" + val;
-			}).join(delimiter ? delimiter : "\n") : "";
-		},
-		parseProperties: function(text){
-			var props = {};
-			if(text){
-				text.split("\n").forEach(function(item) {
-			        var pair = item.split("=");
-			        props[pair[0]] = pair[1];
-		        });
-			}
-			return props;
 		}
 };
 

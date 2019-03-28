@@ -23,6 +23,7 @@ $(function() {
     	    icon: 'error'
     	});
 	};
+	
 	addTags = function(element, tags){
 		element.tagsinput({
 	    	  trimValue: true,
@@ -36,6 +37,24 @@ $(function() {
 	    	});
 	    }
 	};
+	
+	formatProperties =  function(props, delimiter){
+		return props ? $.map(props, function(val, key) {
+			return key + "=" + val;
+		}).join(delimiter ? delimiter : "\n") : "";
+	};
+	
+	parseProperties = function(text){
+		var props = {};
+		if(text){
+			text.split("\n").forEach(function(item) {
+		        var pair = item.split("=");
+		        props[pair[0]] = pair[1];
+	        });
+		}
+		return props;
+	};
+	
 	// loadTemplates
 	$.addTemplateFormatter("MapFormatter", function(value, template) {
 		return $.map(value, function(val, key) {
