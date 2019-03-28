@@ -18,9 +18,9 @@
                     <% if(hasWriteAccess){ %>
                     <th>
                     	<%if(user.hasAuthority(Authority.TENANT_CREATE)){ %>
-                        <button class="btn btn-primary btn-sm" id="newTenantButton">
+                        <a href="#tenants/create" class="btn btn-primary btn-sm">
                             <span class="fa fa-plus"></span> New Tenant
-                        </button>
+                        </a>
                         <%} %>
                     </th>
                     <%} %>
@@ -119,9 +119,6 @@ render = (function($){
 	return function(){
 		$("#page-title").html("Tenants");
 		showTenantsDataTable();
-		$("#newTenantButton").click(function(event){
-			showEditTenantView(null);
-		});
 		$("#tenants").on("delete-tenant", showDeleteTenantConfirmationModal);
 	}
 })(jQuery);

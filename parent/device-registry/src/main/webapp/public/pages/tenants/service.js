@@ -57,3 +57,14 @@ $.router.add("#tenants/edit/:id", function(){
     	error: errorCallback
     });
 });
+
+$.router.add("#tenants/create", function(){
+    $("#template-container").loadTemplate("edit-tenant", null, {
+    	success: function(){
+    		render({});
+    	},
+    	error: errorCallback
+    });
+});
+
+
