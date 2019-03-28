@@ -11,6 +11,22 @@ $(function() {
     	    icon: toastIcon ? toastIcon : 'success'
     	});
 	};
+	successCallback = function(callback){
+		return function(xhr, status, text){
+			if(text && text.responseText && text.responseText.startsWith("<!--login-->")){
+				window.location.reload();
+			}else if(callback){
+				callback(xhr, status, text);
+			}
+		};
+	};
+	beforeTemplateInsert = function(content, data){
+		console.log(content);
+		if(content && 7 < content.length && "login-form" == content[7].id){
+			window.location.reload();
+			throw new Error("Login");
+		}
+	};
 	errorCallback = function(xhr, status, text){
 		var message = "<p>There has been an error.<br>Please contact <a href='http://www.google.com'>Administrator</a>.";
 		message = text ? message + "<br>Error : "+text + "</p>" : message + "</p>";

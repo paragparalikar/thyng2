@@ -1,11 +1,11 @@
 var thingService = {
 	findAll : function(success, error, always) {
 		$.get(window.location.origin + "/api/v1/things")
-		.done(success).fail(error ? error : errorCallback).always(always);
+		.done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 	},
 	findOne : function(id, success, error, always) {
 		$.get(window.location.origin + "/api/v1/things/" + id)
-		.done(success).fail(error ? error : errorCallback).always(always);
+		.done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 	},
 	save: function(thing, success, error, always){
 		$.ajax({
@@ -13,13 +13,13 @@ var thingService = {
 			type: thing.id && 0 < thing.id ? "PUT" : "POST",
 			contentType:"application/json; charset=utf-8",
 			data: JSON.stringify(thing),
-		}).done(success).fail(error ? error : errorCallback).always(always);
+		}).done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 	},
 	deleteById : function(id, success, error, always){
 		$.ajax({
 			url: window.location.origin + "/api/v1/things/" + id,
 			type: "DELETE",
-		}).done(success).fail(error ? error : errorCallback).always(always);
+		}).done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 	}
 };
 
