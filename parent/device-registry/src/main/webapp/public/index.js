@@ -29,6 +29,10 @@ $(function() {
 			return key + "=" + val;
 		}).join("\n");
 	});
+	$.addTemplateFormatter("DateFormatter", function(value, template) {
+		return new Date(value).toLocaleDateString();
+	});
+
 	$(document).on("submit","form",function(event){
 		event.preventDefault();
 		return false;

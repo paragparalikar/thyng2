@@ -33,13 +33,27 @@ $.router.add("#tenants", function(){
     });
 });
 
-$.subscribe("show-tenant-view-modal", function(event, id){
-	tenantService.findOne(id, function(data){
-		$("#modal-container").loadTemplate("view-tenant", data, {
-			success: function(){
-				$("#modal-container").modal();
-				renderModal(data);
-			}
-		});
-	});
+$.router.add("#tenants/view/:id", function(){
+	var id = arguments[0];
+    $("#template-container").loadTemplate("view-tenant", null, {
+    	success: function(){
+    		tenantService.findOne(id, function(tenant){
+    			render(tenant);
+    		});
+    	},
+    	error: errorCallback
+    });
+});
+
+
+$.router.add("#tenants/edit/:id", function(){
+	var id = arguments[0];
+    $("#template-container").loadTemplate("edit-tenant", null, {
+    	success: function(){
+    		tenantService.findOne(id, function(tenant){
+    			render(tenant);
+    		});
+    	},
+    	error: errorCallback
+    });
 });

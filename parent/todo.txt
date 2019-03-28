@@ -15,3 +15,21 @@
  - is Controller level validations working?
  - is service level validations working?
  
+ 
+ 
+ Default dashboard may contain:
+  - Location for all things
+  - Tachometer for alive vs total things I have access to
+  - My Favorite Things + alive status - Depending on created, modified and viewed things + add to favorite option
+  - My Favorite Rules + evaluation count, hit count - Depending on created, modified and viewed things + add to favorite option
+  - My Favorite Commands + execution count - Depending on created, modified and viewed things + add to favorite option
+  
+  
+  
+Thing Details View may contain:
+  - location map
+  - Tachometer for alive vs total time
+  - Big Icon for alive status + last activity info
+  - Audit trail
+  - Activity - some time in past + current using websockets
+  - Extended audit trail - Users who got the access to thing, rules that matched againt it, command executed on it

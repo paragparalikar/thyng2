@@ -8,7 +8,13 @@ body {
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	font-family: 'Source Sans Pro', sans-serif
 }
-
+.parent-center{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	width: 100%;
+}
 .bootstrap-tagsinput{
 	width: 100%;
 }
@@ -42,6 +48,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	padding: 1em;
 	box-shadow: 6px 6px 6px 0 rgba(0,0,0,0.2);
   	transition: 0.3s;
+}
+.card-body > table{
+	width: 100%;
+}
+.card-footer{
+	text-align: right;
 }
 .error{
 	font-weight: 100;

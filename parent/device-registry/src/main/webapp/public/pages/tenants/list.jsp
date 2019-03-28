@@ -34,43 +34,6 @@
 render = (function($){
 	var tenantsDataTable = null;
 	
-	var showEditTenantModal = function(event, element, originalEvent, id){
-		element.blur();
-		originalEvent.preventDefault();
-		var row = tenantsDataTable.row("#" + id);
-		var tenant = row.data();
-		showEditTenantView(tenant);
-	}
-	
-	var showEditTenantView = function(tenant){
-		tenant = tenant ? tenant : {};
-		$("#modal-container").loadTemplate("edit-tenant", tenant, {
-		    success : function() {
-		    	$("#modal-container").modal();
-		    	var data = tenantsDataTable.rows().data();
-		    	renderModal(tenant, data, function(savedTenant){
-		    		var isEdit = false;
-		    		var editIndex = -1;
-		    		for(var index = 0; index < data.length; index++){
-		    			if(savedTenant.id === data[index].id){
-		    				isEdit = true;
-		    				editIndex = index;
-		    				break;
-		    			}
-		    		}
-		    		var clonedData = data.slice();
-		    		if(isEdit){
-		    			clonedData.splice(editIndex, 1);
-		    		}else{
-		    			clonedData.push(savedTenant);
-		    		}
-		    		tenantsDataTable.clear().rows.add(clonedData).draw();
-			    });
-		    },
-	    	error: errorCallback
-	    });
-	}
-	
 	var showDeleteTenantConfirmationModal = function(event, element, originalEvent, id){
 		element.blur();
 		originalEvent.preventDefault();
@@ -100,7 +63,7 @@ render = (function($){
 							if(type === "sort" || type === "type"){
 	                            return data;
 	                        }
-							return user.hasAuthority("TENANT_CREATE") ? "<a href='#' onclick='this.blur(); event.preventDefault(); $.publish(\"show-tenant-view-modal\", "+row.id+");'>"+data+"</a>" : data;
+							return user.hasAuthority("TENANT_CREATE") ? "<a href='#tenants/view/"+row.id+"'>"+data+"</a>" : data;
 						}	                	
                 	},
 	                { data: "start",
@@ -131,9 +94,9 @@ render = (function($){
 	                ,{
 	                    render: function (data, type, row, meta) {
 	                    	var editHtml = user.hasAuthority("TENANT_UPDATE") ? 
-	                    		'<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#tenants\').trigger(\'edit-tenant\', [this, event,'+row.id+'])">' +
+	                    		'<a class="btn btn-warning btn-xs" href="#tenants/edit/'+row.id+'">' +
 		                        	'<span class="fa fa-edit"></span> Edit' +
-		                        '</button>' : "";
+		                        '</a>' : "";
 		                    var deleteHtml = user.hasAuthority("TENANT_DELETE") ? 
 		                    	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#tenants\').trigger(\'delete-tenant\', [this, event,'+row.id+'])">' +
 	                            	'<span class="fa fa-trash"></span> Delete' +
@@ -159,7 +122,6 @@ render = (function($){
 		$("#newTenantButton").click(function(event){
 			showEditTenantView(null);
 		});
-		$("#tenants").on("edit-tenant", showEditTenantModal);
 		$("#tenants").on("delete-tenant", showDeleteTenantConfirmationModal);
 	}
 })(jQuery);
