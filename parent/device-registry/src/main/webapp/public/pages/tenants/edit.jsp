@@ -175,7 +175,7 @@
 			inputTenant = tenant;
 			toView(tenant);
 			bindEventHandlers();
-			$("#page-title").text("Edit Tenant Details");
+			$("#page-title").text(tenant && tenant.id ? "Edit Tenant Details" : "Create New Tenant");
 			$("#tenant-name").focus();
 		};
 	})(jQuery);

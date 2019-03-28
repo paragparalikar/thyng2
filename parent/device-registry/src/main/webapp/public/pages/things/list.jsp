@@ -32,22 +32,6 @@
 	render = (function($){
 		var thingsDataTable = null;
 		
-		var showThingEditModal = function(event, element, originalEvent, id){
-			element.blur();
-			originalEvent.preventDefault();
-			row = thingsDataTable.row("#" + id);
-			doShowThingEditModal(row.data());
-		}
-		var doShowThingEditModal = function(thing){
-			$("#modal-container").loadTemplate("edit-thing", thing, {
-				success : function(){
-					$("#modal-container").modal();
-					render(thing);
-				},
-		    	error: errorCallback
-			});
-		}
-		
 		var showDeleteThingConfirmationModal = function(event, element, originalEvent, id){
 			element.blur();
 			originalEvent.preventDefault();
@@ -90,9 +74,9 @@
 		                ,{
 		                    mRender: function (data, type, row, meta) {
 		                    	var editHtml = user.hasAuthority("THING_UPDATE") ? 
-		                    		'<button class="btn btn-warning btn-xs" onclick="$(\'#things\').trigger(\'edit-thing\', [this, event,'+row.id+'])">' +
+		                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
 		                                '<span class="fa fa-edit"></span> Edit' +
-		                            '</button>' : "";
+		                            '</a>' : "";
 		                        var deleteHtml = user.hasAuthority("THING_DELETE") ?
 		                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
 		                            	'<span class="fa fa-trash"></span> Delete' +
@@ -128,7 +112,6 @@
 		return function(){
 			$("#page-title").html("Things");
 			showThingsDataTable();
-			$("#things").on("edit-thing", showThingEditModal);
 			$("#things").on("delete-thing", showDeleteThingConfirmationModal);
 		}
 	})(jQuery);

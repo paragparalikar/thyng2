@@ -43,25 +43,14 @@ $.router.add("#things/view/:id", function(params){
     });
 });
 
-$.router.add("#things/:id", function(params){
+$.router.add("#things/edit/:id", function(params){
 	var id = arguments[0];
 	$("#template-container").loadTemplate("edit-thing", null, {
 		success : function(){
-			render(id);
+			thingService.findOne(id, function(thing){
+				render(thing);
+			});
 		},
     	error: errorCallback
 	});
 });
-
-$.subscribe("show-thing-view-modal", function(event, id){
-	thingService.findOne(id, function(thing, status){
-		$("#modal-container").loadTemplate("view-thing", thing, {
-			success : function(){
-				$("#modal-container").modal();
-				renderModal(thing);
-			},
-	    	error: errorCallback
-		});
-	});
-});
-
