@@ -49,9 +49,11 @@ public class ThingService {
 	
 	@PreAuthorize("hasPermission(#thing.id, 'THING', 'CREATE')")
 	public Thing create(@NotNull Thing thing){
-		if(null != thing.getId() || 0 < thing.getId()) throw new IllegalArgumentException("Id must be null");
-		if(0 == thing.getId()) thing.setId(null);
-		return thingRepository.save(thing);
+		if(null == thing.getId() || 0 >= thing.getId()){
+			if(null != thing.getId() && 0 == thing.getId()) thing.setId(null);
+			return thingRepository.save(thing);
+		}
+		throw new IllegalArgumentException("Id must be null");
 	}
 	
 	@Transactional

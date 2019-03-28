@@ -16,9 +16,9 @@
                     <% if(hasWriteAccess){ %>
                     <th>
                     	<%if(user.hasAuthority(Authority.THING_CREATE)){ %>
-                        <button class="btn btn-primary btn-sm" id="newThingButton">
+                        <a class="btn btn-primary btn-sm" href="#things/create">
                             <span class="fa fa-plus"></span> New Thing
-                        </button>
+                        </a>
                         <%} %>
                     </th>
                     <%} %>

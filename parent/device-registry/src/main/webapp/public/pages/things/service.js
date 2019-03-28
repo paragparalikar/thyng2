@@ -54,3 +54,14 @@ $.router.add("#things/edit/:id", function(params){
     	error: errorCallback
 	});
 });
+
+$.router.add("#things/create", function(params){
+	var id = arguments[0];
+	$("#template-container").loadTemplate("edit-thing", null, {
+		success : function(){
+			render({metrics:[]});
+		},
+    	error: errorCallback
+	});
+});
+
