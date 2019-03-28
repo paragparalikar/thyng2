@@ -14,6 +14,8 @@ public interface ThingRepository extends JpaRepository<Thing, Long> {
 	
 	boolean existsByIdAndTenantId(Long id, Long tenantId);
 	
+	boolean existsByIdNotAndNameAndTenantId(Long id, String name, Long tenantId);
+	
 	void deleteByTenantId(Long tenantId);
 	
 }

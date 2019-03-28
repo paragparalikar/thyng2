@@ -10,9 +10,9 @@ var thingService = {
 	save: function(thing, success, error, always){
 		$.ajax({
 			url: window.location.origin + "/api/v1/things",
-			type: "POST",
+			type: thing.id && 0 < thing.id ? "PUT" : "POST",
 			contentType:"application/json; charset=utf-8",
-			data: thing,
+			data: JSON.stringify(thing),
 		}).done(success).fail(error ? error : errorCallback).always(always);
 	},
 	deleteById : function(id, success, error, always){

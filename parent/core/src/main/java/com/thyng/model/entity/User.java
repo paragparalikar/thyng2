@@ -13,8 +13,13 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,15 +45,20 @@ public class User extends AuditableEntity implements UserDetails, CredentialsCon
 	@GeneratedValue
 	private Long id;
 
+	@NotNull
 	@Embedded
 	private Name name;
 	
+	@Email
+	@NotBlank
 	@Column(nullable=false, unique=true)
 	private String email;
 	
 	private String phone;
 	
+	@Valid
 	@ManyToOne(optional=false)
+	@JoinColumn(updatable=false, nullable=false)
 	private Tenant tenant;
 	
 	@ElementCollection(fetch=FetchType.EAGER)

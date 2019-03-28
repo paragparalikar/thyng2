@@ -39,13 +39,14 @@ public class TenantService {
 	
 	@PreAuthorize("hasPermission(#tenant.id, 'TENANT', 'CREATE')")
 	public Tenant create(@NotNull @Valid Tenant tenant){
-		assert null == tenant.getId() : "Id must be null";
+		if(null != tenant.getId() || 0 < tenant.getId()) throw new IllegalArgumentException("Id must be null");
+		if(0 == tenant.getId()) tenant.setId(null);
 		return tenantRepository.save(tenant);
 	}
 	
 	@PreAuthorize("hasPermission(#tenant.id, 'TENANT', 'UPDATE')")
 	public Tenant update(@NotNull @Valid Tenant tenant){
-		assert null != tenant.getId() : "Id must not be null";
+		if(null == tenant.getId() || 0 >= tenant.getId()) throw new IllegalArgumentException("Id must not be null");
 		return tenantRepository.save(tenant);
 	}
 	

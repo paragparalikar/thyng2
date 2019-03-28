@@ -10,7 +10,7 @@ tenantService = {
 		save: function(tenant, success, error, always){
 			$.ajax({
 				url: window.location.origin + "/api/v1/tenants",
-				type: "POST",
+				type: tenant.id && 0 < tenant.id ? "PUT" : "POST",
 				contentType:"application/json; charset=utf-8",
 				data: tenant,
 			}).done(success).fail(error ? error : errorCallback).always(always);

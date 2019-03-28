@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,8 +47,9 @@ public class ThingController {
 	
 	@PostMapping
 	@ResponseBody
-	public ThingDetailsDTO create(@RequestBody @NotNull @Valid ThingDetailsDTO dto){
+	public ThingDetailsDTO create(@RequestBody @NotNull @Valid ThingDetailsDTO dto, @AuthenticationPrincipal User user){
 		final Thing thing = thingMapper.toEntity(dto);
+		thing.setTenant(user.getTenant());
 		final Thing managedThing = thingService.create(thing);
 		return thingMapper.toDTO(managedThing);
 	}
@@ -63,6 +65,11 @@ public class ThingController {
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable @NotNull @Positive Long id){
 		thingService.deleteById(id);
+	}
+	
+	@GetMapping(params={"id", "name"})
+	public String existsByIdNotAndNameAndTenantId(@RequestParam(defaultValue="0") Long id, @RequestParam String name, @AuthenticationPrincipal User user){
+		return thingService.existsByIdNotAndNameAndTenantId(id, name, user.getTenant().getId()) ? "[\"This name is already taken\"]" : Boolean.TRUE.toString();
 	}
 
 }

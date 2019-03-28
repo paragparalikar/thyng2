@@ -2,6 +2,7 @@ package com.thyng.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @Validated
+@Transactional
 @RequiredArgsConstructor
 public class ThingService {
 
@@ -41,15 +43,21 @@ public class ThingService {
 		return thingRepository.existsByIdAndTenantId(id, tenantId);
 	}
 	
+	public boolean existsByIdNotAndNameAndTenantId(Long id, String name, Long tenantId){
+		return thingRepository.existsByIdNotAndNameAndTenantId(id, name, tenantId);
+	}
+	
 	@PreAuthorize("hasPermission(#thing.id, 'THING', 'CREATE')")
 	public Thing create(@NotNull Thing thing){
-		assert null == thing.getId() : "Id must be null";
+		if(null != thing.getId() || 0 < thing.getId()) throw new IllegalArgumentException("Id must be null");
+		if(0 == thing.getId()) thing.setId(null);
 		return thingRepository.save(thing);
 	}
 	
+	@Transactional
 	@PreAuthorize("hasPermission(#thing.id, 'THING', 'UPDATE')")
 	public Thing update(@NotNull Thing thing){
-		assert null != thing.getId() : "Id must not be null";
+		if(null == thing.getId() || 0 >= thing.getId()) throw new IllegalArgumentException("Id must not be null");
 		return thingRepository.save(thing);
 	}
 	

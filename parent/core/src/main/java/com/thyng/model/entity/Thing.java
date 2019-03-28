@@ -6,13 +6,13 @@ import java.util.UUID;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
@@ -21,6 +21,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -55,8 +58,12 @@ public class Thing extends AuditableEntity {
 	
 	@Valid
 	@ManyToOne(optional=false, fetch=FetchType.LAZY)
+	@JoinColumn(updatable=false, nullable=false)
 	private Tenant tenant;
 	
+	@Cascade({CascadeType.ALL})
+	@Access(AccessType.PROPERTY)
+	@OneToMany(orphanRemoval=true, mappedBy="thing")
 	private Set<@NotNull @Valid Metric> metrics;
 	
 	@ElementCollection
@@ -76,26 +83,5 @@ public class Thing extends AuditableEntity {
 	public void setKey(String key){
 		throw new UnsupportedOperationException();
 	}
-	
-	public void setPath(String path){
-		throw new UnsupportedOperationException();
-	}
-	
-	@Access(AccessType.PROPERTY)
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="thing")
-	public Set<Metric> getMetrics(){
-		return metrics;
-	}
-	
-	public void setMetrics(Set<Metric> metrics){
-		if(null == this.metrics){
-			this.metrics = metrics;
-		}else{
-			this.metrics.clear();
-			if(null != metrics){
-				this.metrics.addAll(metrics);
-			}
-		}
-	} 
 	
 }
