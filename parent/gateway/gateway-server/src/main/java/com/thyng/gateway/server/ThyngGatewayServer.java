@@ -26,33 +26,29 @@ public class ThyngGatewayServer {
 	public static void main(String[] args) throws InterruptedException {
 		log.info("Attempting to start Thyng Gateway server");
 		final int httpPort = Integer.getInteger("thyng.gateway.server.http.port", 9090);
-		final int mqttPort = Integer.getInteger("thyng.gateway.server.mqtt.port", 9091);
 		final ThyngGatewayServer server = new ThyngGatewayServer();
-		server.start(httpPort, mqttPort);
+		server.start(httpPort);
 	}
 
 	private ChannelFuture httpChannelFuture;
-	private ChannelFuture mqttChannelFuture;
 	private final EventLoopGroup bossGroup = new NioEventLoopGroup();
 	private final EventLoopGroup workerGroup = new NioEventLoopGroup();
 	
-	public void start(final int httpPort, final int mqttPort) throws InterruptedException {
+	public void start(final int httpPort) throws InterruptedException {
 		try {
 			validate();
 			prepareShutdownHook();
 			httpChannelFuture = prepareHttpChannel(httpPort);
-			mqttChannelFuture = prepareMqttChannel(mqttPort);
 			log.info("Thyng Gateway server started successfully");
 			log.info("Listening for HTTP requests on port : "+httpPort);
-			log.info("Listening for MQTT requests on port : "+mqttPort);
-			sync(httpChannelFuture, mqttChannelFuture);
+			httpChannelFuture.channel().closeFuture().sync();
 		} finally {
 			shutdown();
 		}
 	}
 	
 	private void validate() {
-		if (Objects.nonNull(httpChannelFuture) || Objects.nonNull(mqttChannelFuture)) {
+		if (Objects.nonNull(httpChannelFuture)) {
 			throw new IllegalStateException("Server is already running");
 		}
 	}
@@ -65,22 +61,6 @@ public class ThyngGatewayServer {
 				.option(ChannelOption.SO_BACKLOG, 128)
 				.childOption(ChannelOption.SO_KEEPALIVE, true)
 				.bind(httpPort).sync();
-	}
-	
-	private ChannelFuture prepareMqttChannel(int mqttPort) throws InterruptedException{
-		return new ServerBootstrap()
-				.group(bossGroup, workerGroup)
-				.channel(NioServerSocketChannel.class)
-				.childHandler(new HttpChannelInitailizer())
-				.option(ChannelOption.SO_BACKLOG, 128)
-				.childOption(ChannelOption.SO_KEEPALIVE, true)
-				.bind(mqttPort).sync();
-	}
-	
-	private void sync(ChannelFuture...channelFutures) throws InterruptedException{
-		for(ChannelFuture channelFuture : channelFutures){
-			channelFuture.channel().closeFuture().sync();
-		}
 	}
 	
 	private void prepareShutdownHook(){
@@ -101,7 +81,6 @@ public class ThyngGatewayServer {
 		workerGroup.shutdownGracefully();
 		bossGroup.shutdownGracefully();
 		httpChannelFuture.channel().close();
-		mqttChannelFuture.channel().close();
 		log.info("Goodbye");
 	}
 
