@@ -53,5 +53,6 @@
 	<modules>
 		<module>device-registry</module>
 		<module>core</module>
+		<module>gateway</module>
 	</modules>
 </project>
