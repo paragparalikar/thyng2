@@ -8,6 +8,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<netty.version>4.1.34.Final</netty.version>
 		<spring-boot.version>2.0.1.RELEASE</spring-boot.version>  <!-- 2.1.3 is latest-->
 		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,6 +32,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>io.netty</groupId>
+				<artifactId>netty-bom</artifactId>
+				<version>${netty.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -51,7 +57,7 @@
 	</build>
 
 	<modules>
-		<module>device-registry</module>
+		<module>master-data-service</module>
 		<module>core</module>
 		<module>gateway</module>
 	</modules>

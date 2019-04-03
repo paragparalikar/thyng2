@@ -1,0 +1,40 @@
+server:
+  port: 8081
+  gateway:
+    port: 8082
+
+spring:
+  mvc:
+    view:
+      prefix: /views/
+      suffix: .jsp
+  datasource:
+    driver-class-name: org.hsqldb.jdbc.JDBCDriver
+    url: jdbc:hsqldb:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password: 
+  jpa:
+    show-sql: true
+    properties:
+      javax:
+        cache:
+          missing_cache_strategy: create
+        persistence:
+          sharedCache: 
+            mode: ALL 
+      hibernate:
+        ddl-auto: create
+        format_sql: true
+        generate_statistics: false
+        cache:
+          use_second_level_cache: false
+          use_query_cache: false
+          region:
+            factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory  
+          
+logging:
+  level:
+    org.hibernate.tool.schema.internal.ExceptionHandlerLoggedImpl: ERROR
+    com:
+      thyng: trace
+      hazelcast: info

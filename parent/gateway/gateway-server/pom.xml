@@ -14,11 +14,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.thyng</groupId>
-			<artifactId>gateway-core</artifactId>
-			<version>${gateway-core.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-handler</artifactId>
 		</dependency>
@@ -43,6 +38,11 @@
             <artifactId>guava</artifactId>
             <version>19.0</version>
         </dependency>
+		 <dependency>
+		 	<groupId>com.thyng</groupId>
+		 	<artifactId>core</artifactId>
+		 	<version>0.0.1-SNAPSHOT</version>
+		 </dependency>
 	</dependencies>
 
 	<repositories>
