@@ -117,7 +117,6 @@ public class SetupService {
 				.properties(buildProperties())
 				.alive(0 == (index % 2))
 				.inactivityPeriod(60)
-				.heartbeatInterval(10)
 				.mqttClientConfig(buildMqttClientConfig())
 				.build();
 	}
@@ -161,7 +160,6 @@ public class SetupService {
 					.description("Description for Sensor -"+index)
 					.name("Sensor-"+index+"-"+thing.getName())
 					.unit("Unit-"+index)
-					.topic("/thyng/abc")
 					.build());
 		}
 		return sensors;

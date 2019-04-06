@@ -6,6 +6,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -13,7 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.thyng.model.enumeration.DataType;
-import com.thyng.model.enumeration.Protocol;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,21 +68,7 @@ public class Sensor extends AuditableEntity {
 	@Builder.Default
 	private Integer aggregationPeriod = 60;
 	
-	@NotNull
-	@Builder.Default
-	@Column(nullable=false)
-	@Enumerated(EnumType.STRING)
-	private Protocol protocol = Protocol.MQTT; 
-	
-	@Size(max=255)
-	private String topic;		// mqtt topic
-	
-	@Size(max=255)
-	private String host;		// coap, http, https IP address
-	
-	private Integer port;			// coap, http, https port
-	
-	@Size(max=255)
-	private String path;		// http, https context path
+	@Lob
+	private String normalizer;
 	
 }

@@ -7,8 +7,6 @@ public class GatewayRegistrationDTO{
 
 	private Long gatewayId;
 	
-	private String host;
-	
 	private Integer port;
 
 }

@@ -17,6 +17,4 @@ public class GatewayDTO{
 
 	private int inactivityPeriod;
 
-	private int heartbeatInterval;
-
 }

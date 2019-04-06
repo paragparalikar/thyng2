@@ -59,7 +59,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers("/public/**/*").permitAll()
-		.anyRequest().authenticated().and()
+		.anyRequest().authenticated().and().httpBasic().and()
 		.formLogin().loginPage("/login").successHandler(this::onAuthenticationSuccess).permitAll().and()
 		.logout().permitAll().and()
 		.csrf().disable();
@@ -79,5 +79,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter{
     public DefaultAuthenticationEventPublisher authenticationEventPublisher() {
         return new DefaultAuthenticationEventPublisher();
     }
+	
+	/*@Configuration
+    @Order(1)
+    public static class BasicWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+        protected void configure(HttpSecurity http) throws Exception {
+        	
+        	
+            http.antMatcher("/api/**").authorizeRequests().anyRequest().authenticated().and().httpBasic();
+        }
+    }*/
 		
 }

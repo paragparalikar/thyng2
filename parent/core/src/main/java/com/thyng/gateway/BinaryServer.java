@@ -41,21 +41,23 @@ public class BinaryServer {
 					continue;
 				}
 				final SocketChannelHandler handler = mappings.get(GatewayOps.values()[opCode]);
-				if(null != handler){
-					executor.submit(() -> {
-						try {
-							handler.handle(input, output);
-						} catch (Exception e1) {
-							e1.printStackTrace();
-						} finally{
-							try {
-								socket.close();
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-					});
+				if(null == handler){
+					socket.close();
+					continue;
 				}
+				executor.submit(() -> {
+					try {
+						handler.handle(input, output);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					} finally{
+						try {
+							socket.close();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
 			}
 		}
 	}

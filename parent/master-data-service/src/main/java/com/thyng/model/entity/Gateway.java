@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
@@ -57,14 +58,17 @@ public class Gateway {
 	@ElementCollection
 	private Map<@NotBlank String,@NotBlank  String> properties;
 	
+	@Size(max=255)
+	private String host;
+	
+	@Positive
+	private Integer port;
+	
 	private Boolean alive;
 	
 	@Min(60)
 	private Integer inactivityPeriod;
-	
-	@Min(10)
-	private Integer heartbeatInterval;
-	
+		
 	@Cascade({CascadeType.ALL})
 	@OneToMany(orphanRemoval=true, mappedBy="gateway")
 	private Set<@Valid @NotNull Thing> things;
@@ -74,8 +78,4 @@ public class Gateway {
 	@OneToOne(fetch=FetchType.LAZY)
 	private MqttClientConfig mqttClientConfig;
 	
-	@Valid
-	@Cascade({CascadeType.ALL})
-	@OneToOne(fetch=FetchType.LAZY, mappedBy="gateway")
-	private GatewayRegistration registration;
 }
