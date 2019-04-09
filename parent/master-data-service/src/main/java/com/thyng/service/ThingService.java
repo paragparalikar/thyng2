@@ -1,6 +1,7 @@
 package com.thyng.service;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
@@ -27,6 +28,10 @@ public class ThingService {
 	@PreAuthorize("hasPermission(null, 'THING', 'LIST')")
 	public List<Thing> findByTenantId(@NotNull @Positive Long tenantId){
 		return thingRepository.findByTenantId(tenantId);
+	}
+	
+	public Set<Thing> findByGatewayId(@NotNull @Positive Long gatewayId){
+		return thingRepository.findByGatewayId(gatewayId);
 	}
 	
 	@PreAuthorize("hasPermission(#id, 'THING', 'VIEW')")

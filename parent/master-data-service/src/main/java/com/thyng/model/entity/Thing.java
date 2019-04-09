@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false, of={"id", "name"})
-public class Thing extends AuditableEntity {
+public class Thing extends AuditableEntity{
 
 	@Id 
 	@GeneratedValue
@@ -69,5 +69,5 @@ public class Thing extends AuditableEntity {
 	private Map<@NotBlank String,@NotBlank  String> properties;
 	
 	private Boolean alive;
-		
+	
 }

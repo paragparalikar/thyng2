@@ -9,7 +9,7 @@ import com.thyng.model.dto.GatewayDTO;
 import com.thyng.model.dto.GatewayDetailsDTO;
 import com.thyng.model.entity.Gateway;
 
-@Mapper(componentModel="spring")
+@Mapper(componentModel="spring", uses={ThingMapper.class})
 public interface GatewayMapper {
 
 	GatewayDetailsDTO dto(Gateway gateway);
@@ -17,5 +17,7 @@ public interface GatewayMapper {
 	Set<GatewayDTO> dto(Collection<? extends Gateway> gateways);
 	
 	Gateway entity(GatewayDetailsDTO dto);
+	
+	Gateway entity(Gateway gateway);
 	
 }

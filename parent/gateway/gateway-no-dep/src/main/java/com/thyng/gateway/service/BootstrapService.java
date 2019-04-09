@@ -4,13 +4,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.google.gson.Gson;
-import com.thyng.gateway.Context;
-import com.thyng.gateway.EventBus;
-import com.thyng.gateway.GatewayDetailsProvider;
-import com.thyng.gateway.MutablePropertyProvider;
-import com.thyng.gateway.PropertyProvider;
-import com.thyng.gateway.SimpleContext;
+import com.thyng.gateway.model.Context;
+import com.thyng.gateway.provider.details.DetailsProvider;
+import com.thyng.gateway.provider.event.EventBus;
+import com.thyng.gateway.provider.persistence.FileSystemPersistenceProvider;
+import com.thyng.gateway.provider.persistence.PersistenceProvider;
+import com.thyng.gateway.provider.property.MutablePropertyProvider;
+import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.gateway.service.server.coap.CoapServerService;
 import com.thyng.model.dto.GatewayDetailsDTO;
 
@@ -28,7 +28,10 @@ public class BootstrapService implements Service {
 		initShutdownHook();
 		context = buildContext();
 		log.info("Thyng gateway context successfully built");
-		compositeService = new CompositeService(new CoapServerService(context));
+		compositeService = new CompositeService(
+				new HeartbeatService(context),
+				new CoapServerService(context)/*, 
+				new DispatchService(context)*/);
 		compositeService.start();
 	}
 	
@@ -71,23 +74,24 @@ public class BootstrapService implements Service {
 	}
 	
 	private Context buildContext() throws Exception{
-		final Gson gson = new Gson();
 		final EventBus eventBus = new EventBus();
 		final PropertyProvider properties = new MutablePropertyProvider().load();
 		final ScheduledExecutorService executor = Executors.newScheduledThreadPool
 				(Runtime.getRuntime().availableProcessors());
-		final GatewayDetailsDTO details = buildDetails(gson, properties);
-		return SimpleContext.builder()
-				.gson(gson)
+		final GatewayDetailsDTO details = buildDetails(properties);
+		final PersistenceProvider persistenceProvider = 
+				new FileSystemPersistenceProvider(eventBus, properties);
+		return Context.builder()
 				.eventBus(eventBus)
 				.executor(executor)
 				.properties(properties)
 				.details(details)
+				.persistenceProvider(persistenceProvider)
 				.build();
 	}
 	
-	private GatewayDetailsDTO buildDetails(Gson gson, PropertyProvider propertyProvider) throws Exception{
-		final GatewayDetailsProvider detailsProvider = new GatewayDetailsProvider(gson, propertyProvider);
+	private GatewayDetailsDTO buildDetails(PropertyProvider propertyProvider) throws Exception{
+		final DetailsProvider detailsProvider = new DetailsProvider(propertyProvider);
 		try{
 			return detailsProvider.load();
 		}catch(Exception e){

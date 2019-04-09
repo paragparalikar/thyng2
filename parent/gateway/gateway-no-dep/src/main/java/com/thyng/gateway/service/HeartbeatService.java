@@ -1,12 +1,16 @@
 package com.thyng.gateway.service;
 
-import java.net.HttpURLConnection;
+import java.nio.ByteBuffer;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import com.thyng.gateway.Constant;
-import com.thyng.gateway.Context;
-import com.thyng.gateway.util.HttpUtil;
+import org.eclipse.californium.core.CoapClient;
+import org.eclipse.californium.core.CoapResponse;
+import org.eclipse.californium.core.coap.MediaTypeRegistry;
+
+import com.thyng.gateway.model.Constant;
+import com.thyng.gateway.model.Context;
+import com.thyng.gateway.provider.property.PropertyProvider;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 public class HeartbeatService implements Service, Runnable {
 	public static final String KEY_HEARTBEAT_URL = "thyng.server.url.heartbeat";
 	public static final String KEY_HEARTBEAT_INTERVAL = "thyng.gateway.heartbeat.interval";
-	
 	
 	private final Context context;
 	private ScheduledFuture<?> future;
@@ -31,20 +34,16 @@ public class HeartbeatService implements Service, Runnable {
 	@Override
 	public void run() {
 		try{
-			String url = context.getProperties().get(Constant.KEY_URL_SERVER, "http://www.thyng.io") 
-					+ context.getProperties().get(KEY_HEARTBEAT_URL, "/gateways/%s/heartbeats");
-			url = String.format(url, context.getProperties().get(Constant.KEY_GATEWAY_ID, null));
-			
-			final HttpURLConnection connection = HttpUtil.build(url, 
-					context.getProperties().get(Constant.KEY_USERNAME, null),
-					context.getProperties().get(Constant.KEY_PASSWORD, null));
-			connection.setRequestMethod("HEAD");
-			if(200 == connection.getResponseCode()){
-				log.info("Successfully sent heartbeat");
-			}else{
-				log.error("Heartbeat not reaching server - Response Code : "+connection.getResponseCode() 
-					+ ", Response Message : "+connection.getResponseMessage());
-			}
+			log.debug("Sending heartbeat");
+			final PropertyProvider properties = context.getProperties();
+			final Long id = context.getProperties().getLong(Constant.KEY_GATEWAY_ID, null);
+			final byte[] value = ByteBuffer.allocate(Long.BYTES).putLong(id).array();
+			final CoapResponse response = new CoapClient("coap", 
+					properties.get(Constant.KEY_URL_SERVER, "www.thyng.io"),
+					properties.getInteger(Constant.KEY_URL_SERVER_PORT, 5684),
+					properties.get(KEY_HEARTBEAT_URL, "heartbeats"))
+			.post(value, MediaTypeRegistry.APPLICATION_OCTET_STREAM);
+			log.debug("Heartbeat response success : " + (null != response && response.isSuccess()));
 		}catch(Exception e){
 			e.printStackTrace();
 		}

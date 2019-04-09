@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import com.thyng.model.enumeration.DataType;
@@ -70,5 +71,10 @@ public class Sensor extends AuditableEntity {
 	
 	@Lob
 	private String normalizer;
+	
+	@NotNull
+	@Positive
+	@Builder.Default
+	private Integer batchSize = 60;
 	
 }

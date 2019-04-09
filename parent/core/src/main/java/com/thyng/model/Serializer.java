@@ -1,9 +1,12 @@
 package com.thyng.model;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Output;
 import com.thyng.model.dto.ActuatorDTO;
 import com.thyng.model.dto.GatewayDTO;
 import com.thyng.model.dto.GatewayDetailsDTO;
@@ -46,4 +49,13 @@ public class Serializer {
 		return kryo;
 	}
 	
+	
+	public static byte[] write(Object object){
+		Objects.requireNonNull(object);
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		final Output output = new Output(baos);
+		Serializer.kryo().writeObject(output, object);
+		output.flush();
+		return baos.toByteArray();
+	}
 }

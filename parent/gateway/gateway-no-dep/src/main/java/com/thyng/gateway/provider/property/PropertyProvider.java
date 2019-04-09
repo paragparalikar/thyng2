@@ -1,4 +1,4 @@
-package com.thyng.gateway;
+package com.thyng.gateway.provider.property;
 
 public interface PropertyProvider {
 

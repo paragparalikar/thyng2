@@ -34,7 +34,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false, of={"id", "name"})
-public class Gateway {
+public class Gateway{
 
 	@Id
 	@GeneratedValue

@@ -25,4 +25,6 @@ public class SensorDTO {
 		
 	private String normalizer;
 	
+	private Integer batchSize;
+	
 }

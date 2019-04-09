@@ -13,8 +13,8 @@ public abstract class ThingMapperDecorator implements ThingMapper {
 	private ThingMapper delegate;
 	
 	@Override
-	public Thing toEntity(ThingDetailsDTO dto) {
-		final Thing thing = delegate.toEntity(dto);
+	public Thing entity(ThingDetailsDTO dto) {
+		final Thing thing = delegate.entity(dto);
 		if(null != thing.getSensors()){
 			thing.getSensors().forEach(sensor -> {
 				sensor.setThing(thing);

@@ -2,7 +2,7 @@ package com.thyng.gateway.service.server.coap;
 
 import org.eclipse.californium.core.CoapServer;
 
-import com.thyng.gateway.Context;
+import com.thyng.gateway.model.Context;
 import com.thyng.gateway.service.Service;
 
 import lombok.extern.slf4j.Slf4j;

@@ -1,8 +1,10 @@
-package com.thyng.gateway;
+package com.thyng.gateway.model;
 
 import java.util.concurrent.ScheduledExecutorService;
 
-import com.google.gson.Gson;
+import com.thyng.gateway.provider.event.EventBus;
+import com.thyng.gateway.provider.persistence.PersistenceProvider;
+import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.model.dto.GatewayDetailsDTO;
 
 import lombok.Builder;
@@ -10,12 +12,12 @@ import lombok.Value;
 
 @Value
 @Builder
-public class SimpleContext implements Context{
+public class Context {
 
-	private final Gson gson;
 	private final EventBus eventBus;
 	private final ScheduledExecutorService executor;
 	private final PropertyProvider properties;
 	private final GatewayDetailsDTO details;
+	private final PersistenceProvider persistenceProvider;
 	
 }

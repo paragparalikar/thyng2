@@ -1,4 +1,4 @@
-package com.thyng.gateway;
+package com.thyng.gateway.provider.event;
 
 import java.util.Collections;
 import java.util.HashMap;

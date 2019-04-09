@@ -1,7 +1,7 @@
 server:
   port: 8081
   gateway:
-    port: 8082
+    port: 5684
 
 spring:
   mvc:

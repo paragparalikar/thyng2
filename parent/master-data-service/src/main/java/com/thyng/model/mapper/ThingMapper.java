@@ -18,11 +18,15 @@ public interface ThingMapper {
 
 	@Mapping(target="gatewayId", source="gateway.id")
 	@Mapping(target="gatewayName", source="gateway.name")
-	ThingDetailsDTO toDTO(Thing thing);
+	ThingDetailsDTO dto(Thing thing);
 	
-	Set<ThingDTO> toDTO(Collection<Thing> things);
+	Set<ThingDTO> dto(Collection<Thing> things);
 	
 	@InheritInverseConfiguration
-	Thing toEntity(ThingDetailsDTO dto);
+	Thing entity(ThingDetailsDTO dto);
+	
+	Thing entity(Thing thing);
+	
+	Set<Thing> entities(Collection<Thing> things);
 	
 }

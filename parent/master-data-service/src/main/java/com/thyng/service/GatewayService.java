@@ -10,6 +10,8 @@ import org.springframework.validation.annotation.Validated;
 
 import com.thyng.model.entity.Gateway;
 import com.thyng.model.exception.NotFoundException;
+import com.thyng.model.mapper.GatewayMapper;
+import com.thyng.model.mapper.ThingMapper;
 import com.thyng.repository.data.jpa.GatewayRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GatewayService {
 
+	private final ThingMapper thingMapper;
+	private final GatewayMapper gatewayMapper;
 	private final GatewayRepository gatewayRepository;
 	
 	@Transactional
@@ -27,10 +31,15 @@ public class GatewayService {
 			@NotBlank String host, @NotNull @Positive Integer port){
 		final Gateway gateway = gatewayRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException());
-		gateway.getThings();
 		gateway.setHost(host);
 		gateway.setPort(port);
-		return gatewayRepository.save(gateway);
+		if(null != gateway.getMqttClientConfig()){
+			gateway.getMqttClientConfig().getHost();
+			gateway.getMqttClientConfig().getLastWill();
+		}
+		final Gateway clone = gatewayMapper.entity(gatewayRepository.save(gateway));
+		clone.setThings(thingMapper.entities(gateway.getThings()));
+		return clone;
 	}
 	
 	public Gateway findById(@NotNull @Positive Long id){

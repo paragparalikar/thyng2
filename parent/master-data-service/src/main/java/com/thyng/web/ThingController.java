@@ -37,29 +37,29 @@ public class ThingController {
 	
 	@GetMapping
 	public Set<ThingDTO> findAll(@AuthenticationPrincipal User user){
-		return thingMapper.toDTO(thingService.findByTenantId(user.getTenant().getId()));
+		return thingMapper.dto(thingService.findByTenantId(user.getTenant().getId()));
 	}
 	
 	@GetMapping("/{id}")
 	public ThingDetailsDTO findById(@PathVariable @NotNull @Positive Long id){
-		return thingMapper.toDTO(thingService.findById(id));
+		return thingMapper.dto(thingService.findById(id));
 	}
 	
 	@PostMapping
 	@ResponseBody
 	public ThingDetailsDTO create(@RequestBody @NotNull @Valid ThingDetailsDTO dto, @AuthenticationPrincipal User user){
-		final Thing thing = thingMapper.toEntity(dto);
+		final Thing thing = thingMapper.entity(dto);
 		thing.setTenant(user.getTenant());
 		final Thing managedThing = thingService.create(thing);
-		return thingMapper.toDTO(managedThing);
+		return thingMapper.dto(managedThing);
 	}
 	
 	@PutMapping
 	@ResponseBody
 	public ThingDetailsDTO update(@RequestBody @NotNull @Valid ThingDetailsDTO dto){
-		final Thing thing = thingMapper.toEntity(dto);
+		final Thing thing = thingMapper.entity(dto);
 		final Thing managedThing = thingService.update(thing);
-		return thingMapper.toDTO(managedThing);
+		return thingMapper.dto(managedThing);
 	}
 	
 	@DeleteMapping("/{id}")
