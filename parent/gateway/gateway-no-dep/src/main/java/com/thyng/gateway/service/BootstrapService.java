@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.provider.details.DetailsProvider;
 import com.thyng.gateway.provider.event.EventBus;
-import com.thyng.gateway.provider.persistence.FileSystemPersistenceProvider;
+import com.thyng.gateway.provider.persistence.FilePersistenceProvider;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
 import com.thyng.gateway.provider.property.MutablePropertyProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
@@ -30,8 +30,8 @@ public class BootstrapService implements Service {
 		log.info("Thyng gateway context successfully built");
 		compositeService = new CompositeService(
 				new HeartbeatService(context),
-				new CoapServerService(context)/*, 
-				new DispatchService(context)*/);
+				new CoapServerService(context), 
+				new DispatchService(context));
 		compositeService.start();
 	}
 	
@@ -78,9 +78,8 @@ public class BootstrapService implements Service {
 		final PropertyProvider properties = new MutablePropertyProvider().load();
 		final ScheduledExecutorService executor = Executors.newScheduledThreadPool
 				(Runtime.getRuntime().availableProcessors());
-		final GatewayDetailsDTO details = buildDetails(properties);
-		final PersistenceProvider persistenceProvider = 
-				new FileSystemPersistenceProvider(eventBus, properties);
+		final PersistenceProvider persistenceProvider = new FilePersistenceProvider(properties);
+		final GatewayDetailsDTO details =  new DetailsProvider(properties, persistenceProvider).get();
 		return Context.builder()
 				.eventBus(eventBus)
 				.executor(executor)
@@ -89,15 +88,5 @@ public class BootstrapService implements Service {
 				.persistenceProvider(persistenceProvider)
 				.build();
 	}
-	
-	private GatewayDetailsDTO buildDetails(PropertyProvider propertyProvider) throws Exception{
-		final DetailsProvider detailsProvider = new DetailsProvider(propertyProvider);
-		try{
-			return detailsProvider.load();
-		}catch(Exception e){
-			log.error("Could not load gateway details - "+e.getMessage());
-			return detailsProvider.save(detailsProvider.fetch());
-		}
-	}
-	
+		
 }

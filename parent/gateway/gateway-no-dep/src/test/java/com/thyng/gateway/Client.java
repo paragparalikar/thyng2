@@ -20,7 +20,7 @@ public class Client {
 			final CoapResponse response = new CoapClient("coap","localhost",5683,"telemetry")
 			.post(baos.toByteArray(), MediaTypeRegistry.APPLICATION_OCTET_STREAM);
 			
-			System.out.println("success : "+response.isSuccess());
+			System.out.println("success : "+(null == response? "null" : response.isSuccess()));
 			
 			Thread.sleep(3000);
 		}

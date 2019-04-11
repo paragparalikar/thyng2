@@ -14,10 +14,9 @@ import org.eclipse.californium.core.coap.Request;
 import com.thyng.gateway.model.Constant;
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.model.Message;
-import com.thyng.gateway.provider.persistence.PersistenceProvider;
+import com.thyng.gateway.provider.persistence.PersistentTelemetry;
 import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.model.dto.SensorDTO;
-import com.thyng.model.dto.TelemetryDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -31,12 +30,12 @@ public class DispatchService implements Service, Consumer<Message> {
 	
 	@Override
 	public void start() throws Exception {
-		context.getEventBus().register(PersistenceProvider.PERSISTED, this);
+		context.getEventBus().register(Message.PERSISTED, this);
 	}
 
 	@Override
 	public void stop() throws Exception {
-		context.getEventBus().unregister(PersistenceProvider.PERSISTED, this);
+		context.getEventBus().unregister(Message.PERSISTED, this);
 	}
 
 	@Override
@@ -47,10 +46,10 @@ public class DispatchService implements Service, Consumer<Message> {
 			final Integer unsentCount = message.getUnsentCounts().get(sensorId);
 			if(unsentCount >= sensor.getBatchSize()){
 				final ThingDetailsDTO thing = message.getThing(sensorId);
-				final TelemetryDTO dto = context.getPersistenceProvider().getUnsentTelemetry(thing.getId(), sensorId);
+				final PersistentTelemetry telemetry = context.getPersistenceProvider().getUnsentTelemetry(thing.getId(), sensorId);
 				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				final DataOutput out = new DataOutputStream(baos);
-				final byte dataType = dto.write(out);
+				final byte dataType = telemetry.write(out);
 				final PropertyProvider properties = context.getProperties();
 				final CoapClient client = new CoapClient("coap", 
 						properties.get(Constant.KEY_URL_SERVER, "www.thyng.io"),
@@ -60,10 +59,10 @@ public class DispatchService implements Service, Consumer<Message> {
 				request.setType(Type.CON);
 				request.setPayload(baos.toByteArray());
 				request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_OCTET_STREAM);
-				request.getOptions().setUriQuery("sensorId="+sensorId+"&dataType="+dataType);
+				request.getOptions().setUriQuery("thingId="+thing.getId()+"&sensorId="+sensorId+"&dataType="+dataType);
 				final CoapResponse response = client.advanced(request);
-				if(response.isSuccess()){
-					
+				if(null != response && response.isSuccess()){
+					context.getPersistenceProvider().markSent(telemetry);
 				}
 			}
 		}

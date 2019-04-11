@@ -13,9 +13,9 @@ public class GatewayConfiguration {
 	
 	@Bean(initMethod="start", destroyMethod="stop")
 	public CoapServer coapServer(GatewayResource gatewayResource, 
-			HeartbeatResource heartbeatResource){
+			HeartbeatResource heartbeatResource, TelemetryResource telemetryResource){
 		final CoapServer server = new CoapServer(port);
-		server.add(gatewayResource, heartbeatResource);
+		server.add(gatewayResource, heartbeatResource, telemetryResource);
 		return server;
 	}
 	

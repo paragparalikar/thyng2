@@ -10,20 +10,27 @@ import java.util.Map;
 
 public class TelemetryDTO {
 
+	private final Long thingId;
 	private final Long sensorId;
 	private final HashMap<Long, Object> values = new HashMap<>();
 	
-	public TelemetryDTO(Long sensorId, byte dataType, byte[] data) throws IOException {
+	public TelemetryDTO(Long thingId, Long sensorId, byte dataType, byte[] data) throws IOException {
+		this.thingId = thingId;
 		this.sensorId = sensorId;
 		read(dataType, data);
 	}
 	
-	public TelemetryDTO(Long sensorId) {
+	public TelemetryDTO(Long thingId, Long sensorId) {
+		this.thingId = thingId;
 		this.sensorId = sensorId;
 	}
 	
 	public Long getSensorId() {
 		return sensorId;
+	}
+	
+	public Long getThingId() {
+		return thingId;
 	}
 	
 	public Map<Long, Object> getValues() {
@@ -85,6 +92,7 @@ public class TelemetryDTO {
 	public byte write(DataOutput file) throws IOException{
 		byte dataType = 8;
 		for(Long timestamp : values.keySet()){
+			file.writeLong(timestamp);
 			final Object value = values.get(timestamp);
 			dataType = TelemetryDTO.write(value, file);
 		}

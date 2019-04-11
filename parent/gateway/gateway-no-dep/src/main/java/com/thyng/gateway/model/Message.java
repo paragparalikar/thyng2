@@ -8,6 +8,7 @@ import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
 
 public class Message {
+	public static final String PERSISTED = "topic-message-persisted";
 	
 	private final long timestamp;
 	

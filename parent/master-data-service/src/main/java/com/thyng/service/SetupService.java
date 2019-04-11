@@ -160,6 +160,7 @@ public class SetupService {
 					.description("Description for Sensor -"+index)
 					.name("Sensor-"+index+"-"+thing.getName())
 					.unit("Unit-"+index)
+					.batchSize(10)
 					.build());
 		}
 		return sensors;
