@@ -19,6 +19,7 @@ public class TelemetryResource extends CoapResource {
 	@Override
 	@SneakyThrows
 	public void handlePOST(CoapExchange exchange) {
+		final Long gatewayId = Long.parseLong(exchange.getQueryParameter("gatewayId"));
 		final Long thingId = Long.parseLong(exchange.getQueryParameter("thingId"));
 		final Long sensorId = Long.parseLong(exchange.getQueryParameter("sensorId"));
 		final Byte dataType = Byte.parseByte(exchange.getQueryParameter("dataType"));

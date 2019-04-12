@@ -46,6 +46,7 @@ public class DispatchService implements Service, Consumer<Message> {
 			final Integer unsentCount = message.getUnsentCounts().get(sensorId);
 			if(unsentCount >= sensor.getBatchSize()){
 				final ThingDetailsDTO thing = message.getThing(sensorId);
+				final Long gatewayId = context.getProperties().getLong(Constant.KEY_GATEWAY_ID, null);
 				final PersistentTelemetry telemetry = context.getPersistenceProvider().getUnsentTelemetry(thing.getId(), sensorId);
 				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				final DataOutput out = new DataOutputStream(baos);
@@ -59,10 +60,13 @@ public class DispatchService implements Service, Consumer<Message> {
 				request.setType(Type.CON);
 				request.setPayload(baos.toByteArray());
 				request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_OCTET_STREAM);
-				request.getOptions().setUriQuery("thingId="+thing.getId()+"&sensorId="+sensorId+"&dataType="+dataType);
+				request.getOptions().setUriQuery("gatewayId="+gatewayId+"&thingId="+thing.getId()+"&sensorId="+sensorId+"&dataType="+dataType);
 				final CoapResponse response = client.advanced(request);
-				if(null != response && response.isSuccess()){
-					context.getPersistenceProvider().markSent(telemetry);
+				if(null != response){
+					context.getEventBus().publish(Message.SENT, message);
+					if(response.isSuccess()){
+						context.getPersistenceProvider().markSent(telemetry);
+					}
 				}
 			}
 		}

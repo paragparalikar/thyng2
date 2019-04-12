@@ -6,16 +6,27 @@ import com.thyng.gateway.service.BootstrapService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Heart beats 
- * Data transformation 
- * Data persistence 
- * Data Aggregation 
- * Data upload
+ * 		Heart beats 
+ * 		Data normalization 
+ * 		Data persistence 
+ * 		Data Aggregation 
+ * 		Data upload
  * Thing status change notifications
  * 
- * Configuration service info/commands 
- * System service(+Watchdog) info/commands
- * Log upload service info
+ * Queries
+ * Ping
+ * Logs
+ * System Properties
+ * Environmental Variables
+ * Thyng properties
+ * MX bean values
+ * 
+ * Commands
+ * Set log levels
+ * Set System properties
+ * Set Thyng property
+ * Soft Restart
+ * Hard Restart
  */
 @Slf4j
 public class Main {

@@ -12,7 +12,7 @@ tenantService = {
 				url: window.location.origin + "/api/v1/tenants",
 				type: tenant.id && 0 < tenant.id ? "PUT" : "POST",
 				contentType:"application/json; charset=utf-8",
-				data: tenant,
+				data: JSON.stringify(tenant),
 			}).done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 		},
 		deleteById : function(id, success, error, always){

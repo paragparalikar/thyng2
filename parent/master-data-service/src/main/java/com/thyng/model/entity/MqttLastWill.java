@@ -1,11 +1,14 @@
 package com.thyng.model.entity;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.envers.Audited;
 
 import com.thyng.model.enumeration.MqttQoS;
 
@@ -16,6 +19,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@Audited
+@Cacheable
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor

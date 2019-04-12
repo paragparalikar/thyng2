@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
@@ -21,6 +22,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.envers.Audited;
 import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -35,6 +37,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
+@Audited
+@Cacheable
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false, of={"id","email"})

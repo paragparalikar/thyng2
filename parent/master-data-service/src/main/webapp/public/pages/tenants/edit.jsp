@@ -129,7 +129,7 @@
 			},			
 			submitHandler: function(){
 				toModel(inputTenant);
-				tenantService.save(JSON.stringify(inputTenant), function(data){
+				tenantService.save(inputTenant, function(data){
 					toast('Tenant has been saved successfully');
 				});
 			}	

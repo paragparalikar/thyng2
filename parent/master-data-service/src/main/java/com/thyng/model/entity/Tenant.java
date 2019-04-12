@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,8 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import org.hibernate.envers.Audited;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +26,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
+@Audited
+@Cacheable
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false, of={"id", "name"})

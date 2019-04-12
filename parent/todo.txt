@@ -33,3 +33,11 @@ Thing Details View may contain:
   - Audit trail
   - Activity - some time in past + current using websockets
   - Extended audit trail - Users who got the access to thing, rules that matched againt it, command executed on it
+  
+  
+  
+  
+  
+ORM Second level cache - Hazelcast
+	Audit - Hibernate Envers
+Spring boot Kafka - dependency to interact with kafka server 

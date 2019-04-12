@@ -3,6 +3,7 @@ package com.thyng.model.entity;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,6 +19,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.envers.Audited;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +31,9 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
+@Audited
+@Cacheable
+@DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false, of={"id", "name"})

@@ -1,5 +1,6 @@
 package com.thyng.model.entity;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.envers.Audited;
 
 import com.thyng.model.enumeration.DataType;
 import com.thyng.model.enumeration.Protocol;
@@ -23,6 +26,8 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
+@Audited
+@Cacheable
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false, of={"id", "name"})

@@ -2,6 +2,8 @@ package com.thyng.model.entity;
 
 import javax.persistence.Embeddable;
 
+import org.hibernate.envers.Audited;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@Audited
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor

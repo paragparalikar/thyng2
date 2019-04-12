@@ -1,5 +1,6 @@
 package com.thyng.model.entity;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +15,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.envers.Audited;
+
 import com.thyng.model.enumeration.DataType;
 
 import lombok.AllArgsConstructor;
@@ -25,6 +29,9 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Builder
+@Audited
+@Cacheable
+@DynamicUpdate
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false, of={"id", "name"})
@@ -60,6 +67,8 @@ public class Sensor extends AuditableEntity {
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
 	private DataType dataType = DataType.NUMBER; 
+	
+	private Boolean alive;
 	
 	@Min(10)
 	@Builder.Default
