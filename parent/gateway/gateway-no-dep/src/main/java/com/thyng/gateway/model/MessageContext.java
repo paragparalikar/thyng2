@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.thyng.model.dto.GatewayDetailsDTO;
+import com.thyng.model.dto.GatewayExtendedDetailsDTO;
 import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
 
@@ -13,7 +13,7 @@ public class MessageContext {
 	private final Map<Long, ThingDetailsDTO> sensorIdToThingDTO = new HashMap<>();
 	private final Map<Long, SensorDTO> sensorIdToSensorDTO = new HashMap<>();
 
-	public MessageContext(GatewayDetailsDTO details) {
+	public MessageContext(GatewayExtendedDetailsDTO details) {
 		Objects.requireNonNull(details);
 		for(ThingDetailsDTO thing : details.getThings()){
 			for(SensorDTO sensor : thing.getSensors()){

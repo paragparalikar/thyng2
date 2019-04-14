@@ -13,8 +13,12 @@ public class GatewayDTO{
 
 	private String description;
 
-	private Boolean alive;
+	private Boolean active;
 
 	private Integer inactivityPeriod;
+	
+	private String host;
+	
+	private Integer port;
 
 }

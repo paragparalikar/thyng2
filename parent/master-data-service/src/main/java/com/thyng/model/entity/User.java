@@ -64,9 +64,6 @@ public class User extends AuditableEntity implements UserDetails, CredentialsCon
 	@ManyToOne(optional=false)
 	@JoinColumn(updatable=false, nullable=false)
 	private Tenant tenant;
-	
-	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<String> tags;
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Map<String, String> properties;

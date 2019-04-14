@@ -13,6 +13,10 @@ public class ThingDTO{
 	
 	private String description;
 
-	private Boolean alive;
+	private Boolean active;
+	
+	private Long gatewayId;
+	
+	private String gatewayName;
 	
 }

@@ -68,7 +68,7 @@ public class Sensor extends AuditableEntity {
 	@Enumerated(EnumType.STRING)
 	private DataType dataType = DataType.NUMBER; 
 	
-	private Boolean alive;
+	private Boolean active;
 	
 	@Min(10)
 	@Builder.Default

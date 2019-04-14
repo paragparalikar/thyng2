@@ -6,7 +6,7 @@ import com.thyng.gateway.provider.client.ThyngClient;
 import com.thyng.gateway.provider.event.EventBus;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
-import com.thyng.model.dto.GatewayDetailsDTO;
+import com.thyng.model.dto.GatewayExtendedDetailsDTO;
 
 import lombok.Builder;
 import lombok.Value;
@@ -19,7 +19,7 @@ public class Context {
 	private final ThyngClient client;
 	private final ScheduledExecutorService executor;
 	private final PropertyProvider properties;
-	private final GatewayDetailsDTO details;
+	private final GatewayExtendedDetailsDTO details;
 	private final PersistenceProvider persistenceProvider;
 	
 }

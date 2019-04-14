@@ -7,15 +7,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=true, of="gatewayId")
+@EqualsAndHashCode(callSuper=true)
 public class ThingDetailsDTO extends ThingDTO{
 
-	private Long gatewayId;
-	
-	private String gatewayName;
-
-	private Set<String> tags;
-	
 	private Set<SensorDTO> sensors;
 	
 	private Set<ActuatorDTO> actuators;

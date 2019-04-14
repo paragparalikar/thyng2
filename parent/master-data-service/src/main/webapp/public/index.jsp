@@ -10,7 +10,6 @@
 <link rel="stylesheet" href="../public/libs/bootstrap/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="../public/libs/bootstrap/dist/css/bootstrap-datetimepicker.min.css">
 <link rel="stylesheet" href="../public/libs/jquery-modal/0.9.1/jquery.modal.min.css">
-<link rel="stylesheet" href="../public/libs/jquery-tagsinput/bootstrap-tagsinput.css">
 <link rel="stylesheet" href="../public/libs/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <link rel="stylesheet" href="../public/libs/jquery-toast/jquery.toast.min.css">
 <link rel="stylesheet" href="../public/index.css">
@@ -25,6 +24,8 @@
 				<li><a class="router-link" href="#dashboard" route-title="Dashboard"><i class="fas fa-tachometer-alt"></i> <span class="menu-text">Dashboard</span></a></li>
 				<% if(user.hasAuthority(Authority.TENANT_LIST)){ %>
 				<li><a class="router-link" href="#tenants" route-title="Tenants"><i class="fa fa-clone"></i> <span class="menu-text">Tenants</span></a></li>
+				<% } if(user.hasAuthority(Authority.GATEWAY_LIST)){ %>
+				<li><a class="router-link" href="#gateways" route-title="Gateways"><i class="fa fa-network-wired"></i> <span class="menu-text">Gateways</span></a></li>
 				<% } if(user.hasAuthority(Authority.THING_LIST)){ %>
 				<li><a class="router-link" href="#things" route-title="Things"><i class="fa fa-bell"></i> <span class="menu-text">Things</span></a></li>
 				<% } if(user.hasAuthority(Authority.USER_LIST)){ %>
@@ -61,7 +62,6 @@
 	<script src="../public/libs/datatables.net/js/jquery.dataTables.min.js"></script>
 	<script src="../public/libs/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
 	<script src="../public/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
-	<script src="../public/libs/jquery-tagsinput/bootstrap-tagsinput.min.js"></script>
 	<script src="../public/libs/jquery-hashchange/jquery.ba-hashchange.min.js"></script>
 	<script src="../public/libs/jquery-toast/jquery.toast.min.js"></script>
 	<script>
@@ -76,6 +76,7 @@
 	<script src="../public/pages/utils/utils.js"></script>
 	<script src="../public/pages/dashboard/service.js"></script>
 	<script src="../public/pages/tenants/service.js"></script>
+	<script src="../public/pages/gateways/service.js"></script>
 	<script src="../public/pages/things/service.js"></script>
 	
 </body>

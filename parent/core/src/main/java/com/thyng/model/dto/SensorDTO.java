@@ -19,7 +19,7 @@ public class SensorDTO {
 	
 	private DataType dataType;
 	
-	private Boolean alive;
+	private Boolean active;
 	
 	private Integer inactivityPeriod;
 	

@@ -1,6 +1,5 @@
 package com.thyng.service;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.thyng.model.entity.Actuator;
 import com.thyng.model.entity.Gateway;
 import com.thyng.model.entity.MqttClientConfig;
+import com.thyng.model.entity.MqttLastWill;
 import com.thyng.model.entity.Name;
 import com.thyng.model.entity.Sensor;
 import com.thyng.model.entity.Tenant;
@@ -23,7 +23,6 @@ import com.thyng.model.entity.Thing;
 import com.thyng.model.entity.User;
 import com.thyng.model.enumeration.DataType;
 import com.thyng.model.enumeration.MqttQoS;
-import com.thyng.model.entity.MqttLastWill;
 import com.thyng.repository.data.jpa.ActuatorRepository;
 import com.thyng.repository.data.jpa.GatewayRepository;
 import com.thyng.repository.data.jpa.SensorRepository;
@@ -111,9 +110,8 @@ public class SetupService {
 				.name("Gateway"+index+"-"+tenant.getName())
 				.description("Description for Gateway")
 				.tenant(tenant)
-				.tags(buildTags())
 				.properties(buildProperties())
-				.alive(0 == (index % 2))
+				.active(0 == (index % 2))
 				.inactivityPeriod(60)
 				.mqttClientConfig(buildMqttClientConfig())
 				.build();
@@ -139,10 +137,9 @@ public class SetupService {
 				.id(null)
 				.tenant(tenant)
 				.gateway(gateway)
-				.alive(0 == (thingIndex % 3))
+				.active(0 == (thingIndex % 3))
 				.description("Description for Thing-"+thingIndex)
 				.name("Thing-"+thingIndex)
-				.tags(buildTags())
 				.properties(buildProperties())
 				.build();
 	}
@@ -193,13 +190,8 @@ public class SetupService {
 				.email(tenantIndex+"."+userIndex+"@gmail.com")
 				.phone("+91-9960739342")
 				.password(passwordEncoder.encode("thyng"))
-				.tags(buildTags())
 				.properties(buildProperties())
 				.build();
-	}
-	
-	private Set<String> buildTags(){
-		return new HashSet<>(Arrays.asList("tag1","tag2","tag3"));
 	}
 	
 	private Map<String, String> buildProperties(){

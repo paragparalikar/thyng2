@@ -40,7 +40,6 @@ public class ThingService {
 		thing.getProperties();
 		thing.getSensors();
 		thing.getTenant();
-		thing.getTags();
 		return thing;
 	}
 	

@@ -14,7 +14,7 @@ import com.thyng.gateway.provider.persistence.PersistenceProvider;
 import com.thyng.gateway.provider.property.MutablePropertyProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.gateway.service.server.coap.CoapServerService;
-import com.thyng.model.dto.GatewayDetailsDTO;
+import com.thyng.model.dto.GatewayExtendedDetailsDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -67,7 +67,7 @@ public class BootstrapService extends CompositeService {
 		final ScheduledExecutorService executor = Executors.newScheduledThreadPool
 				(Runtime.getRuntime().availableProcessors());
 		final PersistenceProvider persistenceProvider = new FilePersistenceProvider(properties);
-		final GatewayDetailsDTO details =  new DetailsProvider(client, persistenceProvider).get();
+		final GatewayExtendedDetailsDTO details =  new DetailsProvider(client, persistenceProvider).get();
 		return Context.builder()
 				.eventBus(eventBus)
 				.executor(executor)

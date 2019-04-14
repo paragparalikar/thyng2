@@ -1,5 +1,7 @@
 package com.thyng.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -42,10 +44,13 @@ public class GatewayService {
 		return clone;
 	}
 	
+	public List<Gateway> findByTenantId(Long tenantId){
+		return gatewayRepository.findByTenantId(tenantId);
+	}
+	
 	public Gateway findById(@NotNull @Positive Long id){
 		final Gateway gateway = gatewayRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException());
-		gateway.getTags();
 		gateway.getProperties();
 		gateway.getMqttClientConfig();
 		return gateway;
@@ -54,7 +59,6 @@ public class GatewayService {
 	public Gateway findByIdIncludeThings(@NotNull @Positive Long id){
 		final Gateway gateway = gatewayRepository.findById(id)
 				.orElseThrow(() -> new NotFoundException());
-		gateway.getTags();
 		gateway.getThings();
 		gateway.getProperties();
 		gateway.getMqttClientConfig();

@@ -57,9 +57,6 @@ public class Gateway{
 	@ManyToOne(optional=false, fetch=FetchType.LAZY)
 	@JoinColumn(updatable=false, nullable=false)
 	private Tenant tenant;
-	
-	@ElementCollection
-	private Set<@NotBlank String> tags;
 
 	@ElementCollection
 	private Map<@NotBlank String,@NotBlank  String> properties;
@@ -70,7 +67,7 @@ public class Gateway{
 	@Positive
 	private Integer port;
 	
-	private Boolean alive;
+	private Boolean active;
 	
 	@Min(60)
 	@Builder.Default

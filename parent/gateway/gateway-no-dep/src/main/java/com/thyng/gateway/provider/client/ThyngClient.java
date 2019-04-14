@@ -1,11 +1,11 @@
 package com.thyng.gateway.provider.client;
 
 import com.thyng.gateway.model.TelemetryRequest;
-import com.thyng.model.dto.GatewayDetailsDTO;
+import com.thyng.model.dto.GatewayExtendedDetailsDTO;
 
 public interface ThyngClient {
 
-	GatewayDetailsDTO registerAndFetchDetails() throws Exception;
+	GatewayExtendedDetailsDTO registerAndFetchDetails() throws Exception;
 
 	void heartbeat() throws Exception;
 
