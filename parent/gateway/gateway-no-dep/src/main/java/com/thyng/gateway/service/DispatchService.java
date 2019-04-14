@@ -1,21 +1,12 @@
 package com.thyng.gateway.service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
 import java.util.function.Consumer;
 
-import org.eclipse.californium.core.CoapClient;
-import org.eclipse.californium.core.CoapResponse;
-import org.eclipse.californium.core.coap.CoAP.Type;
-import org.eclipse.californium.core.coap.MediaTypeRegistry;
-import org.eclipse.californium.core.coap.Request;
-
-import com.thyng.gateway.model.Constant;
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.model.Message;
+import com.thyng.gateway.model.TelemetryRequest;
 import com.thyng.gateway.provider.persistence.PersistentTelemetry;
-import com.thyng.gateway.provider.property.PropertyProvider;
+import com.thyng.model.Lambda;
 import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
 
@@ -24,7 +15,7 @@ import lombok.SneakyThrows;
 
 @RequiredArgsConstructor
 public class DispatchService implements Service, Consumer<Message> {
-	public static final String KEY_TELEMETRY_URL = "thyng.server.url.telemetry";
+	
 
 	private final Context context;
 	
@@ -46,30 +37,25 @@ public class DispatchService implements Service, Consumer<Message> {
 			final Integer unsentCount = message.getUnsentCounts().get(sensorId);
 			if(unsentCount >= sensor.getBatchSize()){
 				final ThingDetailsDTO thing = message.getThing(sensorId);
-				final Long gatewayId = context.getProperties().getLong(Constant.KEY_GATEWAY_ID, null);
 				final PersistentTelemetry telemetry = context.getPersistenceProvider().getUnsentTelemetry(thing.getId(), sensorId);
-				final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				final DataOutput out = new DataOutputStream(baos);
-				final byte dataType = telemetry.write(out);
-				final PropertyProvider properties = context.getProperties();
-				final CoapClient client = new CoapClient("coap", 
-						properties.get(Constant.KEY_URL_SERVER, "www.thyng.io"),
-						properties.getInteger(Constant.KEY_URL_SERVER_PORT, 5684),
-						properties.get(KEY_TELEMETRY_URL, "telemetries"));
-				final Request request = Request.newPost();
-				request.setType(Type.CON);
-				request.setPayload(baos.toByteArray());
-				request.getOptions().setContentFormat(MediaTypeRegistry.APPLICATION_OCTET_STREAM);
-				request.getOptions().setUriQuery("gatewayId="+gatewayId+"&thingId="+thing.getId()+"&sensorId="+sensorId+"&dataType="+dataType);
-				final CoapResponse response = client.advanced(request);
-				if(null != response){
-					context.getEventBus().publish(Message.SENT, message);
-					if(response.isSuccess()){
-						context.getPersistenceProvider().markSent(telemetry);
-					}
-				}
+				final TelemetryRequest telemetryRequest = TelemetryRequest.builder()
+					.thingId(thing.getId())
+					.sensorId(sensorId)
+					.telemetry(telemetry)
+					.success(() -> Lambda.uncheck(() -> success(telemetry)))
+					.after(() -> after(message))
+					.build();
+				context.getClient().sendTelemetry(telemetryRequest);
 			}
 		}
+	}
+	
+	private void success(PersistentTelemetry telemetry) throws Exception{
+		context.getPersistenceProvider().markSent(telemetry);
+	}
+	
+	private void after(Message message){
+		context.getEventBus().publish(Message.SENT, message);
 	}
 
 }

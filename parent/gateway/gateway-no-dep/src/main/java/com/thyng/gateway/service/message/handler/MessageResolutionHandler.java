@@ -17,6 +17,7 @@ public class MessageResolutionHandler implements MessageHandler {
 			final Object value = readValue(in);
 			message.getValues().put(sensorId, value);
 		}
+		chain.getContext().getEventBus().publish(Message.RECEIVED, message);
 		chain.next(message);
 	}
 

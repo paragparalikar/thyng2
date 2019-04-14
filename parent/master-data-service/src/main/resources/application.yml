@@ -14,7 +14,7 @@ spring:
     username: sa
     password: 
   jpa:
-    show-sql: true
+    show-sql: false
     properties:
       javax:
         cache:
@@ -24,11 +24,11 @@ spring:
             mode: ENABLE_SELECTIVE
       hibernate:
         ddl-auto: create
-        format_sql: true
+        format_sql: false
         generate_statistics: false
         cache:
-          use_second_level_cache: true
-          use_query_cache: true
+          use_second_level_cache: false
+          use_query_cache: false
           region:
             factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory  
           

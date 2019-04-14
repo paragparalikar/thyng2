@@ -8,6 +8,7 @@ import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
 
 public class Message {
+	public static final String RECEIVED = "topic-message-received";
 	public static final String SENT = "topic-message-sent";
 	public static final String PERSISTED = "topic-message-persisted";
 	

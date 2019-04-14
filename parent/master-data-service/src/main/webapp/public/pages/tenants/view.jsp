@@ -25,6 +25,9 @@
 #tenant-locked-label {
 	display: inline;
 }
+#tenant-properties-cell{
+	vertical-align: top;
+}
 </style>
 
 <div id="tenant-details-card-wrapper">
@@ -56,11 +59,12 @@
 							>
 						</div>
 					</td>
-					<td>
+					<td rowspan="3" id="tenant-properties-cell">
 						<div class="form-group">
-							<label for="tenant-tags">Tags</label> <input data-rule-maxlength="255" maxlength="255" type="text" data-value="tags" name="tags" disabled="disabled" readonly="readonly"
-								class="form-control" id="tenant-tags" placeholder="Tenant Tags"
-							>
+							<label for="tenant-properties">Properties</label>
+							<textarea data-rule-maxlength="255" maxlength="255" data-value="properties" data-format="MapFormatter" data-format-target="value" name="properties" disabled="disabled"
+								readonly="readonly" class="form-control" id="tenant-properties" placeholder="Tenant Properties" rows="9"
+							></textarea>
 						</div>
 					</td>
 				</tr>
@@ -72,14 +76,7 @@
 							>
 						</div>
 					</td>
-					<td rowspan="2">
-						<div class="form-group">
-							<label for="tenant-properties">Properties</label>
-							<textarea data-rule-maxlength="255" maxlength="255" data-value="properties" data-format="MapFormatter" data-format-target="value" name="properties" disabled="disabled"
-								readonly="readonly" class="form-control" id="tenant-properties" placeholder="Tenant Properties" rows="5"
-							></textarea>
-						</div>
-					</td>
+					
 				</tr>
 				<tr>
 					<td>

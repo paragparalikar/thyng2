@@ -19,6 +19,8 @@ public class SensorDTO {
 	
 	private DataType dataType;
 	
+	private Boolean alive;
+	
 	private Integer inactivityPeriod;
 	
 	private Integer aggregationPeriod;

@@ -15,6 +15,6 @@ public class GatewayDTO{
 
 	private Boolean alive;
 
-	private int inactivityPeriod;
+	private Integer inactivityPeriod;
 
 }

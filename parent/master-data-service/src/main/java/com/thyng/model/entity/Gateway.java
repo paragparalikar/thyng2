@@ -73,7 +73,8 @@ public class Gateway{
 	private Boolean alive;
 	
 	@Min(60)
-	private Integer inactivityPeriod;
+	@Builder.Default
+	private Integer inactivityPeriod = 60;
 		
 	@Cascade({CascadeType.ALL})
 	@OneToMany(orphanRemoval=true, mappedBy="gateway")

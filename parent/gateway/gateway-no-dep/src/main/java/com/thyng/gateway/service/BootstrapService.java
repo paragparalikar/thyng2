@@ -5,6 +5,8 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import com.thyng.gateway.model.Context;
+import com.thyng.gateway.provider.client.ThyngClient;
+import com.thyng.gateway.provider.client.ThyngClientBuilder;
 import com.thyng.gateway.provider.details.DetailsProvider;
 import com.thyng.gateway.provider.event.EventBus;
 import com.thyng.gateway.provider.persistence.FilePersistenceProvider;
@@ -17,38 +19,23 @@ import com.thyng.model.dto.GatewayDetailsDTO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class BootstrapService implements Service {
+public class BootstrapService extends CompositeService {
 	
 	private Context context;
-	private CompositeService compositeService;
 	
-	@Override
-	public void start() throws Exception {
-		log.info("Bootstraping Thyng gateway...");
+	public BootstrapService() throws Exception {
 		initShutdownHook();
 		context = buildContext();
-		log.info("Thyng gateway context successfully built");
-		compositeService = new CompositeService(
-				new HeartbeatService(context),
-				new CoapServerService(context), 
-				new DispatchService(context));
-		compositeService.start();
+		add(new HeartbeatService(context));
+		add(new CoapServerService(context));
+		add(new DispatchService(context));
+		add(new StatusMonitoringService(context));
 	}
 	
 	@Override
 	public void stop() throws Exception {
-		stopServices();
+		super.stop();
 		stopExecutor();
-	}
-	
-	private void stopServices(){
-		if(null != compositeService){
-			try{
-				compositeService.stop();
-			}catch(Exception e){
-				log.error("Failed to stop services gracefully", e);
-			}
-		}
 	}
 	
 	private void stopExecutor(){
@@ -76,15 +63,17 @@ public class BootstrapService implements Service {
 	private Context buildContext() throws Exception{
 		final EventBus eventBus = new EventBus();
 		final PropertyProvider properties = new MutablePropertyProvider().load();
+		final ThyngClient client = new ThyngClientBuilder(properties).getClient();
 		final ScheduledExecutorService executor = Executors.newScheduledThreadPool
 				(Runtime.getRuntime().availableProcessors());
 		final PersistenceProvider persistenceProvider = new FilePersistenceProvider(properties);
-		final GatewayDetailsDTO details =  new DetailsProvider(properties, persistenceProvider).get();
+		final GatewayDetailsDTO details =  new DetailsProvider(client, persistenceProvider).get();
 		return Context.builder()
 				.eventBus(eventBus)
 				.executor(executor)
 				.properties(properties)
 				.details(details)
+				.client(client)
 				.persistenceProvider(persistenceProvider)
 				.build();
 	}

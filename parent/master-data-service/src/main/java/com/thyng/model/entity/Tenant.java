@@ -2,7 +2,6 @@ package com.thyng.model.entity;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.Cacheable;
 import javax.persistence.ElementCollection;
@@ -43,9 +42,6 @@ public class Tenant extends AuditableEntity{
 	
 	@Size(max=255)
 	private String description;
-	
-	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<@NotBlank String> tags;
 
 	@ElementCollection(fetch=FetchType.EAGER)
 	private Map<@NotBlank String,@NotBlank  String> properties;
@@ -56,6 +52,7 @@ public class Tenant extends AuditableEntity{
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date expiry;
 	
-	private boolean locked;
+	@Builder.Default
+	private Boolean locked = Boolean.FALSE;
 	
 }

@@ -9,6 +9,9 @@
 #tenant-locked-label{
 	display: inline;
 }
+#tenant-properties-cell{
+	vertical-align: top;
+}
 </style>
 
 <div class="parent-center">
@@ -39,11 +42,11 @@
 							class="form-control" id="tenant-description" placeholder="Description for the Tenant">
 						</div>
 					</td>
-					<td>
+					<td rowspan="3" id="tenant-properties-cell">
 						<div class="form-group">
-							<label for="tenant-tags">Tags</label> 
-							<input data-rule-maxlength="255" maxlength="255" type="text" data-value="tags" name="tags"
-							class="form-control" id="tenant-tags" placeholder="Tenant Tags">
+							<label for="tenant-properties">Properties</label> 
+							<textarea data-rule-maxlength="255" maxlength="255" data-value="properties" data-format="MapFormatter" data-format-target="value" name="properties"
+							class="form-control" id="tenant-properties" placeholder="Tenant Properties" rows="9"></textarea>
 						</div>
 					</td>
 				</tr>
@@ -57,13 +60,6 @@
 									<span class="fa fa-calendar"></span>
 								</span>
 							</div>
-						</div>
-					</td>
-					<td rowspan="2">
-						<div class="form-group">
-							<label for="tenant-properties">Properties</label> 
-							<textarea data-rule-maxlength="255" maxlength="255" data-value="properties" data-format="MapFormatter" data-format-target="value" name="properties"
-							class="form-control" id="tenant-properties" placeholder="Tenant Properties" rows="5"></textarea>
 						</div>
 					</td>
 				</tr>
@@ -156,7 +152,6 @@
 				$("#tenant-expiry").val(tenant.expiry ? new Date(tenant.expiry).toLocaleDateString() : new Date().toLocaleDateString());
 				$("#tenant-locked").prop("checked", tenant.locked);
 				$("#tenant-properties").val(formatProperties(tenant.properties));
-				addTags($("#tenant-tags"), tenant.tags);
 			}
 		};
 		
@@ -167,7 +162,6 @@
 			tenant.start = new Date($("#tenant-start").val()).getTime();
 			tenant.expiry = new Date($("#tenant-expiry").val()).getTime();
 			tenant.locked = $("#tenant-locked").prop("checked");
-			tenant.tags = $("#tenant-tags").val().split(",");
 			tenant.properties = parseProperties($("#tenant-properties").val());
 		};
 		

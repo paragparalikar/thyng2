@@ -13,7 +13,6 @@
                     <th>Start</th>
                     <th>Expiry</th>
                     <th>Locked</th>
-                    <th>Tags</th>
                     <th>Description</th>
                     <% if(hasWriteAccess){ %>
                     <th>
@@ -87,7 +86,6 @@ render = (function($){
 							return data ? "Yes" : "No";
 						}
 	                },
-	                { data: "tags" },
 	                { data: "description" }
 	                
 	                <% if(hasWriteAccess){%>

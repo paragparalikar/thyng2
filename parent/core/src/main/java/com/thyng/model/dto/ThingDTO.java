@@ -14,5 +14,5 @@ public class ThingDTO{
 	private String description;
 
 	private Boolean alive;
-
+	
 }

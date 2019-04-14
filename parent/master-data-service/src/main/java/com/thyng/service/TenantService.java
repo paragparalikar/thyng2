@@ -39,8 +39,8 @@ public class TenantService {
 	
 	@PreAuthorize("hasPermission(#tenant.id, 'TENANT', 'CREATE')")
 	public Tenant create(@NotNull @Valid Tenant tenant){
-		if(null != tenant.getId() || 0 < tenant.getId()) throw new IllegalArgumentException("Id must be null");
-		if(0 == tenant.getId()) tenant.setId(null);
+		if(null != tenant.getId() && 0 < tenant.getId()) throw new IllegalArgumentException("Id must be null");
+		if(null != tenant.getId() && 0 >= tenant.getId()) tenant.setId(null);
 		return tenantRepository.save(tenant);
 	}
 	

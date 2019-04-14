@@ -2,6 +2,7 @@ package com.thyng.gateway.model;
 
 import java.util.concurrent.ScheduledExecutorService;
 
+import com.thyng.gateway.provider.client.ThyngClient;
 import com.thyng.gateway.provider.event.EventBus;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
@@ -15,6 +16,7 @@ import lombok.Value;
 public class Context {
 
 	private final EventBus eventBus;
+	private final ThyngClient client;
 	private final ScheduledExecutorService executor;
 	private final PropertyProvider properties;
 	private final GatewayDetailsDTO details;

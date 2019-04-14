@@ -62,7 +62,6 @@ public class SetupService {
 			}
 			for(int gatewayIndex = 0; gatewayIndex < 2; gatewayIndex++){
 				final Gateway gateway = gatewayRepository.save(buildGateway(tenant, gatewayIndex));
-				System.out.println(gateway.getId());
 				for(int thingIndex = 0; thingIndex < 5; thingIndex++){
 					final Thing thing = thingRepository.save(buildThing(tenant, gateway, thingIndex));
 					sensorRepository.saveAll(buildSensors(thing));
@@ -99,7 +98,6 @@ public class SetupService {
 				.id(null)
 				.name("Tenant-"+index)
 				.description("Description for Tenant-"+index)
-				.tags(buildTags())
 				.properties(buildProperties())
 				.start(start.getTime())
 				.locked(locked)

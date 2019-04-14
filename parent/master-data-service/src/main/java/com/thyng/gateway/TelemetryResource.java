@@ -11,7 +11,7 @@ import lombok.SneakyThrows;
 
 @Component
 public class TelemetryResource extends CoapResource {
-
+	
 	public TelemetryResource() {
 		super("telemetries");
 	}

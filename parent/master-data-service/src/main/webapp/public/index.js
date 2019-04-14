@@ -28,16 +28,20 @@ $(function() {
 		}
 	};
 	errorCallback = function(xhr, status, text){
-		var message = "<p>There has been an error.<br>Please contact <a href='http://www.google.com'>Administrator</a>.";
-		message = text ? message + "<br>Error : "+text + "</p>" : message + "</p>";
-		$.toast({
-    		heading: "Error",
-    	    text: message,
-    	    showHideTransition: 'slide',
-    	    position: 'top-right',
-    	    hideAfter: false,
-    	    icon: 'error'
-    	});
+		if(xhr && xhr.status && 401 == xhr.status){
+			window.location.reload();
+		}else{
+			var message = "<p>There has been an error.<br>Please contact <a href='http://www.google.com'>Administrator</a>.";
+			message = text ? message + "<br>Error : "+text + "</p>" : message + "</p>";
+			$.toast({
+	    		heading: "Error",
+	    	    text: message,
+	    	    showHideTransition: 'slide',
+	    	    position: 'top-right',
+	    	    hideAfter: false,
+	    	    icon: 'error'
+	    	});
+		}
 	};
 	
 	addTags = function(element, tags){
