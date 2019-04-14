@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thyng.model.dto.GatewayDTO;
+import com.thyng.model.dto.GatewayDetailsDTO;
 import com.thyng.model.dto.GatewayExtendedDetailsDTO;
 import com.thyng.model.dto.GatewayRegistrationDTO;
 import com.thyng.model.entity.Gateway;
@@ -34,10 +35,15 @@ public class GatewayController {
 		return gatewayMapper.dto(gatewayService.findByTenantId(user.getTenant().getId()));
 	}
 	
+	@GetMapping("/{id}")
+	public GatewayDetailsDTO findOne(@PathVariable Long id){
+		return gatewayMapper.toDetailsDTO(gatewayService.findById(id));
+	}
+	
 	@PostMapping("/registrations")
 	public GatewayExtendedDetailsDTO register(@RequestBody GatewayRegistrationDTO dto, HttpServletRequest request){
 		final Gateway gateway = gatewayService.register(dto.getGatewayId(), request.getRemoteHost(), dto.getPort());
-		return gatewayMapper.dto(gateway);
+		return gatewayMapper.toExtendedDTO(gateway);
 	}
 
 	@GetMapping("/{id}/heartbeats") //For Head

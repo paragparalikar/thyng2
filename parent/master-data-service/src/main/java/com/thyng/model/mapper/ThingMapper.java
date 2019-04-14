@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -20,13 +21,10 @@ public interface ThingMapper {
 	@Mapping(target="gatewayName", source="gateway.name")
 	ThingDetailsDTO dto(Thing thing);
 	
+	@IterableMapping(elementTargetType = ThingDTO.class)
 	Set<ThingDTO> dto(Collection<Thing> things);
 	
 	@InheritInverseConfiguration
 	Thing entity(ThingDetailsDTO dto);
-	
-	Thing entity(Thing thing);
-	
-	Set<Thing> entities(Collection<Thing> things);
 	
 }

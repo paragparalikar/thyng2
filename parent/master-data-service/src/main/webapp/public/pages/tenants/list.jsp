@@ -62,7 +62,7 @@ render = (function($){
 							if(type === "sort" || type === "type"){
 	                            return data;
 	                        }
-							return user.hasAuthority("TENANT_CREATE") ? "<a href='#tenants/view/"+row.id+"'>"+data+"</a>" : data;
+							return user.hasAuthority("TENANT_VIEW") ? "<a href='#tenants/view/"+row.id+"'>"+data+"</a>" : data;
 						}	                	
                 	},
 	                { data: "start",

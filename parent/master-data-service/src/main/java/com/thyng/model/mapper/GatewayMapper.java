@@ -14,13 +14,13 @@ import com.thyng.model.entity.Gateway;
 @Mapper(componentModel="spring", uses={ThingMapper.class})
 public interface GatewayMapper {
 
-	GatewayExtendedDetailsDTO dto(Gateway gateway);
+	GatewayExtendedDetailsDTO toExtendedDTO(Gateway gateway);
+	
+	GatewayDetailsDTO toDetailsDTO(Gateway gateway);
 	
 	@IterableMapping(elementTargetType = GatewayDTO.class)
 	Set<GatewayDTO> dto(Collection<? extends Gateway> gateways);
 	
 	Gateway entity(GatewayDetailsDTO dto);
-	
-	Gateway entity(Gateway gateway); //TODO get rid of this, service layer should not be aware of mapper
 	
 }

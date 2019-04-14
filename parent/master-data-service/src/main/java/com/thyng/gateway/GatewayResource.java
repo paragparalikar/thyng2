@@ -39,7 +39,7 @@ public class GatewayResource extends CoapResource {
 					.readObject(new Input(exchange.getRequestPayload()), GatewayRegistrationDTO.class);
 			final Gateway gateway = gatewayService.register(gatewayRegistrationDTO.getGatewayId(), 
 					host, gatewayRegistrationDTO.getPort());
-			final GatewayExtendedDetailsDTO gatewayDetailsDTO = gatewayMapper.dto(gateway);
+			final GatewayExtendedDetailsDTO gatewayDetailsDTO = gatewayMapper.toExtendedDTO(gateway);
 			exchange.respond(ResponseCode.CREATED, Serializer.write(gatewayDetailsDTO), 
 					MediaTypeRegistry.APPLICATION_OCTET_STREAM);
 		}catch(Exception e){

@@ -1,5 +1,7 @@
 package com.thyng.model.entity;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -37,7 +39,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false, of={"id", "name"})
-public class Thing extends AuditableEntity{
+public class Thing extends AuditableEntity implements Cloneable{
 
 	@Id 
 	@GeneratedValue
@@ -72,5 +74,19 @@ public class Thing extends AuditableEntity{
 	private Map<@NotBlank String,@NotBlank  String> properties;
 	
 	private Boolean active;
-		
+	
+	@Override
+	protected Thing clone(){
+		return Thing.builder()
+				.id(getId())
+				.name(getName())
+				.description(getDescription())
+				.tenant(getTenant())
+				.gateway(getGateway())
+				.active(getActive())
+				.properties(new HashMap<>(getProperties()))
+				.sensors(new HashSet<>(getSensors()))
+				.actuators(new HashSet<>(getActuators()))
+				.build();
+	}
 }

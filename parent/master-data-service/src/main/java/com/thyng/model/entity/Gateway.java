@@ -1,7 +1,10 @@
 package com.thyng.model.entity;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Cacheable;
 import javax.persistence.ElementCollection;
@@ -40,7 +43,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper=false, of={"id", "name"})
-public class Gateway{
+public class Gateway extends AuditableEntity implements Cloneable{
 
 	@Id
 	@GeneratedValue
@@ -81,5 +84,22 @@ public class Gateway{
 	@Cascade({CascadeType.ALL})
 	@OneToOne(fetch=FetchType.LAZY)
 	private MqttClientConfig mqttClientConfig;
+	
+	@Override
+	public Gateway clone() {
+		return Gateway.builder()
+				.id(getId())
+				.name(getName())
+				.description(getDescription())
+				.tenant(getTenant())
+				.properties(new HashMap<>(getProperties()))
+				.host(getHost())
+				.port(getPort())
+				.active(getActive())
+				.inactivityPeriod(getInactivityPeriod())
+				.things(new HashSet<>(getThings().stream().map(Thing::clone).collect(Collectors.toSet())))
+				.mqttClientConfig(getMqttClientConfig())
+				.build();
+	}
 	
 }

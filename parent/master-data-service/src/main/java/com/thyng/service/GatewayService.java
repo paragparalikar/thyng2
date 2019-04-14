@@ -12,8 +12,6 @@ import org.springframework.validation.annotation.Validated;
 
 import com.thyng.model.entity.Gateway;
 import com.thyng.model.exception.NotFoundException;
-import com.thyng.model.mapper.GatewayMapper;
-import com.thyng.model.mapper.ThingMapper;
 import com.thyng.repository.data.jpa.GatewayRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -24,8 +22,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GatewayService {
 
-	private final ThingMapper thingMapper;
-	private final GatewayMapper gatewayMapper;
 	private final GatewayRepository gatewayRepository;
 	
 	@Transactional
@@ -39,9 +35,8 @@ public class GatewayService {
 			gateway.getMqttClientConfig().getHost();
 			gateway.getMqttClientConfig().getLastWill();
 		}
-		final Gateway clone = gatewayMapper.entity(gatewayRepository.save(gateway));
-		clone.setThings(thingMapper.entities(gateway.getThings()));
-		return clone;
+		final Gateway managedGateway = gatewayRepository.save(gateway);
+		return managedGateway.clone();
 	}
 	
 	public List<Gateway> findByTenantId(Long tenantId){

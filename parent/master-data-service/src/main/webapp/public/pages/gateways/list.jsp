@@ -65,7 +65,7 @@ render = (function($){
 							if(type === "sort" || type === "type"){
 	                            return data;
 	                        }
-							return user.hasAuthority("GATEWAY_CREATE") ? "<a href='#gateways/view/"+row.id+"'>"+data+"</a>" : data;
+							return user.hasAuthority("GATEWAY_VIEW") ? "<a href='#gateways/view/"+row.id+"'>"+data+"</a>" : data;
 						}	                	
                 	},
 	                { data: "description" },
