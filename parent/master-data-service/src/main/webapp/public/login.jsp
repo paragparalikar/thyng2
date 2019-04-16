@@ -53,7 +53,7 @@
 </style>
 </head>
 <body>
-	<form action="/login" method="POST" class="card" id="login-form">
+	<form action="/login" method="POST" class="card" id="login-form" onsubmit="loginAction(this);">
 		<div>
 			<table>
 				<tr>
@@ -106,6 +106,11 @@
 				errorElement: "span"
 			});
 		});
+		var loginAction = function(form){
+			
+             form.action = form.action + self.document.location.hash;
+             return true;
+		};
 	</script>
 </body>
 </html>

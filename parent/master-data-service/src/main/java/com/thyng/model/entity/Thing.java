@@ -58,8 +58,7 @@ public class Thing extends AuditableEntity implements Cloneable{
 	private Tenant tenant;
 	
 	@Valid
-	@ManyToOne(optional=false, fetch=FetchType.LAZY)
-	@JoinColumn(updatable=false, nullable=false)
+	@ManyToOne(fetch=FetchType.LAZY)
 	private Gateway gateway;
 	
 	@Cascade({CascadeType.ALL})
