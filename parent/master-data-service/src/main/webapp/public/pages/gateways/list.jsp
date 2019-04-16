@@ -19,7 +19,7 @@
                     <% if(hasWriteAccess){ %>
                     <th>
                     	<%if(user.hasAuthority(Authority.GATEWAY_CREATE)){ %>
-                        <a href="#gateways/create" class="btn btn-primary btn-sm">
+                        <a href="#gateways/edit/0" class="btn btn-primary btn-sm">
                             <span class="fa fa-plus"></span> New Gateway
                         </a>
                         <%} %>
@@ -33,12 +33,12 @@
 
 <script>
 render = (function($){
-	var gatetwaysDataTable = null;
+	var gatewaysDataTable = null;
 	
 	var showDeleteGatewayConfirmationModal = function(event, element, originalEvent, id){
 		element.blur();
 		originalEvent.preventDefault();
-		row = gatetwaysDataTable.row("#" + id);
+		row = gatewaysDataTable.row("#" + id);
         $.publish("show-confirmation-modal", [{
             message: "Are you sure you want to delete gateway " + row.data().name + " ?"
         }, function () {

@@ -17,10 +17,11 @@ public class MethodSecurityConfiguration extends GlobalMethodSecurityConfigurati
 
 	private final UserService userService;
 	private final ThingService thingService;
+	private final GatewayService gatewayService;
 	
 	@Bean
 	public PermissionEvaluator permissionEvaluator(){
-		return new MethodPermissionEvaluator(userService, thingService);
+		return new MethodPermissionEvaluator(userService, thingService, gatewayService);
 	}
 	
 	@Override

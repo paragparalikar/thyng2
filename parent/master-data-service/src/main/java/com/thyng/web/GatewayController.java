@@ -2,13 +2,21 @@ package com.thyng.web;
 
 import java.util.Set;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thyng.model.dto.GatewayDTO;
@@ -36,9 +44,40 @@ public class GatewayController {
 	}
 	
 	@GetMapping("/{id}")
-	public GatewayDetailsDTO findOne(@PathVariable Long id){
+	public GatewayDetailsDTO findOne(@PathVariable @NotNull @Positive Long id){
 		return gatewayMapper.toDetailsDTO(gatewayService.findById(id));
 	}
+	
+	@PostMapping
+	@ResponseBody
+	public GatewayDetailsDTO create(@RequestBody @NotNull @Valid GatewayDetailsDTO dto, 
+			@AuthenticationPrincipal User user){
+		final Gateway gateway = gatewayMapper.entity(dto);
+		gateway.setTenant(user.getTenant());
+		final Gateway managedGateway = gatewayService.create(gateway);
+		return gatewayMapper.toDetailsDTO(managedGateway);
+	}
+	
+	@PutMapping
+	@ResponseBody
+	public GatewayDetailsDTO update(@RequestBody @NotNull @Valid GatewayDetailsDTO dto){
+		final Gateway gateway = gatewayMapper.entity(dto);
+		final Gateway managedGateway = gatewayService.update(gateway);
+		return gatewayMapper.toDetailsDTO(managedGateway);
+	}
+	
+	@DeleteMapping("/{id}")	
+	public void delete(@PathVariable @NotNull @Positive Long id){
+		gatewayService.deleteById(id);
+	}
+	
+	@GetMapping(params={"id", "name"})
+	public String existsByIdNotAndNameAndTenantId(@RequestParam(defaultValue="0") Long id, 
+			@RequestParam String name, @AuthenticationPrincipal User user){
+		return gatewayService.existsByIdNotAndNameAndTenantId(id, name, user.getTenant().getId()) ? 
+				"[\"This name is already taken\"]" : Boolean.TRUE.toString();
+	}
+	
 	
 	@PostMapping("/registrations")
 	public GatewayExtendedDetailsDTO register(@RequestBody GatewayRegistrationDTO dto, HttpServletRequest request){

@@ -15,10 +15,12 @@ public class MethodPermissionEvaluator implements PermissionEvaluator {
 	private static final String USER = "USER";
 	private static final String THING = "THING";
 	private static final String TENANT = "TENANT";
+	private static final String GATEWAY = "GATEWAY";
 
 	private final UserService userService;
 	private final ThingService thingService;
-
+	private final GatewayService gatewayService;
+	
 	@Override
 	public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
 		if(targetDomainObject instanceof Thing){
@@ -49,6 +51,7 @@ public class MethodPermissionEvaluator implements PermissionEvaluator {
 		switch(targetType){
 			case THING : return thingService.existsByIdAndTenantId((Long)targetId, user.getTenant().getId());
 			case USER : return userService.existsByIdAndTenantId((Long)targetId, user.getTenant().getId());
+			case GATEWAY : return gatewayService.existsByIdAndTenantId((Long)targetId, user.getTenant().getId());
 			case TENANT : return true;
 		}
 		

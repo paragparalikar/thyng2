@@ -66,9 +66,7 @@ render = (function($){
 			$("#gateway-inactivityPeriod").text(gateway.inactivityPeriod);
 			$("#gateway-host").text(gateway.host);
 			$("#gateway-port").text(gateway.port);
-			$("#gateway-properties").html($.map(gateway.properties, function(val, key) {
-				return key + "=" + val;
-			}).join("<br>"));
+			$("#gateway-properties").html(formatProperties(gateway.properties, "<br>"));
 		}
 	};
 	return function(id){

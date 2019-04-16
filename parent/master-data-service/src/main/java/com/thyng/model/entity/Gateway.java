@@ -77,13 +77,22 @@ public class Gateway extends AuditableEntity implements Cloneable{
 	private Integer inactivityPeriod = 60;
 		
 	@Cascade({CascadeType.ALL})
-	@OneToMany(orphanRemoval=true, mappedBy="gateway")
+	@OneToMany(mappedBy="gateway")
 	private Set<@Valid @NotNull Thing> things;
 	
 	@Valid
 	@Cascade({CascadeType.ALL})
 	@OneToOne(fetch=FetchType.LAZY)
 	private MqttClientConfig mqttClientConfig;
+	
+	public void setThings(Set<Thing> things){
+		if(null == this.things){
+			this.things = things;
+		}else{
+			this.things.clear();
+			this.things.addAll(things);
+		}
+	}
 	
 	@Override
 	public Gateway clone() {
