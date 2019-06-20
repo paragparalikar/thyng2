@@ -1,4 +1,4 @@
-package com.thyng.aspect.web;
+package com.thyng.aspect.web.http;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

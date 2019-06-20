@@ -1,4 +1,4 @@
-package com.thyng.aspect.web;
+package com.thyng.aspect.web.http;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;

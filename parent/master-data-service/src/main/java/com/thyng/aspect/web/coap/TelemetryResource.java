@@ -1,4 +1,4 @@
-package com.thyng.gateway;
+package com.thyng.aspect.web.coap;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
