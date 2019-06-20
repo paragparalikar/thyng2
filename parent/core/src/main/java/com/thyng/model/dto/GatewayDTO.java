@@ -4,12 +4,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(of={"id","name"})
-public class GatewayDTO{
-
-	private Long id;
-
-	private String name;
+@EqualsAndHashCode(callSuper=true, exclude={"description","active", "inactivityPeriod", "host", "port"})
+public class GatewayDTO extends GatewayThinDTO{
 
 	private String description;
 

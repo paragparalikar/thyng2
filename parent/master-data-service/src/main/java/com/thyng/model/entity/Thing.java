@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.persistence.Cacheable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -53,12 +52,12 @@ public class Thing extends AuditableEntity implements Cloneable{
 	private String description;
 	
 	@Valid
-	@ManyToOne(optional=false, fetch=FetchType.LAZY)
+	@ManyToOne(optional=false)
 	@JoinColumn(updatable=false, nullable=false)
 	private Tenant tenant;
 	
 	@Valid
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	private Gateway gateway;
 	
 	@Cascade({CascadeType.ALL})

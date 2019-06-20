@@ -23,8 +23,6 @@ public class SensorDTO {
 	
 	private Integer inactivityPeriod;
 	
-	private Integer aggregationPeriod;
-		
 	private String normalizer;
 	
 	private Integer batchSize;

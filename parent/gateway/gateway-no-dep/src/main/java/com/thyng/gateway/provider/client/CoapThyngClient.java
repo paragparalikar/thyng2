@@ -18,7 +18,7 @@ import com.thyng.gateway.model.TelemetryRequest;
 import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.gateway.service.server.coap.CoapServerService;
 import com.thyng.model.Serializer;
-import com.thyng.model.dto.GatewayExtendedDetailsDTO;
+import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.GatewayRegistrationDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class CoapThyngClient implements ThyngClient {
 	private final PropertyProvider properties;
 	
 	@Override
-	public GatewayExtendedDetailsDTO registerAndFetchDetails() throws Exception{
+	public GatewayConfigurationDTO registerAndFetchDetails() throws Exception{
 		log.info("Registering and Fetching gateway details");
 		final CoapClient coapClient = new CoapClient("coap", 
 				properties.get(Constant.KEY_URL_SERVER, "www.thyng.io"),
@@ -43,7 +43,7 @@ public class CoapThyngClient implements ThyngClient {
 		final CoapResponse coapResponse = coapClient.post(buildRegistrationRequestBody(), 
 				MediaTypeRegistry.APPLICATION_OCTET_STREAM);
 		if(null != coapResponse && coapResponse.isSuccess()){
-			return Serializer.kryo().readObject(new Input(coapResponse.getPayload()), GatewayExtendedDetailsDTO.class);
+			return Serializer.kryo().readObject(new Input(coapResponse.getPayload()), GatewayConfigurationDTO.class);
 		}
 		throw new Exception("Failed to fetch gateway details from server "
 		+ (null != coapResponse ? coapResponse.getCode() + ", "+coapResponse.getResponseText() : ""));

@@ -70,7 +70,7 @@ render = (function($){
 		}
 	};
 	return function(id){
-		 $("#page-title").text("Tenant Details");
+		 $("#page-title").text("Gateway Details");
 		 gatewayService.findOne(id, toView);
 	};
 })(jQuery);

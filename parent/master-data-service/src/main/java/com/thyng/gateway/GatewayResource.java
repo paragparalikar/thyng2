@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.esotericsoftware.kryo.io.Input;
 import com.thyng.model.Serializer;
-import com.thyng.model.dto.GatewayExtendedDetailsDTO;
+import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.GatewayRegistrationDTO;
 import com.thyng.model.entity.Gateway;
 import com.thyng.model.mapper.GatewayMapper;
@@ -39,7 +39,7 @@ public class GatewayResource extends CoapResource {
 					.readObject(new Input(exchange.getRequestPayload()), GatewayRegistrationDTO.class);
 			final Gateway gateway = gatewayService.register(gatewayRegistrationDTO.getGatewayId(), 
 					host, gatewayRegistrationDTO.getPort());
-			final GatewayExtendedDetailsDTO gatewayDetailsDTO = gatewayMapper.toExtendedDTO(gateway);
+			final GatewayConfigurationDTO gatewayDetailsDTO = gatewayMapper.toExtendedDTO(gateway);
 			exchange.respond(ResponseCode.CREATED, Serializer.write(gatewayDetailsDTO), 
 					MediaTypeRegistry.APPLICATION_OCTET_STREAM);
 		}catch(Exception e){

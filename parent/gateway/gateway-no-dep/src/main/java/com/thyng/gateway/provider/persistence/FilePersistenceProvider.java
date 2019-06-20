@@ -13,7 +13,7 @@ import com.thyng.gateway.model.Constant;
 import com.thyng.gateway.model.Message;
 import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.model.Serializer;
-import com.thyng.model.dto.GatewayExtendedDetailsDTO;
+import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -59,7 +59,7 @@ public class FilePersistenceProvider implements PersistenceProvider {
 	}
 	
 	@Override
-	public GatewayExtendedDetailsDTO save(GatewayExtendedDetailsDTO dto) throws Exception{
+	public GatewayConfigurationDTO save(GatewayConfigurationDTO dto) throws Exception{
 		final File file = getConfigurationFile();
 		log.info("Persisting gateway details to "+file.getAbsolutePath());
 		try(final Output output = new Output(new FileOutputStream(file))){
@@ -69,11 +69,11 @@ public class FilePersistenceProvider implements PersistenceProvider {
 	}
 	
 	@Override
-	public GatewayExtendedDetailsDTO load() throws Exception{
+	public GatewayConfigurationDTO load() throws Exception{
 		final File file = getConfigurationFile();
 		log.info("Loading gateway details from "+file.getAbsolutePath());
 		try(final Input input = new Input(new FileInputStream(file))){
-			return Serializer.kryo().readObject(input, GatewayExtendedDetailsDTO.class);
+			return Serializer.kryo().readObject(input, GatewayConfigurationDTO.class);
 		}
 	}
 	

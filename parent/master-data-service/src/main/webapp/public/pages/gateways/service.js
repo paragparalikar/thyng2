@@ -3,6 +3,10 @@ gatewayService = {
 			$.get(window.location.origin + "/api/v1/gateways")
 			.done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 		},
+		findAllThin : function(success, error, always) {
+			$.get(window.location.origin + "/api/v1/gateways?thin")
+			.done(successCallback(success)).fail(error ? error : errorCallback).always(always);
+		},
 		findOne : function(id, success, error, always) {
 			$.get(window.location.origin + "/api/v1/gateways/" + id)
 			.done(successCallback(success)).fail(error ? error : errorCallback).always(always);

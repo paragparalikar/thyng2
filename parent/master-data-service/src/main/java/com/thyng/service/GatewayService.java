@@ -21,14 +21,17 @@ import lombok.RequiredArgsConstructor;
 @Validated
 @Transactional
 @RequiredArgsConstructor
-public class GatewayService {
+public class GatewayService { 
 
 	private final GatewayRepository gatewayRepository;
 	
-	// TODO should use #tenantId, and PermissionEvaluator should handle it
 	@PreAuthorize("hasPermission(null, 'GATEWAY', 'LIST')")
 	public List<Gateway> findByTenantId(@NotNull @Positive Long tenantId){
 		return gatewayRepository.findByTenantId(tenantId);
+	}
+	
+	public List<Gateway> findThinByTenantId(@NotNull @Positive Long tenantId){
+		return gatewayRepository.findThinByTenantId(tenantId);
 	}
 	
 	public Boolean existsByIdAndTenantId(@NotNull @Positive Long id, 
@@ -40,7 +43,6 @@ public class GatewayService {
 		return gatewayRepository.existsByIdNotAndNameAndTenantId(id, name, tenantId);
 	}
 	
-	// TODO should use #gateway.tenant.id, and PermissionEvaluator should handle it
 	@PreAuthorize("hasPermission(null, 'GATEWAY', 'CREATE')")
 	public Gateway create(Gateway gateway){
 		if(null == gateway.getId() || 0 >= gateway.getId()){

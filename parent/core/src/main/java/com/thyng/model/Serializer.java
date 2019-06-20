@@ -9,7 +9,7 @@ import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Output;
 import com.thyng.model.dto.ActuatorDTO;
 import com.thyng.model.dto.GatewayDTO;
-import com.thyng.model.dto.GatewayExtendedDetailsDTO;
+import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.GatewayRegistrationDTO;
 import com.thyng.model.dto.MqttClientConfigDTO;
 import com.thyng.model.dto.MqttLastWillDTO;
@@ -29,7 +29,7 @@ public class Serializer {
 		if(null == kryo){
 			kryo = new Kryo();
 			kryo.register(ActuatorDTO.class);
-			kryo.register(GatewayExtendedDetailsDTO.class);
+			kryo.register(GatewayConfigurationDTO.class);
 			kryo.register(GatewayDTO.class);
 			kryo.register(GatewayRegistrationDTO.class);
 			kryo.register(MqttClientConfigDTO.class);

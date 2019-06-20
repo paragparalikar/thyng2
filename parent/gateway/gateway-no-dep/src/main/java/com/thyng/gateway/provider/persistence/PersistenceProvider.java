@@ -1,7 +1,7 @@
 package com.thyng.gateway.provider.persistence;
 
 import com.thyng.gateway.model.Message;
-import com.thyng.model.dto.GatewayExtendedDetailsDTO;
+import com.thyng.model.dto.GatewayConfigurationDTO;
 
 public interface PersistenceProvider {
 
@@ -11,8 +11,8 @@ public interface PersistenceProvider {
 
 	void markSent(PersistentTelemetry telemetry) throws Exception;
 
-	GatewayExtendedDetailsDTO save(GatewayExtendedDetailsDTO dto) throws Exception;
+	GatewayConfigurationDTO save(GatewayConfigurationDTO dto) throws Exception;
 
-	GatewayExtendedDetailsDTO load() throws Exception;
+	GatewayConfigurationDTO load() throws Exception;
 	
 }

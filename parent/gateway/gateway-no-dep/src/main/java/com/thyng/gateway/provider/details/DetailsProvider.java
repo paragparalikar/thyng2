@@ -2,7 +2,7 @@ package com.thyng.gateway.provider.details;
 
 import com.thyng.gateway.provider.client.ThyngClient;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
-import com.thyng.model.dto.GatewayExtendedDetailsDTO;
+import com.thyng.model.dto.GatewayConfigurationDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ public class DetailsProvider{
 	private final ThyngClient client;
 	private final PersistenceProvider persistenceProvider;
 		
-	public GatewayExtendedDetailsDTO get() throws Exception{
+	public GatewayConfigurationDTO get() throws Exception{
 		try{
 			return persistenceProvider.load();
 		}catch(Exception e){

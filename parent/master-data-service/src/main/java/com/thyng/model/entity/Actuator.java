@@ -63,7 +63,7 @@ public class Actuator extends AuditableEntity {
 	@Builder.Default
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Protocol protocol = Protocol.MQTT; 
+	private Protocol protocol = Protocol.COAP; 
 	
 	@Size(max=255)
 	private String topic;

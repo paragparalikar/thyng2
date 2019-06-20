@@ -2,11 +2,8 @@ package com.thyng.service;
 
 import javax.transaction.Transactional;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-
-import com.thyng.repository.data.jpa.SensorRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,10 +11,8 @@ import lombok.RequiredArgsConstructor;
 @Validated
 @Transactional
 @RequiredArgsConstructor
-public class SensorService {
+public class ActuatorService {
 
-	private final SensorRepository sensorRepository;
-	private final ApplicationEventPublisher eventPublisher;
 	
 
 }

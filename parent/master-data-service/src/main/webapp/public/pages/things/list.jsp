@@ -10,13 +10,13 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Key</th>
                     <th>Description</th>
-                    <th>Alive</th>
+                    <th>Active</th>
+                    <th>Gateway</th>
                     <% if(hasWriteAccess){ %>
                     <th>
                     	<%if(user.hasAuthority(Authority.THING_CREATE)){ %>
-                        <a class="btn btn-primary btn-sm" href="#things/create">
+                        <a class="btn btn-primary btn-sm" href="#things/edit/0">
                             <span class="fa fa-plus"></span> New Thing
                         </a>
                         <%} %>
@@ -58,21 +58,30 @@
 		            columns: [
 		                {
 		                    data: "name",
-		                    mRender: function (data, type, row) {
+		                    render: function (data, type, row) {
 		                        return user.hasAuthority("THING_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
 		                    }
 		                },
-		                { data: "key" },
 		                { data: "description" },
 		                {
-		                	data: "alive",
+		                	data: "active",
 		                	render: function(data, type, row, meta){
 		                		return data ? "<i class='fa fa-check text-success'></i> " : "<i class='fa fa-times text-danger'></i> ";
+		                	}
+		                },
+		                { 
+		                	data: "gatewayName",
+		                	render: function(data, type, row, meta){
+		                		return user.hasAuthority("GATEWAY_VIEW") ? '<a href="#gateways/view/'+row.gatewayId+'">' + data + '</a>' : data;
 		                	}
 		                }
 	                	<% if(hasWriteAccess){%>
 		                ,{
 		                    mRender: function (data, type, row, meta) {
+		                    	var copyHtml = user.hasAuthority("THING_CREATE") ? 
+			                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
+				                        	'<span class="fa fa-copy"></span> Copy' +
+				                        '</a>' : "";
 		                    	var editHtml = user.hasAuthority("THING_UPDATE") ? 
 		                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
 		                                '<span class="fa fa-edit"></span> Edit' +
@@ -81,7 +90,7 @@
 		                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
 		                            	'<span class="fa fa-trash"></span> Delete' +
 		                            '</button>' : "";
-		                        return '<div class="btn-group" role="group">' + editHtml + deleteHtml + '</div>';
+		                        return '<div class="btn-group" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
 		                    }
 		                }
 		                <%}%>

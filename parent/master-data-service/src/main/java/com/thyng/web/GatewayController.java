@@ -19,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.GatewayDTO;
 import com.thyng.model.dto.GatewayDetailsDTO;
-import com.thyng.model.dto.GatewayExtendedDetailsDTO;
 import com.thyng.model.dto.GatewayRegistrationDTO;
+import com.thyng.model.dto.GatewayThinDTO;
 import com.thyng.model.entity.Gateway;
 import com.thyng.model.entity.User;
 import com.thyng.model.mapper.GatewayMapper;
@@ -41,6 +42,11 @@ public class GatewayController {
 	@GetMapping
 	public Set<GatewayDTO> findAll(@AuthenticationPrincipal User user){
 		return gatewayMapper.dto(gatewayService.findByTenantId(user.getTenant().getId()));
+	}
+	
+	@GetMapping(params="thin")
+	public Set<GatewayThinDTO> findAllThin(@AuthenticationPrincipal User user){
+		return gatewayMapper.thinDto(gatewayService.findThinByTenantId(user.getTenant().getId()));
 	}
 	
 	@GetMapping("/{id}")
@@ -80,7 +86,7 @@ public class GatewayController {
 	
 	
 	@PostMapping("/registrations")
-	public GatewayExtendedDetailsDTO register(@RequestBody GatewayRegistrationDTO dto, HttpServletRequest request){
+	public GatewayConfigurationDTO register(@RequestBody GatewayRegistrationDTO dto, HttpServletRequest request){
 		final Gateway gateway = gatewayService.register(dto.getGatewayId(), request.getRemoteHost(), dto.getPort());
 		return gatewayMapper.toExtendedDTO(gateway);
 	}

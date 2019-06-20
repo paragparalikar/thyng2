@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=true)
-public class GatewayExtendedDetailsDTO extends GatewayDetailsDTO{
+@EqualsAndHashCode(callSuper=true, exclude={"things","mqttClientConfig"})
+public class GatewayConfigurationDTO extends GatewayDetailsDTO{
 
 	private Set<ThingDetailsDTO> things;
 	

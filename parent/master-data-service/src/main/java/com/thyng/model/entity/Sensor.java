@@ -74,10 +74,6 @@ public class Sensor extends AuditableEntity {
 	@Builder.Default
 	private Integer inactivityPeriod = 10;
 	
-	@Min(60)
-	@Builder.Default
-	private Integer aggregationPeriod = 60;
-	
 	@Lob
 	private String normalizer;
 	

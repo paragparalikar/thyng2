@@ -85,13 +85,9 @@ public class Gateway extends AuditableEntity implements Cloneable{
 	@OneToOne(fetch=FetchType.LAZY)
 	private MqttClientConfig mqttClientConfig;
 	
-	public void setThings(Set<Thing> things){
-		if(null == this.things){
-			this.things = things;
-		}else{
-			this.things.clear();
-			this.things.addAll(things);
-		}
+	public Gateway(Long id, String name){
+		this.id = id;
+		this.name = name;
 	}
 	
 	@Override

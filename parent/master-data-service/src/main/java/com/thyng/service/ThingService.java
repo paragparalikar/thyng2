@@ -30,6 +30,7 @@ public class ThingService {
 		return thingRepository.findByTenantId(tenantId);
 	}
 	
+	@PreAuthorize("hasPermission(null, 'THING', 'LIST')")
 	public Set<Thing> findByGatewayId(@NotNull @Positive Long gatewayId){
 		return thingRepository.findByGatewayId(gatewayId);
 	}
@@ -39,7 +40,7 @@ public class ThingService {
 		final Thing thing = thingRepository.findById(id).orElseThrow(() -> new NotFoundException());
 		thing.getProperties();
 		thing.getSensors();
-		thing.getTenant();
+		thing.getActuators();
 		return thing;
 	}
 	
