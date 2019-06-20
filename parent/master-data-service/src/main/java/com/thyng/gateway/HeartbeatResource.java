@@ -7,8 +7,6 @@ import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.springframework.stereotype.Component;
 
-import com.thyng.service.GatewayService;
-
 @Component
 public class HeartbeatResource extends CoapResource{
 

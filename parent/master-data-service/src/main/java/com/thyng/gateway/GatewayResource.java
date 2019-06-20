@@ -11,9 +11,6 @@ import com.esotericsoftware.kryo.io.Input;
 import com.thyng.model.Serializer;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.GatewayRegistrationDTO;
-import com.thyng.model.entity.Gateway;
-import com.thyng.model.mapper.GatewayMapper;
-import com.thyng.service.GatewayService;
 
 import lombok.extern.slf4j.Slf4j;
 

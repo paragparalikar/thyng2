@@ -58,6 +58,14 @@
 			</table>
 		</div>
 		<div class="card-footer">
+			<span class="pull-left">
+				<a href="#" id="editSensorsButton" class="btn btn-secondary"> 
+					<i class="fa fa-edit"></i> Edit Sensors
+				</a>
+				<a href="#" id="editActuatorsButton" class="btn btn-secondary"> 
+					<i class="fa fa-edit"></i> Edit Actuators
+				</a>
+			</span>
 			<a href="#" id="cancelButton" class="btn btn-secondary"> 
 				<i class="fa fa-trash"></i> Cancel
 			</a>
