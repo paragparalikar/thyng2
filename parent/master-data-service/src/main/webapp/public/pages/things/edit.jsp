@@ -1,6 +1,14 @@
 <style>
-#thing-details-card {
+#thing-details-card, 
+#sensors-card,
+#actuators-card {
 	width: 60em;
+	margin-left: auto;
+	margin-right: auto;
+}
+#sensors-card,
+#actuators-card {
+	margin-top: 2em;
 }
 
 #thing-details-table {
@@ -17,9 +25,9 @@
 	padding: 0 1em 0 0;
 }
 </style>
-<form class="parent-center" id="thing-form">
-	<div class="card" id="thing-details-card">
-		<div class="card-body">
+<div class="card" id="thing-details-card">
+	<div class="card-body">
+		<form id="thing-form">
 			<input type="hidden" id="thing-id" name="id" data-value="id">
 			<table id="thing-details-table">
 				<tbody>
@@ -56,33 +64,70 @@
 					</tr>
 				</tbody>
 			</table>
-		</div>
-		<div class="card-footer">
-			<span class="pull-left">
-				<a href="#" id="editSensorsButton" class="btn btn-secondary"> 
-					<i class="fa fa-edit"></i> Edit Sensors
-				</a>
-				<a href="#" id="editActuatorsButton" class="btn btn-secondary"> 
-					<i class="fa fa-edit"></i> Edit Actuators
-				</a>
-			</span>
-			<a href="#" id="cancelButton" class="btn btn-secondary"> 
-				<i class="fa fa-trash"></i> Cancel
-			</a>
-			<button type="submit" href="#" id="saveButton" class="btn btn-primary">
-				<i class="fa fa-save"></i> Save
-			</button>
-		</div>
+		</form>
 	</div>
-</form>
+	<div class="card-footer">
+		<a href="#" id="cancelButton" class="btn btn-secondary"> 
+			<i class="fa fa-trash"></i> Cancel
+		</a>
+		<button type="submit" href="#" id="saveButton" class="btn btn-primary">
+			<i class="fa fa-save"></i> Save
+		</button>
+	</div>
+</div>
+<div class="card" id="sensors-card">
+	<div class="card-body">
+		<table id="sensors-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Abbreviation</th>
+					<th scope="col">Unit</th>
+					<th scope="col">Data Type</th>
+					<th scope="col">Active</th>
+					<th scope="col" width="10em">
+						<button type="button" class="btn btn-primary btn-sm" formnovalidate="formnovalidate" id="newSensorBtn">
+							<span class="fa fa-plus"></span> New Sensor
+						</button>
+					</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+<div class="card" id="actuators-card">
+	<div class="card-body">
+		<table id="sensors-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
+			<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Abbreviation</th>
+					<th scope="col">Unit</th>
+					<th scope="col">Data Type</th>
+					<th scope="col">Protocol</th>
+					<th scope="col" width="10em">
+						<button type="button" class="btn btn-primary btn-sm" formnovalidate="formnovalidate" id="newActuatorBtn">
+							<span class="fa fa-plus"></span> New Actuator
+						</button>
+					</th>
+				</tr>
+			</thead>
+		</table>
+	</div>
+</div>
+
 <script>
 	render = (function($) {
 		var thing = null;
 		var toModel = function(thing){
-			
+			thing.name = $("#thing-name").val();
+			thing.description = $("#thing-description").val();
+			thing.gatewayId = $("#thing-gateway").val();
+			thing.properties = parseProperties($("#thing-properties").val());
 		};
 		var toView = function(thing){
 			if(thing){
+				$("#thing-id").val(thing.id);
 				$("#thing-name").val(thing.name);
 				$("#thing-description").val(thing.description);
 				$("#thing-properties").val(formatProperties(thing.properties));
@@ -99,6 +144,38 @@
 				window.history.back();
 			});
 		};
+		$("#thing-form").validate({
+			errorPlacement: function(error, element) {
+				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
+			},
+			errorElement: "span",			
+			rules:{
+				name: {
+					remote : {
+		                url : "/api/v1/things",
+		                data : {
+		                    id : function() {
+			                    return $("#thing-id").val();
+		                    },
+		                    name : function() {
+			                    return $("#thing-name").val();
+		                    }
+		                }
+		            }
+				},
+		        properties: {
+		        	propertiesMap : true
+		        }
+			},			
+			submitHandler: function(){
+				toModel(thing);
+				thingService.save(thing, function(data){
+					thing = data;
+					toView(thing);
+					toast('Thing has been saved successfully');
+				});
+			}	
+		});
 	    return function(id) {
 	    	bindHandlers();
 		    gatewayService.findAllThin(function(gateways){
