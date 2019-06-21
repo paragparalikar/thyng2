@@ -7,14 +7,14 @@
 %>
 <style>
 #thing-details-card, 
-#sensors-card,
-#actuators-card {
+#sensor-card,
+#actuator-card {
 	width: 60em;
 	margin-left: auto;
 	margin-right: auto;
 }
-#sensors-card,
-#actuators-card {
+#sensor-card,
+#actuator-card {
 	margin-top: 2em;
 }
 
@@ -83,7 +83,7 @@
 	</div>
 </div>
 <%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
-<div class="card" id="sensors-card">
+<div class="card" id="sensor-card">
 	<div class="card-header">
 		<h5>Sensors</h5>
 	</div>
@@ -112,7 +112,7 @@
 </div>
 <%} %>
 <%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
-<div class="card" id="actuators-card">
+<div class="card" id="actuator-card">
 	<div class="card-header">
 		<h5>Actuators</h5>
 	</div>
@@ -285,7 +285,16 @@
 				});
 			}	
 		});
+		var hideElement = function(element, value){
+			if(element && value){
+				element.hide();
+			}else{
+				element.show();
+			}
+		}
 	    return function(id) {
+	    	hideElement($("#sensor-card"), !id || 0 >= id);
+	    	hideElement($("#actuator-card"), !id || 0 >= id);
 	    	bindHandlers();
 		    gatewayService.findAllThin(function(gateways){
 		    	$.each(gateways, function(index, gateway) {   
