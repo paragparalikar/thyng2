@@ -144,6 +144,89 @@
 <script>
 	render = (function($) {
 		var thing = null;
+		<%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
+		var sensorDataTable = $("#sensor-table").DataTable({
+	        searching : false,
+	        ordering : false,
+	        paging : false,
+	        info : false,
+	        columns : [ 
+	           {
+	        	   data : "name",
+                   render: function (data, type, row) {
+                       return user.hasAuthority("SENSOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+                   }
+	           }, 
+	           {data : "abbreviation" }, 
+	           {data : "unit"}, 
+	           {data : "dataType"}, 
+	           {
+	        	   data : "active",
+	        	   render: function(data, type, row, meta){
+	        		   return data ? "Yes" : "No";
+	        	   }
+	        	}
+	           <% if(hasSensorWriteAccess){ %>
+	           ,{
+                    render: function (data, type, row, meta) {
+                    	var copyHtml = user.hasAuthority("SENSOR_CREATE") ? 
+	                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
+		                        	'<span class="fa fa-copy"></span> Copy' +
+		                        '</a>' : "";
+                    	var editHtml = user.hasAuthority("SENSOR_UPDATE") ? 
+                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
+                                '<span class="fa fa-edit"></span> Edit' +
+                            '</a>' : "";
+                        var deleteHtml = user.hasAuthority("SENSOR_DELETE") ?
+                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
+                            	'<span class="fa fa-trash"></span> Delete' +
+                            '</button>' : "";
+                        return '<div class="btn-group pull-right" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
+                    }
+                }
+	           <%}%>
+	        ]
+	    });
+		<%}%>
+		<%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
+	    var actuatorDataTable = $("#actuator-table").DataTable({
+	        searching : false,
+	        ordering : false,
+	        paging : false,
+	        info : false,
+	        columns : [ 
+	           {
+	        	   data : "name",
+                   render: function (data, type, row) {
+                       return user.hasAuthority("ACTUATOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+                   }
+	        	}, 
+	           {data : "abbreviation" }, 
+	           {data : "unit"}, 
+	           {data : "dataType"}, 
+	           {data : "protocol"}
+	           <% if(hasActuatorWriteAccess){ %>
+	           ,{
+                    render: function (data, type, row, meta) {
+                    	var copyHtml = user.hasAuthority("ACTUATOR_CREATE") ? 
+	                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
+		                        	'<span class="fa fa-copy"></span> Copy' +
+		                        '</a>' : "";
+                    	var editHtml = user.hasAuthority("ACTUATOR_UPDATE") ? 
+                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
+                                '<span class="fa fa-edit"></span> Edit' +
+                            '</a>' : "";
+                        var deleteHtml = user.hasAuthority("ACTUATOR_DELETE") ?
+                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
+                            	'<span class="fa fa-trash"></span> Delete' +
+                            '</button>' : "";
+                        return '<div class="btn-group pull-right" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
+                    }
+                }
+	           <%}%>
+	        ]
+	    });
+	    <%}%>
 		var toModel = function(thing){
 			thing.name = $("#thing-name").val();
 			thing.description = $("#thing-description").val();
@@ -163,90 +246,11 @@
 					}
 				}
 				<%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
-				$("#sensor-table").DataTable({
-			        searching : false,
-			        ordering : false,
-			        paging : false,
-			        info : false,
-			        data : thing.sensors,
-			        columns : [ 
-			           {
-			        	   data : "name",
-		                   render: function (data, type, row) {
-		                       return user.hasAuthority("SENSOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
-		                   }
-			           }, 
-			           {data : "abbreviation" }, 
-			           {data : "unit"}, 
-			           {data : "dataType"}, 
-			           {
-			        	   data : "active",
-			        	   render: function(data, type, row, meta){
-			        		   return data ? "Yes" : "No";
-			        	   }
-			        	}
-			           <% if(hasSensorWriteAccess){ %>
-			           ,{
-		                    render: function (data, type, row, meta) {
-		                    	var copyHtml = user.hasAuthority("SENSOR_CREATE") ? 
-			                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
-				                        	'<span class="fa fa-copy"></span> Copy' +
-				                        '</a>' : "";
-		                    	var editHtml = user.hasAuthority("SENSOR_UPDATE") ? 
-		                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
-		                                '<span class="fa fa-edit"></span> Edit' +
-		                            '</a>' : "";
-		                        var deleteHtml = user.hasAuthority("SENSOR_DELETE") ?
-		                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
-		                            	'<span class="fa fa-trash"></span> Delete' +
-		                            '</button>' : "";
-		                        return '<div class="btn-group pull-right" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
-		                    }
-		                }
-			           <%}%>
-			        ]
-			    });
+					sensorDataTable.clear().rows.add(thing.sensors).draw().columns.adjust();
 				<%}%>
 				<%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
-			    $("#actuator-table").DataTable({
-			        searching : false,
-			        ordering : false,
-			        paging : false,
-			        info : false,
-			        data : thing.actuators,
-			        columns : [ 
-			           {
-			        	   data : "name",
-		                   render: function (data, type, row) {
-		                       return user.hasAuthority("ACTUATOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
-		                   }
-			        	}, 
-			           {data : "abbreviation" }, 
-			           {data : "unit"}, 
-			           {data : "dataType"}, 
-			           {data : "protocol"}
-			           <% if(hasActuatorWriteAccess){ %>
-			           ,{
-		                    render: function (data, type, row, meta) {
-		                    	var copyHtml = user.hasAuthority("ACTUATOR_CREATE") ? 
-			                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
-				                        	'<span class="fa fa-copy"></span> Copy' +
-				                        '</a>' : "";
-		                    	var editHtml = user.hasAuthority("ACTUATOR_UPDATE") ? 
-		                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
-		                                '<span class="fa fa-edit"></span> Edit' +
-		                            '</a>' : "";
-		                        var deleteHtml = user.hasAuthority("ACTUATOR_DELETE") ?
-		                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
-		                            	'<span class="fa fa-trash"></span> Delete' +
-		                            '</button>' : "";
-		                        return '<div class="btn-group pull-right" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
-		                    }
-		                }
-			           <%}%>
-			        ]
-			    });
-			    <%}%>
+					actuatorDataTable.clear().rows.add(thing.actuators).draw().columns.adjust();
+				<%}%>
 			}
 		};
 		var bindHandlers = function(){
