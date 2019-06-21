@@ -1,4 +1,4 @@
-package com.thyng.aspect.persistence;
+package com.thyng.aspect.persistence.dev;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

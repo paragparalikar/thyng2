@@ -1,4 +1,4 @@
-package com.thyng.aspect.persistence;
+package com.thyng.aspect.persistence.dev;
 
 import java.util.Calendar;
 import java.util.HashMap;
