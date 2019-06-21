@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thyng.model.dto.SensorDTO;
@@ -42,21 +43,21 @@ public class SensorController {
 	}
 	
 	@PostMapping
-	public void create(@PathVariable @NonNull @Positive final Long thingId, 
+	public SensorDTO create(@PathVariable @NonNull @Positive final Long thingId, 
 			@RequestBody @NonNull @Valid final SensorDTO dto) {
 		final Thing thing = thingService.findById(thingId);
 		final Sensor sensor = sensorMapper.toEntity(dto);
 		sensor.setThing(thing);
-		sensorService.create(sensor);
+		return sensorMapper.toDTO(sensorService.create(sensor));
 	}
 	
 	@PutMapping
-	public void update(@PathVariable @NonNull @Positive final Long thingId, 
+	public SensorDTO update(@PathVariable @NonNull @Positive final Long thingId, 
 			@RequestBody @NonNull @Valid final SensorDTO dto) {
 		final Thing thing = thingService.findById(thingId);
 		final Sensor sensor = sensorMapper.toEntity(dto);
 		sensor.setThing(thing);
-		sensorService.update(sensor);
+		return sensorMapper.toDTO(sensorService.update(sensor));
 	}
 	
 	@DeleteMapping("/{sensorId}")
@@ -65,4 +66,8 @@ public class SensorController {
 		sensorService.delete(sensorId);
 	}
 
+	@GetMapping(params={"id", "name", "thingId"})
+	public String existsByIdNotAndNameAndTenantId(@RequestParam(defaultValue="0") Long id, @RequestParam String name, @RequestParam Long thingId){
+		return sensorService.existsByIdNotAndNameAndThingId(id, name, thingId) ? "[\"This name is already taken\"]" : Boolean.TRUE.toString();
+	}
 }

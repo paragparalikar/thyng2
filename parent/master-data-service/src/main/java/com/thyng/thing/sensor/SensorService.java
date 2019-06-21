@@ -2,7 +2,6 @@ package com.thyng.thing.sensor;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
 import javax.validation.constraints.Positive;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @Validated
-@Transactional
 @RequiredArgsConstructor
 public class SensorService {
 

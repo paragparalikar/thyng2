@@ -10,27 +10,31 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 
 import com.thyng.gateway.GatewayService;
 import com.thyng.thing.ThingService;
+import com.thyng.thing.actuator.ActuatorService;
+import com.thyng.thing.sensor.SensorService;
 import com.thyng.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled=true)
-public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration{
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class MethodSecurityConfiguration extends GlobalMethodSecurityConfiguration {
 
 	private final UserService userService;
 	private final ThingService thingService;
+	private final SensorService sensorService;
+	private final ActuatorService actuatorService;
 	private final GatewayService gatewayService;
-	
+
 	@Bean
-	public PermissionEvaluator permissionEvaluator(){
-		return new MethodPermissionEvaluator(userService, thingService, gatewayService);
+	public PermissionEvaluator permissionEvaluator() {
+		return new MethodPermissionEvaluator(userService, thingService, sensorService, actuatorService, gatewayService);
 	}
-	
+
 	@Override
 	protected MethodSecurityExpressionHandler createExpressionHandler() {
-		final DefaultMethodSecurityExpressionHandler expressionHandler = (DefaultMethodSecurityExpressionHandler)super.createExpressionHandler();
+		final DefaultMethodSecurityExpressionHandler expressionHandler = (DefaultMethodSecurityExpressionHandler) super.createExpressionHandler();
 		expressionHandler.setPermissionEvaluator(permissionEvaluator());
 		return expressionHandler;
 	}
