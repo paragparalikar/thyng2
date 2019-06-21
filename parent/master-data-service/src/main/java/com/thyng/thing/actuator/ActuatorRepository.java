@@ -10,4 +10,8 @@ public interface ActuatorRepository extends JpaRepository<Actuator, Long> {
 
 	List<Actuator> findByThingId(Long thingId);
 	
+	boolean existsByIdAndThingTenantId(Long id, Long tenantId);
+
+	boolean existsByIdNotAndNameAndThingId(Long id, String name, Long thingId);
+	
 }

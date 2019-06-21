@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,20 +31,37 @@ public class SensorController {
 	private final SensorService sensorService;
 	
 	@GetMapping
-	public Set<SensorDTO> findByThingId(@PathVariable @Positive final Long thingId){
+	public Set<SensorDTO> findByThingId(@PathVariable @NonNull @Positive final Long thingId){
 		return sensorMapper.toDTO(sensorService.findByThingId(thingId));
 	}
 	
+	@GetMapping("/{sensorId}")
+	public SensorDTO findById(@PathVariable @NonNull @Positive final Long thingId, 
+			@PathVariable @NonNull @Positive final Long sensorId) {
+		return sensorMapper.toDTO(sensorService.findById(sensorId));
+	}
+	
 	@PostMapping
-	public void create(@PathVariable @Positive final Long thingId, @RequestBody @NonNull @Valid final SensorDTO dto) {
+	public void create(@PathVariable @NonNull @Positive final Long thingId, 
+			@RequestBody @NonNull @Valid final SensorDTO dto) {
 		final Thing thing = thingService.findById(thingId);
 		final Sensor sensor = sensorMapper.toEntity(dto);
 		sensor.setThing(thing);
-		sensorService.save(sensor);
+		sensorService.create(sensor);
+	}
+	
+	@PutMapping
+	public void update(@PathVariable @NonNull @Positive final Long thingId, 
+			@RequestBody @NonNull @Valid final SensorDTO dto) {
+		final Thing thing = thingService.findById(thingId);
+		final Sensor sensor = sensorMapper.toEntity(dto);
+		sensor.setThing(thing);
+		sensorService.update(sensor);
 	}
 	
 	@DeleteMapping("/{sensorId}")
-	public void delete(@PathVariable @Positive final Long thingId, @PathVariable @Positive final Long sensorId) {
+	public void delete(@PathVariable @NonNull @Positive final Long thingId, 
+			@PathVariable @NonNull @Positive final Long sensorId) {
 		sensorService.delete(sensorId);
 	}
 

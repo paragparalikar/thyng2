@@ -77,7 +77,7 @@
 </div>
 <div class="card" id="sensors-card">
 	<div class="card-body">
-		<table id="sensors-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
+		<table id="sensor-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
 			<thead>
 				<tr>
 					<th scope="col">Name</th>
@@ -85,8 +85,8 @@
 					<th scope="col">Unit</th>
 					<th scope="col">Data Type</th>
 					<th scope="col">Active</th>
-					<th scope="col" width="10em">
-						<button type="button" class="btn btn-primary btn-sm" formnovalidate="formnovalidate" id="newSensorBtn">
+					<th scope="col" width="120">
+						<button type="button" class="btn btn-primary btn-sm pull-right" formnovalidate="formnovalidate" id="newSensorBtn">
 							<span class="fa fa-plus"></span> New Sensor
 						</button>
 					</th>
@@ -97,7 +97,7 @@
 </div>
 <div class="card" id="actuators-card">
 	<div class="card-body">
-		<table id="sensors-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
+		<table id="actuator-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
 			<thead>
 				<tr>
 					<th scope="col">Name</th>
@@ -105,8 +105,8 @@
 					<th scope="col">Unit</th>
 					<th scope="col">Data Type</th>
 					<th scope="col">Protocol</th>
-					<th scope="col" width="10em">
-						<button type="button" class="btn btn-primary btn-sm" formnovalidate="formnovalidate" id="newActuatorBtn">
+					<th scope="col" width="120">
+						<button type="button" class="btn btn-primary btn-sm pull-right" formnovalidate="formnovalidate" id="newActuatorBtn">
 							<span class="fa fa-plus"></span> New Actuator
 						</button>
 					</th>
@@ -137,6 +137,39 @@
 						selectableOption.prop('selected', true).change();
 					}
 				}
+				$("#sensor-table").DataTable({
+			        searching : false,
+			        ordering : false,
+			        paging : false,
+			        info : false,
+			        data : thing.sensors,
+			        columns : [ 
+			           {data : "name"}, 
+			           {data : "abbreviation" }, 
+			           {data : "unit"}, 
+			           {data : "dataType"}, 
+			           {
+			        	   data : "active",
+			        	   render: function(data, type, row, meta){
+			        		   return data ? "Yes" : "No";
+			        	   }
+			        	}
+			        ]
+			    });
+			    $("#actuator-table").DataTable({
+			        searching : false,
+			        ordering : false,
+			        paging : false,
+			        info : false,
+			        data : thing.actuators,
+			        columns : [ 
+			           {data : "name"}, 
+			           {data : "abbreviation" }, 
+			           {data : "unit"}, 
+			           {data : "dataType"}, 
+			           {data : "protocol"}
+			        ]
+			    });
 			}
 		};
 		var bindHandlers = function(){

@@ -11,6 +11,8 @@ public class ActuatorDTO{
 	private Long id;
 
 	private String name;
+	
+	private String abbreviation;
 
 	private String description;
 

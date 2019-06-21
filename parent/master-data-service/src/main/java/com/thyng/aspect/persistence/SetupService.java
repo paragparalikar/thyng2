@@ -170,6 +170,7 @@ public class SetupService {
 					.dataType(DataType.values()[index % DataType.values().length])
 					.description("Description for Actuator -"+index)
 					.name("Actuator-"+index+"-"+thing.getName())
+					.abbreviation("ACT-"+index)
 					.unit("Unit-"+index)
 					.topic("/thyng/abc")
 					.build());

@@ -47,6 +47,11 @@ public class Actuator extends AuditableEntity {
 	@Column(nullable=false)
 	private String name;
 	
+	@NotBlank
+	@Size(max=255)
+	@Column(nullable=false)
+	private String abbreviation;
+	
 	@Size(max=255)
 	private String description;
 	
