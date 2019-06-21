@@ -82,7 +82,11 @@
 		</button>
 	</div>
 </div>
+<%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
 <div class="card" id="sensors-card">
+	<div class="card-header">
+		<h5>Sensors</h5>
+	</div>
 	<div class="card-body">
 		<table id="sensor-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
 			<thead>
@@ -93,7 +97,7 @@
 					<th scope="col">Data Type</th>
 					<th scope="col">Active</th>
 					<% if(hasSensorWriteAccess){ %>
-					<th scope="col" width="120">
+					<th scope="col" width="100">
 						<%if(user.hasAuthority(Authority.SENSOR_CREATE)){ %>
 						<button type="button" class="btn btn-primary btn-sm pull-right" formnovalidate="formnovalidate" id="newSensorBtn">
 							<span class="fa fa-plus"></span> New Sensor
@@ -106,7 +110,12 @@
 		</table>
 	</div>
 </div>
+<%} %>
+<%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
 <div class="card" id="actuators-card">
+	<div class="card-header">
+		<h5>Actuators</h5>
+	</div>
 	<div class="card-body">
 		<table id="actuator-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
 			<thead>
@@ -117,7 +126,7 @@
 					<th scope="col">Data Type</th>
 					<th scope="col">Protocol</th>
 					<% if(hasActuatorWriteAccess){ %>
-					<th scope="col" width="120">
+					<th scope="col" width="100">
 						<%if(user.hasAuthority(Authority.ACTUATOR_CREATE)){ %>
 						<button type="button" class="btn btn-primary btn-sm pull-right" formnovalidate="formnovalidate" id="newActuatorBtn">
 							<span class="fa fa-plus"></span> New Actuator
@@ -130,7 +139,7 @@
 		</table>
 	</div>
 </div>
-
+<%} %>
 <script>
 	render = (function($) {
 		var thing = null;
@@ -152,6 +161,7 @@
 						selectableOption.prop('selected', true).change();
 					}
 				}
+				<%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
 				$("#sensor-table").DataTable({
 			        searching : false,
 			        ordering : false,
@@ -159,7 +169,12 @@
 			        info : false,
 			        data : thing.sensors,
 			        columns : [ 
-			           {data : "name"}, 
+			           {
+			        	   data : "name",
+		                   render: function (data, type, row) {
+		                       return user.hasAuthority("SENSOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+		                   }
+			           }, 
 			           {data : "abbreviation" }, 
 			           {data : "unit"}, 
 			           {data : "dataType"}, 
@@ -190,6 +205,8 @@
 			           <%}%>
 			        ]
 			    });
+				<%}%>
+				<%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
 			    $("#actuator-table").DataTable({
 			        searching : false,
 			        ordering : false,
@@ -197,7 +214,12 @@
 			        info : false,
 			        data : thing.actuators,
 			        columns : [ 
-			           {data : "name"}, 
+			           {
+			        	   data : "name",
+		                   render: function (data, type, row) {
+		                       return user.hasAuthority("ACTUATOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+		                   }
+			        	}, 
 			           {data : "abbreviation" }, 
 			           {data : "unit"}, 
 			           {data : "dataType"}, 
@@ -223,6 +245,7 @@
 			           <%}%>
 			        ]
 			    });
+			    <%}%>
 			}
 		};
 		var bindHandlers = function(){
