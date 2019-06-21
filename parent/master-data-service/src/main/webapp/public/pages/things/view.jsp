@@ -1,3 +1,6 @@
+<%@ page import="com.thyng.user.UserDTO" %>
+<%@ page import="com.thyng.aspect.security.Authority" %>
+<% 	final UserDTO user = (UserDTO)session.getAttribute("user"); %>
 <style>
 #thing-details-card{
 	margin: 0 1em 1em 0; 
@@ -43,7 +46,7 @@
 		</table>
 	</div>
 </div>
-
+<%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
 <div class="card" style="margin: 1em 0 0 0;">
 	<div class="card-header">
 		<h5>Sensors</h5>
@@ -65,6 +68,8 @@
 		</table>
 	</div>
 </div>
+<%} %>
+<%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
 <div class="card" style="margin: 1em 0 0 0;">
 	<div class="card-header">
 		<h5>Actuators</h5>
@@ -87,7 +92,7 @@
 		</table>
 	</div>
 </div>
-
+<%} %>
 <script>
 	render = (function($) {
 	    var toView = function(thing) {
@@ -103,7 +108,12 @@
 		        info : false,
 		        data : thing.sensors,
 		        columns : [ 
-		           {data : "name"}, 
+		           {
+		        	   data : "name",
+	                   render: function (data, type, row) {
+	                       return user.hasAuthority("SENSOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+	                   }
+		        	}, 
 		           {data : "abbreviation" }, 
 		           {data : "unit"}, 
 		           {data : "dataType"}, 
@@ -125,7 +135,12 @@
 		        info : false,
 		        data : thing.actuators,
 		        columns : [ 
-		           {data : "name"}, 
+		           {
+		        	   data : "name",
+	                   render: function (data, type, row) {
+	                       return user.hasAuthority("ACTUATOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+	                   }
+		        	}, 
 		           {data : "unit"}, 
 		           {data : "dataType"}, 
 		           {data : "protocol"},

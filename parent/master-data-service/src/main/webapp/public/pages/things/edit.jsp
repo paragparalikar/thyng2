@@ -32,9 +32,9 @@
 	padding: 0 1em 0 0;
 }
 </style>
-<div class="card" id="thing-details-card">
-	<div class="card-body">
-		<form id="thing-form">
+<form id="thing-form">
+	<div class="card" id="thing-details-card">
+		<div class="card-body">
 			<input type="hidden" id="thing-id" name="id" data-value="id">
 			<table id="thing-details-table">
 				<tbody>
@@ -42,13 +42,13 @@
 						<td>
 							<div class="form-group">
 								<label for="thing-name">Name</label> 
-								<input type="text"  name="name" class="form-control" id="thing-name">
+								<input data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255" type="text" name="name" class="form-control" id="thing-name" placeholder="Thing name">
 							</div>
 						</td>
 						<td rowspan="3">
 							<div class="form-group">
 								<label for="thing-properties">Properties</label>
-								<textarea name="properties"class="form-control" id="thing-properties" rows="8"></textarea>
+								<textarea data-rule-maxlength="255" maxlength="255" name="properties"class="form-control" id="thing-properties" rows="8" placeholder="Thing properties"></textarea>
 							</div>
 						</td>
 					</tr>
@@ -56,7 +56,7 @@
 						<td>
 							<div class="form-group">
 								<label for="thing-description">Description</label> 
-								<input type="text" name="description" class="form-control" id="thing-description">
+								<input data-rule-maxlength="255" maxlength="255" type="text" name="description" class="form-control" id="thing-description" placeholder="Thing description">
 							</div>
 						</td>
 					</tr>
@@ -67,21 +67,22 @@
 								<select id="thing-gateway" name="gatewayId" class="form-control"></select> 
 							</div>
 						</td>
-
+	
 					</tr>
 				</tbody>
 			</table>
-		</form>
+			
+		</div>
+		<div class="card-footer">
+			<a href="#" id="cancelButton" class="btn btn-secondary"> 
+				<i class="fa fa-trash"></i> Cancel
+			</a>
+			<button type="submit" href="#" id="saveButton" class="btn btn-primary">
+				<i class="fa fa-save"></i> Save
+			</button>
+		</div>
 	</div>
-	<div class="card-footer">
-		<a href="#" id="cancelButton" class="btn btn-secondary"> 
-			<i class="fa fa-trash"></i> Cancel
-		</a>
-		<button type="submit" href="#" id="saveButton" class="btn btn-primary">
-			<i class="fa fa-save"></i> Save
-		</button>
-	</div>
-</div>
+</form>
 <%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
 <div class="card" id="sensor-card">
 	<div class="card-header">
