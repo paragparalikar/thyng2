@@ -3,6 +3,7 @@ package com.thyng.thing.sensor;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,14 +34,14 @@ public class SensorService {
 	}
 	
 	@PreAuthorize("hasPermission(null, 'SENSOR', 'CREATE')")
-	public Sensor create(@NonNull final Sensor sensor) {
-		if(null != sensor.getId() || 0 < sensor.getId()) throw new IllegalArgumentException("Id must be null");
+	public Sensor create(@NonNull @Valid final Sensor sensor) {
+		if(null != sensor.getId() && 0 < sensor.getId()) throw new IllegalArgumentException("Id must be null");
 		return sensorRepository.save(sensor);
 	}
 	
 	@Transactional
 	@PreAuthorize("hasPermission(#sensor.id, 'SENSOR', 'UPDATE')")
-	public Sensor update(@NonNull final Sensor sensor) {
+	public Sensor update(@NonNull @Valid final Sensor sensor) {
 		if(null == sensor.getId() || 0 >= sensor.getId()) throw new IllegalArgumentException("Id must not be null");
 		return sensorRepository.save(sensor);
 	}

@@ -7,7 +7,7 @@ var sensorService = {
 			$.get(window.location.origin + "/api/v1/things/"+thingId+"/sensors/"+id)
 			.done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 		},
-		save : function(thingId, sensor){
+		save : function(thingId, sensor, success, error, always){
 			$.ajax({
 				url: window.location.origin + "/api/v1/things/"+thingId+"/sensors",
 				type: sensor.id && 0 < sensor.id ? "PUT" : "POST",
@@ -26,18 +26,24 @@ $.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callbac
 	if(sensorId && 0 < sensorId){
 		sensorService.findById(thingId, sensorId, function(sensor){
 			sensor.thingId = thingId;
-			showSensorEditModal(sensor);
+			showSensorEditModal(sensor, callback);
 		});
 	}else{
 		var sensor = {};
 		sensor.thingId = thingId;
-		showSensorEditModal(sensor);
+		showSensorEditModal(sensor, callback);
 	}
 });
-var showSensorEditModal = function(sensor){
+var showSensorEditModal = function(sensor, callback){
 	$("#modal-container").loadTemplate("public/pages/things/sensors/edit.jsp", sensor, {
 		success : function(){
 			$("#modal-container").modal();
+			$("#sensor-form").on("sensor-save-success", function(event, data){
+				if(callback){
+					callback(data);
+				}
+				$.modal.close();
+			});
 		}
 	});
 }

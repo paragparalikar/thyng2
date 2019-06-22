@@ -191,6 +191,7 @@
 				normalizer : $("#sensor-normalizer").val()
 			}, function(data){
 				toast('Sensor has been saved successfully');
+				$("#sensor-form").trigger("sensor-save-success",data);
 			});
 		}	
 	});

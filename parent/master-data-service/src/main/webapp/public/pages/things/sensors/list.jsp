@@ -93,7 +93,9 @@ var showEditSensorModal =  function(event, element, originalEvent, id){
 	element.blur();
 	originalEvent.preventDefault();
 	row = sensorDataTable.row("#" + id);
-	$.publish("show-sensor-edit-modal", [sensorsListView.thingId, row.data().id]);
+	$.publish("show-sensor-edit-modal", [sensorsListView.thingId, row.data().id, function(data){
+		row.data(data).draw();
+	}]);
 };
 
 var showDeleteSensorConfirmationModal = function(event, element, originalEvent, id){
@@ -103,7 +105,7 @@ var showDeleteSensorConfirmationModal = function(event, element, originalEvent, 
     $.publish("show-confirmation-modal", [{
         message: "Are you sure you want to delete sensor " + row.data().name + " ?"
     }, function () {
-        sensorService.deleteById(id, function () {
+        sensorService.deleteById(sensorsListView.thingId, id, function () {
         	toast('Sensor has been deleted successfully');
             row.remove().draw();
             $.modal.close();
@@ -112,7 +114,9 @@ var showDeleteSensorConfirmationModal = function(event, element, originalEvent, 
 };
 
 $("#newSensorBtn").click(function(){
-	$.publish("show-sensor-edit-modal", [sensorsListView.thingId, 0]);
+	$.publish("show-sensor-edit-modal", [sensorsListView.thingId, 0, function(data){
+		sensorDataTable.row.add(data).draw();
+	}]);
 });
 $("#sensor-table").on("copy-sensor", showCopySensorConfirmationModal);
 $("#sensor-table").on("edit-sensor", showEditSensorModal);
