@@ -4,26 +4,12 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-
-#thing-details-table {
-	width: 100%;
-}
-
-#thing-details-table>tbody>tr>td:LAST-CHILD {
-	width: 50%;
-	padding: 0 0 0 1em;
-}
-
-#thing-details-table>tbody>tr>td:FIRST-CHILD {
-	width: 50%;
-	padding: 0 1em 0 0;
-}
 </style>
 <form id="thing-form">
 	<div class="card" id="thing-details-card">
 		<div class="card-body">
 			<input type="hidden" id="thing-id" name="id" data-value="id">
-			<table id="thing-details-table">
+			<table class="form-table">
 				<tbody>
 					<tr>
 						<td>

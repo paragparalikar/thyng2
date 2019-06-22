@@ -66,8 +66,8 @@ public class SensorController {
 		sensorService.delete(sensorId);
 	}
 
-	@GetMapping(params={"id", "name", "thingId"})
-	public String existsByIdNotAndNameAndTenantId(@RequestParam(defaultValue="0") Long id, @RequestParam String name, @RequestParam Long thingId){
+	@GetMapping(params={"id", "name"})
+	public String existsByIdNotAndNameAndTenantId(@RequestParam(defaultValue="0") Long id, @RequestParam String name, @PathVariable Long thingId){
 		return sensorService.existsByIdNotAndNameAndThingId(id, name, thingId) ? "[\"This name is already taken\"]" : Boolean.TRUE.toString();
 	}
 }

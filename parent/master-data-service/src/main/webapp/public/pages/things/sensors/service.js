@@ -24,9 +24,14 @@ var sensorService = {
 };
 $.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callback){
 	if(sensorId && 0 < sensorId){
-		sensorService.findById(thingId, sensorId, showSensorEditModal);
+		sensorService.findById(thingId, sensorId, function(sensor){
+			sensor.thingId = thingId;
+			showSensorEditModal(sensor);
+		});
 	}else{
-		showSensorEditModal({});
+		var sensor = {};
+		sensor.thingId = thingId;
+		showSensorEditModal(sensor);
 	}
 });
 var showSensorEditModal = function(sensor){

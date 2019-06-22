@@ -1,17 +1,4 @@
 <%@ page import="com.thyng.model.enumeration.DataType" %>
-<style>
-	#sensor-edit-table {
-		width: 100%;
-	}
-	#sensor-edit-table>tbody>tr>td:LAST-CHILD {
-		width: 50%;
-		padding: 0 0 0 1em;
-	}
-	#sensor-edit-table>tbody>tr>td:FIRST-CHILD {
-		width: 50%;
-		padding: 0 1em 0 0;
-	}
-</style>
 <div id="sensor-edit-modal" class="modal modal-danger" style="display: block;">
 	<div class="modal-content" style="width: 50em;">
 		<div class="modal-header">
@@ -21,8 +8,9 @@
 		</div>
 		<div class="modal-body">
 			<form id="sensor-form">
+				<input type="hidden" data-value="thingId" id="thing-id">
 				<input type="hidden" data-value="id" id="sensor-id">
-				<table id="sensor-edit-table">
+				<table class="form-table">
 					<tbody>
 						<tr>
 							<td>
@@ -153,7 +141,7 @@
 			</form>
 		</div>
 		<div class="modal-footer">
-			<a href="#" id="sensor-edit-modal-cancel-button" class="btn btn-secondary"> 
+			<a id="sensor-edit-modal-cancel-button" class="btn btn-secondary"> 
 				<i class="fa fa-trash"></i> Cancel
 			</a>
 			<button id="sensor-edit-modal-action-button" type="button" class="btn btn-primary">
@@ -164,6 +152,38 @@
 	<script>
 		$("#sensor-edit-modal-cancel-button").click(function(){
 			$.modal.close();
+		});
+		$("#sensor-form").validate({
+			errorPlacement: function(error, element) {
+				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
+			},
+			errorElement: "span",			
+			rules:{
+				name: {
+					remote : {
+		                url : "/api/v1/things/"+$("#thing-id").val()+"/sensors",
+		                data : {
+		                    id : function() {
+			                    return $("#sensor-id").val();
+		                    },
+		                    name : function() {
+			                    return $("#sensor-name").val();
+		                    }
+		                }
+		            }
+				},
+		        properties: {
+		        	propertiesMap : true
+		        }
+			},			
+			submitHandler: function(){
+				toModel(thing);
+				thingService.save(thing, function(data){
+					thing = data;
+					toView(thing);
+					toast('Thing has been saved successfully');
+				});
+			}	
 		});
 	</script>
 </div>
