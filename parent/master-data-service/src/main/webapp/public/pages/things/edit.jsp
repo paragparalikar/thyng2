@@ -1,10 +1,3 @@
-<%@ page import="com.thyng.user.UserDTO" %>
-<%@ page import="com.thyng.aspect.security.Authority" %>
-<% 
-	final UserDTO user = (UserDTO)session.getAttribute("user");
-	final boolean hasSensorWriteAccess = user.hasAuthority(Authority.SENSOR_CREATE) || user.hasAuthority(Authority.SENSOR_UPDATE) || user.hasAuthority(Authority.SENSOR_DELETE);
-	final boolean hasActuatorWriteAccess = user.hasAuthority(Authority.ACTUATOR_CREATE) || user.hasAuthority(Authority.ACTUATOR_UPDATE) || user.hasAuthority(Authority.ACTUATOR_DELETE);
-%>
 <style>
 #thing-details-card, 
 #sensor-card,
@@ -83,164 +76,23 @@
 		</div>
 	</div>
 </form>
-<%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
-<div class="card" id="sensor-card">
-	<div class="card-header">
-		<h5>Sensors</h5>
-	</div>
-	<div class="card-body">
-		<table id="sensor-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
-			<thead>
-				<tr>
-					<th scope="col">Name</th>
-					<th scope="col">Abbreviation</th>
-					<th scope="col">Unit</th>
-					<th scope="col">Data Type</th>
-					<th scope="col">Active</th>
-					<% if(hasSensorWriteAccess){ %>
-					<th scope="col" width="100">
-						<%if(user.hasAuthority(Authority.SENSOR_CREATE)){ %>
-						<button type="button" class="btn btn-primary btn-sm pull-right" formnovalidate="formnovalidate" id="newSensorBtn">
-							<span class="fa fa-plus"></span> New Sensor
-						</button>
-						<%} %>
-					</th>
-					<%} %>
-				</tr>
-			</thead>
-		</table>
-	</div>
-</div>
-<%} %>
-<%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
-<div class="card" id="actuator-card">
-	<div class="card-header">
-		<h5>Actuators</h5>
-	</div>
-	<div class="card-body">
-		<table id="actuator-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
-			<thead>
-				<tr>
-					<th scope="col">Name</th>
-					<th scope="col">Abbreviation</th>
-					<th scope="col">Unit</th>
-					<th scope="col">Data Type</th>
-					<th scope="col">Protocol</th>
-					<% if(hasActuatorWriteAccess){ %>
-					<th scope="col" width="100">
-						<%if(user.hasAuthority(Authority.ACTUATOR_CREATE)){ %>
-						<button type="button" class="btn btn-primary btn-sm pull-right" formnovalidate="formnovalidate" id="newActuatorBtn">
-							<span class="fa fa-plus"></span> New Actuator
-						</button>
-						<%} %>
-					</th>
-					<%} %>
-				</tr>
-			</thead>
-		</table>
-	</div>
-</div>
-<%} %>
+<jsp:include page="sensors/list.jsp"/>
+<jsp:include page="actuators/list.jsp"/>
+
+
 <script>
 	render = (function($) {
 		var thing = null;
-		<%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
-		var sensorDataTable = $("#sensor-table").DataTable({
-	        searching : false,
-	        ordering : false,
-	        paging : false,
-	        info : false,
-	        columns : [ 
-	           {
-	        	   data : "name",
-                   render: function (data, type, row) {
-                       return user.hasAuthority("SENSOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
-                   }
-	           }, 
-	           {data : "abbreviation" }, 
-	           {data : "unit"}, 
-	           {data : "dataType"}, 
-	           {
-	        	   data : "active",
-	        	   render: function(data, type, row, meta){
-	        		   return data ? "Yes" : "No";
-	        	   }
-	        	}
-	           <% if(hasSensorWriteAccess){ %>
-	           ,{
-                    render: function (data, type, row, meta) {
-                    	var copyHtml = user.hasAuthority("SENSOR_CREATE") ? 
-	                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
-		                        	'<span class="fa fa-copy"></span> Copy' +
-		                        '</a>' : "";
-                    	var editHtml = user.hasAuthority("SENSOR_UPDATE") ? 
-                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
-                                '<span class="fa fa-edit"></span> Edit' +
-                            '</a>' : "";
-                        var deleteHtml = user.hasAuthority("SENSOR_DELETE") ?
-                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
-                            	'<span class="fa fa-trash"></span> Delete' +
-                            '</button>' : "";
-                        return '<div class="btn-group pull-right" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
-                    }
-                }
-	           <%}%>
-	        ]
-	    });
-		<%}%>
-		<%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
-	    var actuatorDataTable = $("#actuator-table").DataTable({
-	        searching : false,
-	        ordering : false,
-	        paging : false,
-	        info : false,
-	        columns : [ 
-	           {
-	        	   data : "name",
-                   render: function (data, type, row) {
-                       return user.hasAuthority("ACTUATOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
-                   }
-	        	}, 
-	           {data : "abbreviation" }, 
-	           {data : "unit"}, 
-	           {data : "dataType"}, 
-	           {data : "protocol"}
-	           <% if(hasActuatorWriteAccess){ %>
-	           ,{
-                    render: function (data, type, row, meta) {
-                    	var copyHtml = user.hasAuthority("ACTUATOR_CREATE") ? 
-	                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
-		                        	'<span class="fa fa-copy"></span> Copy' +
-		                        '</a>' : "";
-                    	var editHtml = user.hasAuthority("ACTUATOR_UPDATE") ? 
-                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
-                                '<span class="fa fa-edit"></span> Edit' +
-                            '</a>' : "";
-                        var deleteHtml = user.hasAuthority("ACTUATOR_DELETE") ?
-                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
-                            	'<span class="fa fa-trash"></span> Delete' +
-                            '</button>' : "";
-                        return '<div class="btn-group pull-right" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
-                    }
-                }
-	           <%}%>
-	        ]
-	    });
-	    <%}%>
 		var toModel = function(thing){
 			thing.id = $("#thing-id").val();
 			thing.name = $("#thing-name").val();
 			thing.description = $("#thing-description").val();
 			thing.gatewayId = $("#thing-gateway").val();
 			thing.properties = parseProperties($("#thing-properties").val());
-			thing.sensors = null;
-			thing.actuators = null;
 		};
 		var toView = function(thing){
 			if(thing){
-				var isCreate = !thing.id || 0 >= thing.id;
-				hideElement($("#sensor-card"), isCreate);
-		    	hideElement($("#actuator-card"), isCreate);
+				var isUpdate = thing.id && 0 < thing.id;
 				$("#thing-id").val(thing.id);
 				$("#thing-name").val(thing.name);
 				$("#thing-description").val(thing.description);
@@ -251,16 +103,10 @@
 						selectableOption.prop('selected', true).change();
 					}
 				}
-				<%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
-				if(thing.sensors){
-					sensorDataTable.clear().rows.add(thing.sensors).draw().columns.adjust();
-				}
-				<%}%>
-				<%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
-				if(thing.actuators){
-					actuatorDataTable.clear().rows.add(thing.actuators).draw().columns.adjust();
-				}
-				<%}%>
+				sensorsListView.data(thing.sensors);
+				sensorsListView.display(isUpdate);
+				actuatorsListView.data(thing.actuators);
+				actuatorsListView.display(isUpdate);
 			}
 		};
 		var bindHandlers = function(){
@@ -300,13 +146,6 @@
 				});
 			}	
 		});
-		var hideElement = function(element, value){
-			if(element && value){
-				element.hide();
-			}else{
-				element.show();
-			}
-		}
 	    return function(id) {
 	    	bindHandlers();
 		    gatewayService.findAllThin(function(gateways){

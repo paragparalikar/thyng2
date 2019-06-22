@@ -78,7 +78,8 @@
 	<script src="../public/pages/tenants/service.js"></script>
 	<script src="../public/pages/gateways/service.js"></script>
 	<script src="../public/pages/things/service.js"></script>
-	
+	<script src="../public/pages/things/sensors/service.js"></script>
+	<script src="../public/pages/things/actuators/service.js"></script>
 </body>
 
 </html>
