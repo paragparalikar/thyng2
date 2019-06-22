@@ -5,6 +5,14 @@ final UserDTO user = (UserDTO)session.getAttribute("user");
 if(user.hasAuthority(Authority.ACTUATOR_LIST)){ 
 	final boolean hasActuatorWriteAccess = user.hasAuthority(Authority.ACTUATOR_CREATE) || user.hasAuthority(Authority.ACTUATOR_UPDATE) || user.hasAuthority(Authority.ACTUATOR_DELETE);
 %>
+<style>
+	#actuator-card {
+		width: 60em;
+		margin-top: 2em;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
 <div class="card" id="actuator-card">
 	<div class="card-header">
 		<h5>Actuators</h5>
@@ -38,6 +46,8 @@ if(user.hasAuthority(Authority.ACTUATOR_LIST)){
 	    ordering : false,
 	    paging : false,
 	    info : false,
+	    rowId: "id",
+	    processing: true,
 	    columns : [ 
 	       {
 	    	   data : "name",

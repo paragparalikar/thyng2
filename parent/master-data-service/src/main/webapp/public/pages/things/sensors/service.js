@@ -22,3 +22,17 @@ var sensorService = {
 			}).done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 		}
 };
+$.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callback){
+	if(sensorId && 0 < sensorId){
+		sensorService.findById(thingId, sensorId, showSensorEditModal);
+	}else{
+		showSensorEditModal({});
+	}
+});
+var showSensorEditModal = function(sensor){
+	$("#modal-container").loadTemplate("public/pages/things/sensors/edit.jsp", sensor, {
+		success : function(){
+			$("#modal-container").modal();
+		}
+	});
+}

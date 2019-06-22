@@ -1,14 +1,8 @@
 <style>
-#thing-details-card, 
-#sensor-card,
-#actuator-card {
+#thing-details-card {
 	width: 60em;
 	margin-left: auto;
 	margin-right: auto;
-}
-#sensor-card,
-#actuator-card {
-	margin-top: 2em;
 }
 
 #thing-details-table {
@@ -103,9 +97,9 @@
 						selectableOption.prop('selected', true).change();
 					}
 				}
-				sensorsListView.data(thing.sensors);
+				sensorsListView.data(thing.id, thing.sensors);
 				sensorsListView.display(isUpdate);
-				actuatorsListView.data(thing.actuators);
+				actuatorsListView.data(thing.id, thing.actuators);
 				actuatorsListView.display(isUpdate);
 			}
 		};

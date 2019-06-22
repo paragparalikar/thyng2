@@ -5,6 +5,14 @@ final UserDTO user = (UserDTO)session.getAttribute("user");
 if(user.hasAuthority(Authority.SENSOR_LIST)){ 
 	final boolean hasSensorWriteAccess = user.hasAuthority(Authority.SENSOR_CREATE) || user.hasAuthority(Authority.SENSOR_UPDATE) || user.hasAuthority(Authority.SENSOR_DELETE);
 %>
+<style>
+	#sensor-card {
+		width: 60em;
+		margin-top: 2em;
+		margin-left: auto;
+		margin-right: auto;
+	}
+</style>
 <div class="card" id="sensor-card">
 	<div class="card-header">
 		<h5>Sensors</h5>
@@ -38,6 +46,8 @@ var sensorDataTable = $("#sensor-table").DataTable({
     ordering : false,
     paging : false,
     info : false,
+    rowId: "id",
+    processing: true,
     columns : [ 
        {
     	   data : "name",
@@ -58,15 +68,15 @@ var sensorDataTable = $("#sensor-table").DataTable({
        ,{
             render: function (data, type, row, meta) {
             	var copyHtml = user.hasAuthority("SENSOR_CREATE") ? 
-                		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
-                        	'<span class="fa fa-copy"></span> Copy' +
-                        '</a>' : "";
+        			'<button type="button" class="btn btn-success btn-xs" onclick="$(\'#sensor-table\').trigger(\'copy-sensor\', [this, event,'+row.id+'])">' +
+                    	'<span class="fa fa-copy"></span> Copy' +
+                    '</button>' : "";
             	var editHtml = user.hasAuthority("SENSOR_UPDATE") ? 
-            		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
-                        '<span class="fa fa-edit"></span> Edit' +
-                    '</a>' : "";
+           			'<button type="button" class="btn btn-warning btn-xs" onclick="$(\'#sensor-table\').trigger(\'edit-sensor\', [this, event,'+row.id+'])">' +
+                       	'<span class="fa fa-edit"></span> Edit' +
+                    '</button>' : "";
                 var deleteHtml = user.hasAuthority("SENSOR_DELETE") ?
-                	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
+                	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#sensor-table\').trigger(\'delete-sensor\', [this, event,'+row.id+'])">' +
                     	'<span class="fa fa-trash"></span> Delete' +
                     '</button>' : "";
                 return '<div class="btn-group pull-right" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
@@ -75,11 +85,42 @@ var sensorDataTable = $("#sensor-table").DataTable({
        <%}%>
     ]
 });
+var showCopySensorConfirmationModal = function(){
+	
+};
+
+var showEditSensorModal =  function(event, element, originalEvent, id){
+	element.blur();
+	originalEvent.preventDefault();
+	row = sensorDataTable.row("#" + id);
+	$.publish("show-sensor-edit-modal", [sensorsListView.thingId, row.data().id]);
+};
+
+var showDeleteSensorConfirmationModal = function(event, element, originalEvent, id){
+	element.blur();
+	originalEvent.preventDefault();
+	row = sensorDataTable.row("#" + id);
+    $.publish("show-confirmation-modal", [{
+        message: "Are you sure you want to delete sensor " + row.data().name + " ?"
+    }, function () {
+        sensorService.deleteById(id, function () {
+        	toast('Sensor has been deleted successfully');
+            row.remove().draw();
+            $.modal.close();
+        });
+    }]);
+};
+
+$("#sensor-table").on("copy-sensor", showCopySensorConfirmationModal);
+$("#sensor-table").on("edit-sensor", showEditSensorModal);
+$("#sensor-table").on("delete-sensor", showDeleteSensorConfirmationModal);
 </script>
 <%} %>
 <script>
 	var sensorsListView = {
-		data : function(sensors){
+		thingId : 0,
+		data : function(thingId, sensors){
+			this.thingId = thingId;
 			if(sensors && sensorDataTable){
 				sensorDataTable.clear().rows.add(sensors).draw().columns.adjust();
 			}
