@@ -15,7 +15,7 @@ if(user.hasAuthority(Authority.SENSOR_LIST)){
 </style>
 <div class="card" id="sensor-card">
 	<div class="card-header">
-		<h5>Sensors</h5>
+		<label>Sensors</label>
 	</div>
 	<div class="card-body">
 		<table id="sensor-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
@@ -111,6 +111,9 @@ var showDeleteSensorConfirmationModal = function(event, element, originalEvent, 
     }]);
 };
 
+$("#newSensorBtn").click(function(){
+	$.publish("show-sensor-edit-modal", [sensorsListView.thingId, 0]);
+});
 $("#sensor-table").on("copy-sensor", showCopySensorConfirmationModal);
 $("#sensor-table").on("edit-sensor", showEditSensorModal);
 $("#sensor-table").on("delete-sensor", showDeleteSensorConfirmationModal);

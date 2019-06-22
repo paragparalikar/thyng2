@@ -15,7 +15,7 @@ if(user.hasAuthority(Authority.ACTUATOR_LIST)){
 </style>
 <div class="card" id="actuator-card">
 	<div class="card-header">
-		<h5>Actuators</h5>
+		<label>Actuators</label>
 	</div>
 	<div class="card-body">
 		<table id="actuator-table" class="table table-striped table-bordered table-sm" style="width: 100%;">

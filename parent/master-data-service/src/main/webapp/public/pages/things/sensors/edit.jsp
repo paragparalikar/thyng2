@@ -38,6 +38,7 @@
 										data-rule-digits="true"
 										maxlength="255" 
 										type="text" 
+										value="60"
 										data-value="inactivityPeriod"
 										name="inactivity-period" 
 										class="form-control" 
@@ -51,7 +52,7 @@
 							<div class="form-group">
 								<label for="sensor-abbreviation">Abbreviation</label> 
 								<input 	data-rule-required="true" 
-										data-rule-minlength="3" 
+										data-rule-minlength="1" 
 										data-rule-maxlength="255" 
 										maxlength="255" 
 										type="text" 
@@ -77,7 +78,7 @@
 										class="form-control" 
 										id="sensor-batch-size" 
 										placeholder="Batch Size" 
-										value="60">
+										value="10">
 							</div>
 						</td>
 					</tr>
