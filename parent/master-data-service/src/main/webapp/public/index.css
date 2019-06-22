@@ -8,6 +8,9 @@ body {
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	font-family: 'Source Sans Pro', sans-serif
 }
+form{
+	margin-block-end: 0;
+}
 .parent-center{
 	display: flex;
 	justify-content: center;
@@ -87,16 +90,28 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 	z-index: 4;
 }
 .modal a.close-modal{
-	z-index: 3;
+	z-index: 5;
 }
 .modal-content{
 	margin-bottom: 0;
+	border-radius: 8px;
 }
 .modal-header{
-	border-radius: 6px;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+.modal-footer{
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
 }
 .modal-header, .modal-footer{
 	background-color: #eeeeee;
+}
+.modal-content,
+.modal-header,
+.modal-body, 
+.modal-footer{
+	z-index: 4;
 }
 
 #page-wrapper {
