@@ -63,14 +63,20 @@ public class ThingService {
 	@PreAuthorize("hasPermission(#thing.id, 'THING', 'UPDATE')")
 	public Thing update(@NotNull Thing thing){
 		if(null == thing.getId() || 0 >= thing.getId()) throw new IllegalArgumentException("Id must not be null");
+		final Thing managedThing = findById(thing.getId());
+		thing.setProperties(managedThing.getProperties());
+		thing.setSensors(managedThing.getSensors());
+		thing.setActuators(managedThing.getActuators());
 		return thingRepository.save(thing);
 	}
 	
+	@Transactional
 	@PreAuthorize("hasPermission(#id, 'THING', 'DELETE')")
 	public void deleteById(@NotNull @Positive Long id){
 		thingRepository.deleteById(id);
 	}
 	
+	@Transactional
 	@PreAuthorize("hasPermission(#tenantId, 'TENANT', 'DELETE')")
 	public void deleteByTenantId(Long tenantId){
 		thingRepository.deleteByTenantId(tenantId);

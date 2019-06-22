@@ -38,12 +38,14 @@ public class ActuatorService {
 		return actuatorRepository.save(actuator);
 	}
 	
+	@Transactional
 	@PreAuthorize("hasPermission(#actuator.id, 'ACTUATOR', 'UPDATE')")
 	public Actuator update(@NonNull final Actuator actuator) {
 		if(null == actuator.getId() || 0 >= actuator.getId()) throw new IllegalArgumentException("Id must not be null");
 		return actuatorRepository.save(actuator);
 	}
 	
+	@Transactional
 	@PreAuthorize("hasPermission(#actuatorId, 'ACTUATOR', 'DELETE')")
 	public void delete(@NonNull  @Positive  final Long actuatorId) {
 		actuatorRepository.deleteById(actuatorId);

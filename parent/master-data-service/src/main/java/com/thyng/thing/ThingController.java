@@ -60,7 +60,7 @@ public class ThingController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public void deleteById(@PathVariable @NotNull @Positive Long id){
+	public void deleteById(@PathVariable @NotNull @Positive final Long id){
 		thingService.deleteById(id);
 	}
 	

@@ -228,13 +228,19 @@
 	    });
 	    <%}%>
 		var toModel = function(thing){
+			thing.id = $("#thing-id").val();
 			thing.name = $("#thing-name").val();
 			thing.description = $("#thing-description").val();
 			thing.gatewayId = $("#thing-gateway").val();
 			thing.properties = parseProperties($("#thing-properties").val());
+			thing.sensors = null;
+			thing.actuators = null;
 		};
 		var toView = function(thing){
 			if(thing){
+				var isCreate = !thing.id || 0 >= thing.id;
+				hideElement($("#sensor-card"), isCreate);
+		    	hideElement($("#actuator-card"), isCreate);
 				$("#thing-id").val(thing.id);
 				$("#thing-name").val(thing.name);
 				$("#thing-description").val(thing.description);
@@ -246,10 +252,14 @@
 					}
 				}
 				<%if(user.hasAuthority(Authority.SENSOR_LIST)){ %>
+				if(thing.sensors){
 					sensorDataTable.clear().rows.add(thing.sensors).draw().columns.adjust();
+				}
 				<%}%>
 				<%if(user.hasAuthority(Authority.ACTUATOR_LIST)){ %>
+				if(thing.actuators){
 					actuatorDataTable.clear().rows.add(thing.actuators).draw().columns.adjust();
+				}
 				<%}%>
 			}
 		};
@@ -298,8 +308,6 @@
 			}
 		}
 	    return function(id) {
-	    	hideElement($("#sensor-card"), !id || 0 >= id);
-	    	hideElement($("#actuator-card"), !id || 0 >= id);
 	    	bindHandlers();
 		    gatewayService.findAllThin(function(gateways){
 		    	$.each(gateways, function(index, gateway) {   

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,11 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.envers.Audited;
 
@@ -64,12 +62,10 @@ public class Thing extends AuditableEntity implements Cloneable{
 	@ManyToOne
 	private Gateway gateway;
 	
-	@Cascade({CascadeType.ALL})
-	@OneToMany(orphanRemoval=true, mappedBy="thing")
+	@OneToMany(mappedBy="thing", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<com.thyng.thing.sensor.Sensor> sensors;
 	
-	@Cascade({CascadeType.ALL})
-	@OneToMany(orphanRemoval=true, mappedBy="thing")
+	@OneToMany(mappedBy="thing", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<com.thyng.thing.actuator.Actuator> actuators;
 	
 	@ElementCollection
