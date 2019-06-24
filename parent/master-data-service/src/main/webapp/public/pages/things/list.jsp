@@ -30,98 +30,85 @@
 
 <script type="text/javascript">
 	render = (function($){
-		var thingsDataTable = null;
 		
-		var showDeleteThingConfirmationModal = function(event, element, originalEvent, id){
+		var thingsDataTable = $("#things").DataTable({
+            rowId: "id",
+            language: {
+                processing: "Loading ..."
+            },
+            processing: true,
+            columns: [
+                {
+                    data: "name",
+                    render: function (data, type, row) {
+                        return user.hasAuthority("THING_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+                    }
+                },
+                { data: "description" },
+                {
+                	data: "active",
+                	render: function(data, type, row, meta){
+                		return data ? "<i class='fa fa-check text-success'></i> " : "<i class='fa fa-times text-danger'></i> ";
+                	}
+                },
+                { 
+                	data: "gatewayName",
+                	render: function(data, type, row, meta){
+                		return user.hasAuthority("GATEWAY_VIEW") ? '<a href="#gateways/view/'+row.gatewayId+'">' + data + '</a>' : data;
+                	}
+                }
+            	<% if(hasWriteAccess){%>
+                ,{
+                    mRender: function (data, type, row, meta) {
+                    	var copyHtml = user.hasAuthority("THING_CREATE") ? 
+	                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
+		                        	'<span class="fa fa-copy"></span> Copy' +
+		                        '</a>' : "";
+                    	var editHtml = user.hasAuthority("THING_UPDATE") ? 
+                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
+                                '<span class="fa fa-edit"></span> Edit' +
+                            '</a>' : "";
+                        var deleteHtml = user.hasAuthority("THING_DELETE") ?
+                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
+                            	'<span class="fa fa-trash"></span> Delete' +
+                            '</button>' : "";
+                        return '<div class="btn-group" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
+                    }
+                }
+                <%}%>
+                ],
+            columnDefs: [{
+                targets: -1,
+                orderable: false,
+                className: "text-center"
+            },
+            {
+                targets: -2,
+                orderable: true,
+                className: "text-center"
+            }
+            <% if(hasWriteAccess){%>
+            ,{
+                targets: -3,
+                orderable: true,
+                className: "text-center"
+            }
+            <%}%>
+            ]
+        });
+		
+		$("#things").on("delete-thing", function(event, element, originalEvent, id){
 			element.blur();
 			originalEvent.preventDefault();
 			row = thingsDataTable.row("#" + id);
-	        $.publish("show-confirmation-modal", [{
-	            message: "Are you sure you want to delete thing " + row.data().name + " ?"
-	        }, function () {
-	            thingService.deleteById(id, function () {
-	            	toast('Thing has been deleted successfully');
-	                row.remove().draw();
-	                $.modal.close();
-	            });
-	        }]);
-		};
+			$("#things").trigger("show-delete-thing-modal", [row.data(), function(){
+				row.remove().draw();	
+			}]);
+		});
 		
-		var showThingsDataTable = function(){
-			thingService.findAll(function (things) {
-				thingsDataTable = $("#things").DataTable({
-		            rowId: "id",
-		            language: {
-		                processing: "Loading ..."
-		            },
-		            processing: true,
-		            columns: [
-		                {
-		                    data: "name",
-		                    render: function (data, type, row) {
-		                        return user.hasAuthority("THING_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
-		                    }
-		                },
-		                { data: "description" },
-		                {
-		                	data: "active",
-		                	render: function(data, type, row, meta){
-		                		return data ? "<i class='fa fa-check text-success'></i> " : "<i class='fa fa-times text-danger'></i> ";
-		                	}
-		                },
-		                { 
-		                	data: "gatewayName",
-		                	render: function(data, type, row, meta){
-		                		return user.hasAuthority("GATEWAY_VIEW") ? '<a href="#gateways/view/'+row.gatewayId+'">' + data + '</a>' : data;
-		                	}
-		                }
-	                	<% if(hasWriteAccess){%>
-		                ,{
-		                    mRender: function (data, type, row, meta) {
-		                    	var copyHtml = user.hasAuthority("THING_CREATE") ? 
-			                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
-				                        	'<span class="fa fa-copy"></span> Copy' +
-				                        '</a>' : "";
-		                    	var editHtml = user.hasAuthority("THING_UPDATE") ? 
-		                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
-		                                '<span class="fa fa-edit"></span> Edit' +
-		                            '</a>' : "";
-		                        var deleteHtml = user.hasAuthority("THING_DELETE") ?
-		                        	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#things\').trigger(\'delete-thing\', [this, event,'+row.id+'])">' +
-		                            	'<span class="fa fa-trash"></span> Delete' +
-		                            '</button>' : "";
-		                        return '<div class="btn-group" role="group">' + copyHtml + editHtml + deleteHtml + '</div>';
-		                    }
-		                }
-		                <%}%>
-		                ],
-		            columnDefs: [{
-		                targets: -1,
-		                orderable: false,
-		                className: "text-center"
-		            },
-		            {
-		                targets: -2,
-		                orderable: true,
-		                className: "text-center"
-		            }
-		            <% if(hasWriteAccess){%>
-		            ,{
-		                targets: -3,
-		                orderable: true,
-		                className: "text-center"
-		            }
-		            <%}%>
-		            ],
-		            data: things
-		        });
-		    });
-		};
-		
-		return function(){
+		return function(things){
 			$("#page-title").html("Things");
-			showThingsDataTable();
-			$("#things").on("delete-thing", showDeleteThingConfirmationModal);
+			thingsDataTable.clear().rows.add(things).draw();
 		}
 	})(jQuery);
 

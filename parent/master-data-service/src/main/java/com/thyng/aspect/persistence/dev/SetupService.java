@@ -139,7 +139,7 @@ public class SetupService {
 				.gateway(gateway)
 				.active(0 == (thingIndex % 3))
 				.description("Description for Thing-"+thingIndex)
-				.name("Thing-"+thingIndex)
+				.name("Thing-"+thingIndex+"-"+gateway.getId())
 				.properties(buildProperties())
 				.build();
 	}

@@ -26,7 +26,22 @@ var thingService = {
 $.router.add("#things", function(){
     $("#template-container").loadTemplate("list-things", null, {
     	success: function(){
-    		render();
+    		$("#things").on("show-delete-thing-modal", function(event, thing, callback){
+    			$.publish("show-confirmation-modal", [{
+    	            message: "Are you sure you want to delete thing " + thing.name + " ?"
+    	        }, function () {
+    	            thingService.deleteById(thing.id, function () {
+    	            	toast('Thing "'+thing.name+'" has been deleted successfully');
+    	                $.modal.close();
+    	                if(callback){
+    	                	callback();
+    	                }
+    	            });
+    	        }]);
+    		});
+    		thingService.findAll(function (things) {
+    			render(things);
+    		});
     	},
     	error: errorCallback
     });
@@ -48,7 +63,27 @@ $.router.add("#things/edit/:id", function(params){
 	var id = arguments[0];
 	$("#template-container").loadTemplate("edit-thing", null, {
 		success : function(){
-			render(id);
+			$("#thing-form").on("cancel-thing-edit", function(event){
+				window.history.back();
+				$("#thing-form").unbind(event);
+			});
+			$("#thing-form").on("save-thing", function(event, thing, callback){
+				thingService.save(thing, function(data){
+					toast('Thing "'+data.name+'" has been saved successfully');
+					if(callback){
+						callback(data);
+					}
+				});
+			});
+			gatewayService.findAllThin(function(gateways){
+				if(id && 0 < id){
+					thingService.findOne(id, function(thing){
+						render(thing, gateways);
+					});
+				}else{
+					render(null, gateways);
+				}
+			});
 		},
     	error: errorCallback
 	});

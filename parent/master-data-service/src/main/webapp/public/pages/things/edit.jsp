@@ -62,14 +62,21 @@
 
 <script>
 	render = (function($) {
-		var thing = null;
+		
+		$("#cancelButton").click(function(){
+			$("#thing-form").trigger("cancel-thing-edit");
+		});
+		
 		var toModel = function(thing){
-			thing.id = $("#thing-id").val();
-			thing.name = $("#thing-name").val();
-			thing.description = $("#thing-description").val();
-			thing.gatewayId = $("#thing-gateway").val();
-			thing.properties = parseProperties($("#thing-properties").val());
+			return {
+				id : $("#thing-id").val(),
+				name : $("#thing-name").val(),
+				description : $("#thing-description").val(),
+				gatewayId : $("#thing-gateway").val(),
+				properties : parseProperties($("#thing-properties").val())
+			};
 		};
+		
 		var toView = function(thing){
 			if(thing){
 				var isUpdate = thing.id && 0 < thing.id;
@@ -89,11 +96,11 @@
 				actuatorsListView.display(isUpdate);
 			}
 		};
-		var bindHandlers = function(){
-			$("#cancelButton").click(function(){
-				window.history.back();
-			});
+		
+		var save = function(){
+			$("#thing-form").trigger("save-thing", [toModel(), toView]);
 		};
+
 		$("#thing-form").validate({
 			errorPlacement: function(error, element) {
 				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
@@ -117,33 +124,16 @@
 		        	propertiesMap : true
 		        }
 			},			
-			submitHandler: function(){
-				toModel(thing);
-				thingService.save(thing, function(data){
-					thing = data;
-					toView(thing);
-					toast('Thing has been saved successfully');
-				});
-			}	
+			submitHandler: save
 		});
-	    return function(id) {
-	    	bindHandlers();
-		    gatewayService.findAllThin(function(gateways){
-		    	$.each(gateways, function(index, gateway) {   
-		    	     $('#thing-gateway').append("<option value='"+gateway.id+"'>"+gateway.name+"</option>"); 
-		    	});
-		    	if(id && 0 < id){
-		    		$("#page-title").text("Edit Thing Details");
-		    		thingService.findOne(id, function(data){
-		    			thing = data;
-		    			toView(thing);
-		    		});
-		    	}else{
-		    		$("#page-title").text("Create New Thing");
-		    		thing = {properties:{}};
-		    		toView(thing);
-		    	}
-		    });
+	    return function(thing, gateways) {
+	    	$("#page-title").text(thing && thing.id && 0 < thing.id ? "Edit Thing Details" : "Create New Thing");
+	    	$('#thing-gateway').empty();
+	    	$.each(gateways, function(index, gateway) {   
+	    	     $('#thing-gateway').append("<option value='"+gateway.id+"'>"+gateway.name+"</option>"); 
+	    	});
+	    	toView(thing);
+	    	$("#thing-name").focus();
 	    };
     })(jQuery);
 </script>
