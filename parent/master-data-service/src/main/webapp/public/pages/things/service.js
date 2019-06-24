@@ -25,6 +25,7 @@ var thingService = {
 
 $.router.add("#things", function(){
     $("#template-container").loadTemplate("list-things", null, {
+    	beforeInsert: beforeTemplateInsert,
     	success: function(){
     		$("#things").on("show-delete-thing-modal", function(event, thing, callback){
     			$.publish("show-confirmation-modal", [{
@@ -50,6 +51,7 @@ $.router.add("#things", function(){
 $.router.add("#things/view/:id", function(params){
 	var id = arguments[0];
     $("#template-container").loadTemplate("view-thing", null, {
+    	beforeInsert: beforeTemplateInsert,
     	success: function(){
     		thingService.findOne(id, function(thing){
     			render(thing);
@@ -62,11 +64,8 @@ $.router.add("#things/view/:id", function(params){
 $.router.add("#things/edit/:id", function(params){
 	var id = arguments[0];
 	$("#template-container").loadTemplate("edit-thing", null, {
+		beforeInsert: beforeTemplateInsert,
 		success : function(){
-			$("#thing-form").on("cancel-thing-edit", function(event){
-				window.history.back();
-				$("#thing-form").unbind(event);
-			});
 			$("#thing-form").on("save-thing", function(event, thing, callback){
 				thingService.save(thing, function(data){
 					toast('Thing "'+data.name+'" has been saved successfully');

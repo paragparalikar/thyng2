@@ -54,7 +54,7 @@
                 { 
                 	data: "gatewayName",
                 	render: function(data, type, row, meta){
-                		return user.hasAuthority("GATEWAY_VIEW") ? '<a href="#gateways/view/'+row.gatewayId+'">' + data + '</a>' : data;
+                		return user.hasAuthority("GATEWAY_VIEW") ? '<a href="" onclick="$(\'#things\').trigger(\'view-gateway\', [this, event,'+row.id+'])">' + data + '</a>' : data;
                 	}
                 }
             	<% if(hasWriteAccess){%>
@@ -104,6 +104,13 @@
 			$("#things").trigger("show-delete-thing-modal", [row.data(), function(){
 				row.remove().draw();	
 			}]);
+		});
+		
+		$("#things").on("view-gateway", function(event, element, originalEvent, id){
+			element.blur();
+			originalEvent.preventDefault();
+			row = thingsDataTable.row("#" + id);
+			$.publish("show-view-gateway-modal", row.data().gatewayId);
 		});
 		
 		return function(things){

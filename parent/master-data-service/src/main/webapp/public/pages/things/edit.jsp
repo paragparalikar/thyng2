@@ -47,9 +47,6 @@
 			
 		</div>
 		<div class="card-footer">
-			<a href="#" id="cancelButton" class="btn btn-secondary"> 
-				<i class="fa fa-trash"></i> Cancel
-			</a>
 			<button type="submit" href="#" id="saveButton" class="btn btn-primary">
 				<i class="fa fa-save"></i> Save
 			</button>
@@ -63,10 +60,6 @@
 <script>
 	render = (function($) {
 		
-		$("#cancelButton").click(function(){
-			$("#thing-form").trigger("cancel-thing-edit");
-		});
-		
 		var toModel = function(thing){
 			return {
 				id : $("#thing-id").val(),
@@ -78,8 +71,10 @@
 		};
 		
 		var toView = function(thing){
+			var isUpdate = thing && thing.id && 0 < thing.id;
+			sensorsListView.display(isUpdate);
+			actuatorsListView.display(isUpdate);
 			if(thing){
-				var isUpdate = thing.id && 0 < thing.id;
 				$("#thing-id").val(thing.id);
 				$("#thing-name").val(thing.name);
 				$("#thing-description").val(thing.description);
@@ -91,9 +86,7 @@
 					}
 				}
 				sensorsListView.data(thing.id, thing.sensors);
-				sensorsListView.display(isUpdate);
 				actuatorsListView.data(thing.id, thing.actuators);
-				actuatorsListView.display(isUpdate);
 			}
 		};
 		
