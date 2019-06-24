@@ -35,19 +35,18 @@ $.router.add("#tenants", function(){
     });
 });
 
-$.router.add("#tenants/view/:id", function(){
-	var id = arguments[0];
-    $("#template-container").loadTemplate("view-tenant", null, {
-    	beforeInsert: beforeTemplateInsert,
-    	success: function(){
-    		tenantService.findById(id, function(tenant){
-    			render(tenant);
-    		});
-    	},
-    	error: errorCallback
-    });
+$.subscribe("show-tenant-view-modal", function(event, id){
+	 $("#modal-container").loadTemplate("view-tenant", null, {
+	    	beforeInsert: beforeTemplateInsert,
+	    	success: function(){
+	    		$("#modal-container").modal();
+	    		tenantService.findById(id, function(tenant){
+	    			renderModal(tenant);
+	    		});
+	    	},
+	    	error: errorCallback
+	    });
 });
-
 
 $.subscribe("show-tenant-edit-modal", function(event, id, callback){
     $("#modal-container").loadTemplate("edit-tenant", null, {
@@ -68,22 +67,14 @@ $.subscribe("show-tenant-edit-modal", function(event, id, callback){
 					}
 				});
     		});
-    		tenantService.findById(id, function(tenant){
-    			renderModal(tenant);
-    		});
+    		if(id && 0 < id){
+    			tenantService.findById(id, function(tenant){
+        			renderModal(tenant);
+        		});
+    		}else{
+    			renderModal();
+    		}
     	},
     	error: errorCallback
     });
 });
-
-$.router.add("#tenants/create", function(){
-    $("#template-container").loadTemplate("edit-tenant", null, {
-    	beforeInsert: beforeTemplateInsert,
-    	success: function(){
-    		renderModal({});
-    	},
-    	error: errorCallback
-    });
-});
-
-

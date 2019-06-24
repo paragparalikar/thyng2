@@ -17,7 +17,7 @@
                     <% if(hasWriteAccess){ %>
                     <th>
                     	<%if(user.hasAuthority(Authority.TENANT_CREATE)){ %>
-                        <a href="#tenants/create" class="btn btn-primary btn-sm">
+                        <a class="btn btn-primary btn-sm" id="new-tenant-button">
                             <span class="fa fa-plus"></span> New Tenant
                         </a>
                         <%} %>
@@ -44,7 +44,7 @@ render = (function($){
 					if(type === "sort" || type === "type"){
                         return data;
                     }
-					return user.hasAuthority("TENANT_VIEW") ? "<a href='#tenants/view/"+row.id+"'>"+data+"</a>" : data;
+					return user.hasAuthority("TENANT_VIEW") ? '<a href="" onclick="$(\'#tenants\').trigger(\'view-tenant\', [this, event,'+row.id+'])">'+data+'</a>' : data;
 				}	                	
         	},
             { data: "start",
@@ -92,6 +92,19 @@ render = (function($){
         }]
         <% } %>
     });
+    
+    $("#tenants").on("view-tenant", function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = tenantsDataTable.row("#" + id);
+		$.publish("show-tenant-view-modal", [row.data().id]);
+	});
+    
+    $("#new-tenant-button").click(function(event){
+		$.publish("show-tenant-edit-modal", [null, function(data){
+			tenantsDataTable.row.add(data).draw();
+		}]);
+	});
     
 	$("#tenants").on("edit-tenant", function(event, element, originalEvent, id){
 		element.blur();

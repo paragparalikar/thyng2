@@ -60,8 +60,7 @@
 										class="form-control" 
 										id="tenant-properties" 
 										placeholder="Tenant Properties" 
-										rows="9">
-							</textarea>
+										rows="9"></textarea>
 						</div>
 					</td>
 				</tr>

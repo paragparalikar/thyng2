@@ -59,9 +59,9 @@ $(function() {
 	};
 	
 	formatProperties =  function(props, delimiter){
-		return props ? $.map(props, function(val, key) {
+		return $.trim(props ? $.map(props, function(val, key) {
 			return key + "=" + val;
-		}).join(delimiter ? delimiter : "\n") : "";
+		}).join(delimiter ? delimiter : "\n") : "");
 	};
 	
 	parseProperties = function(text){
