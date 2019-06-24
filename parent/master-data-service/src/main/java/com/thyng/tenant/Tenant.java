@@ -2,13 +2,16 @@ package com.thyng.tenant;
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
@@ -17,6 +20,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.envers.Audited;
 
 import com.thyng.aspect.persistence.AuditableEntity;
+import com.thyng.gateway.Gateway;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,5 +60,8 @@ public class Tenant extends AuditableEntity{
 	
 	@Builder.Default
 	private Boolean locked = Boolean.FALSE;
+	
+	@OneToMany(mappedBy="tenant", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Gateway> gateways;
 	
 }

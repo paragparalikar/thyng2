@@ -7,6 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,12 +20,9 @@ import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.envers.Audited;
 
@@ -80,13 +78,11 @@ public class Gateway extends AuditableEntity implements Cloneable{
 	@Builder.Default
 	private Integer inactivityPeriod = 60;
 		
-	@Cascade({CascadeType.ALL})
-	@OneToMany(mappedBy="gateway")
+	@OneToMany(mappedBy="gateway", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<com.thyng.thing.Thing> things;
 	
 	@Valid
-	@Cascade({CascadeType.ALL})
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
 	private MqttClientConfig mqttClientConfig;
 	
 	public Gateway(Long id, String name){
