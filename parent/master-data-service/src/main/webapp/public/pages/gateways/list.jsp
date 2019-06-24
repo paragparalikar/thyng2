@@ -19,7 +19,7 @@
                     <% if(hasWriteAccess){ %>
                     <th>
                     	<%if(user.hasAuthority(Authority.GATEWAY_CREATE)){ %>
-                        <a href="#gateways/edit/0" class="btn btn-primary btn-sm">
+                        <a class="btn btn-primary btn-sm" id="new-gateway-button">
                             <span class="fa fa-plus"></span> New Gateway
                         </a>
                         <%} %>
@@ -33,76 +33,80 @@
 
 <script>
 render = (function($){
-	var gatewaysDataTable = null;
-	
-	var showDeleteGatewayConfirmationModal = function(event, element, originalEvent, id){
+
+    var gatewaysDataTable = $("#gateways").DataTable({
+        rowId: "id",
+        language: {
+            processing: "Loading ..."
+        },
+        processing: true,
+        columns: [
+            { data: "id" },
+            { data: "name",
+				render: function(data, type, row){
+					if(type === "sort" || type === "type"){
+                        return data;
+                    }
+					return user.hasAuthority("GATEWAY_VIEW") ? "<a href='#gateways/view/"+row.id+"'>"+data+"</a>" : data;
+				}	                	
+        	},
+            { data: "description" },
+            { data: "active" },
+            { data: "inactivityPeriod" },
+            { data: "host" },
+            { data: "port" }
+            <% if(hasWriteAccess){%>
+            ,{
+                render: function (data, type, row, meta) {
+                	var editHtml = user.hasAuthority("GATEWAY_UPDATE") ? 
+                		'<a class="btn btn-warning btn-xs" onclick="$(\'#gateways\').trigger(\'edit-gateway\', [this, event,'+row.id+'])">' +
+                        	'<span class="fa fa-edit"></span> Edit' +
+                        '</a>' : "";
+                    var deleteHtml = user.hasAuthority("GATEWAY_DELETE") ? 
+                    	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#gateways\').trigger(\'delete-gateway\', [this, event,'+row.id+'])">' +
+                        	'<span class="fa fa-trash"></span> Delete' +
+                        '</button>' : "";
+                    return '<div class="btn-group" role="group">' + editHtml + deleteHtml + '</div>';
+                }
+            }<% } %>]
+        <% if(hasWriteAccess){%>
+        ,columnDefs: [{
+            targets: -1,
+            orderable: false,
+            className: "text-center"
+        }]
+        <% } %>
+    });
+    
+    if($("#new-gateway-button")){
+    	$("#new-gateway-button").click(function(event){
+    		$.publish("show-edit-gateway-modal", [null, function(gateway){
+    			gatewaysDataTable.row.add(gateway).draw();
+    		}]);
+    	});
+    }
+    
+	$("#gateways").on("delete-gateway", function(event, element, originalEvent, id){
 		element.blur();
 		originalEvent.preventDefault();
 		row = gatewaysDataTable.row("#" + id);
-        $.publish("show-confirmation-modal", [{
-            message: "Are you sure you want to delete gateway " + row.data().name + " ?"
-        }, function () {
-            gatewayService.deleteById(id, function () {
-            	toast('Gateway has been deleted successfully');
-                row.remove().draw();
-                $.modal.close();
-            });
-        }]);
-	};
+		$("#gateways").trigger("delete-gateway-1", [row.data(), function(){
+			 row.remove().draw();
+		}]);
+	});
 	
-	var showGatewaysDataTable = function(){
-		gatewayService.findAll(function (gateways) {
-	        gatewaysDataTable = $("#gateways").DataTable({
-	            rowId: "id",
-	            language: {
-	                processing: "Loading ..."
-	            },
-	            processing: true,
-	            columns: [
-	                { data: "id" },
-	                { data: "name",
-						render: function(data, type, row){
-							if(type === "sort" || type === "type"){
-	                            return data;
-	                        }
-							return user.hasAuthority("GATEWAY_VIEW") ? "<a href='#gateways/view/"+row.id+"'>"+data+"</a>" : data;
-						}	                	
-                	},
-	                { data: "description" },
-	                { data: "active" },
-	                { data: "inactivityPeriod" },
-	                { data: "host" },
-	                { data: "port" }
-	                <% if(hasWriteAccess){%>
-	                ,{
-	                    render: function (data, type, row, meta) {
-	                    	var editHtml = user.hasAuthority("GATEWAY_UPDATE") ? 
-	                    		'<a class="btn btn-warning btn-xs" href="#gateways/edit/'+row.id+'">' +
-		                        	'<span class="fa fa-edit"></span> Edit' +
-		                        '</a>' : "";
-		                    var deleteHtml = user.hasAuthority("GATEWAY_DELETE") ? 
-		                    	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#gateways\').trigger(\'delete-gateway\', [this, event,'+row.id+'])">' +
-	                            	'<span class="fa fa-trash"></span> Delete' +
-	                            '</button>' : "";
-	                        return '<div class="btn-group" role="group">' + editHtml + deleteHtml + '</div>';
-	                    }
-	                }<% } %>],
-	            <% if(hasWriteAccess){%>
-	            columnDefs: [{
-	                targets: -1,
-	                orderable: false,
-	                className: "text-center"
-	            }],
-	            <% } %>
-	            data: gateways
-	        });
-	    });
-	};
+	$("#gateways").on("edit-gateway", function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = gatewaysDataTable.row("#" + id);
+		$.publish("show-edit-gateway-modal", [row.data().id, function(data){
+			row.data(data).draw();
+		}]);
+	});
 	
-	return function(){
+	return function(gateways){
 		$("#page-title").html("Gateways");
-		showGatewaysDataTable();
-		$("#gateways").on("delete-gateway", showDeleteGatewayConfirmationModal);
+		gatewaysDataTable.clear().rows.add(gateways).draw().columns.adjust();
 	}
 })(jQuery);
 </script>

@@ -27,6 +27,19 @@ $.router.add("#tenants", function(){
     $("#template-container").loadTemplate("list-tenants", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
+    		$("#tenants").on("delete-tenant-1", function(event, tenant, callback){
+    			 $.publish("show-confirmation-modal", [{
+    		            message: "Are you sure you want to delete tenant " + tenant.name + " ?"
+    		        }, function () {
+    		            tenantService.deleteById(tenant.id, function () {
+    		            	toast('Tenant "'+tenant.name+'" has been deleted successfully');
+    		                $.modal.close();
+    		                if(callback){
+    							callback();
+    						}
+    		            });
+    		        }]);
+    		});
     		tenantService.findAll(function (tenants) {
     			render(tenants);
     		});
@@ -60,7 +73,7 @@ $.subscribe("show-tenant-edit-modal", function(event, id, callback){
     		$("#tenant-form").on("save-tenant", function(event, tenant){
     			tenantService.save(tenant, function(data){
     				$("#tenant-form").unbind(event);
-					toast('Tenant has been saved successfully');
+					toast('Tenant "'+data.name+'" has been saved successfully');
 					$.modal.close();
 					if(callback){
 						callback(data);

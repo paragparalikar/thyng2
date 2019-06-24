@@ -100,11 +100,13 @@ render = (function($){
 		$.publish("show-tenant-view-modal", [row.data().id]);
 	});
     
-    $("#new-tenant-button").click(function(event){
-		$.publish("show-tenant-edit-modal", [null, function(data){
-			tenantsDataTable.row.add(data).draw();
-		}]);
-	});
+    if($("#new-tenant-button")){
+    	$("#new-tenant-button").click(function(event){
+    		$.publish("show-tenant-edit-modal", [null, function(data){
+    			tenantsDataTable.row.add(data).draw();
+    		}]);
+    	});	
+    }
     
 	$("#tenants").on("edit-tenant", function(event, element, originalEvent, id){
 		element.blur();
@@ -119,15 +121,9 @@ render = (function($){
 		element.blur();
 		originalEvent.preventDefault();
 		row = tenantsDataTable.row("#" + id);
-        $.publish("show-confirmation-modal", [{
-            message: "Are you sure you want to delete tenant " + row.data().name + " ?"
-        }, function () {
-            tenantService.deleteById(id, function () {
-            	toast('Tenant has been deleted successfully');
-                row.remove().draw();
-                $.modal.close();
-            });
-        }]);
+		$("#tenants").trigger("delete-tenant-1", [row.data(), function(){
+			row.remove().draw();
+		}]);
 	});
     
 	return function(tenants){

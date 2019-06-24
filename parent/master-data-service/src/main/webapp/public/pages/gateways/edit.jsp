@@ -1,33 +1,41 @@
-<style>
-#gateway-view-table tr td:LAST-CHILD {
-	padding: 0 0 0 1em;
-}
-#gateway-view-table tr td:FIRST-CHILD {
-	padding: 0 1em 0 0;
-	width: 50%;
-}
-#gateway-properties-cell{
-	vertical-align: top;
-}
-</style>
-<div class="parent-center">
-	<form class="card" id="gateway-form" style="width: 60em;">
-		<div class="card-body">
-			<input type="text" style="display: none;" id="gateway-id" data-value="id">
-			<table id="gateway-view-table">
+<div id="gateway-edit-modal" class="modal" style="display: block;">
+	<div class="modal-content" style="width: 50em;">
+	<form id="gateway-form">
+		<div class="modal-header">
+			<h4 class="modal-title" data-content="title" id="edit-gateway-title">Edit Gateway</h4>
+		</div>
+		<div class="modal-body">
+			<input type="hidden" id="gateway-id" data-value="id">
+			<table id="gateway-view-table" class="form-table">
 				<tr>
 					<td>
 						<div class="form-group">
 							<label for="gateway-name">Name</label> 
-							<input data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255"
-							type="text" data-value="name" class="form-control" id="gateway-name" name="name" placeholder="Gateway Name">
+							<input 	data-rule-required="true" 
+									data-rule-minlength="3" 
+									data-rule-maxlength="255" 
+									maxlength="255"
+									type="text" 
+									data-value="name" 
+									class="form-control" 
+									id="gateway-name" 
+									name="name" 
+									placeholder="Gateway Name">
 						</div>
 					</td>
 					<td rowspan="3" id="gateway-properties-cell">
 						<div class="form-group">
 							<label for="gateway-properties">Properties</label> 
-							<textarea data-rule-maxlength="255" maxlength="255" data-value="properties" data-format="MapFormatter" data-format-target="value" name="properties"
-							class="form-control" id="gateway-properties" placeholder="Gateway Properties" rows="9"></textarea>
+							<textarea 	data-rule-maxlength="255" 
+										maxlength="255" 
+										data-value="properties" 
+										data-format="MapFormatter" 
+										data-format-target="value" 
+										name="properties"
+										class="form-control" 
+										id="gateway-properties" 
+										placeholder="Gateway Properties" 
+										rows="9"></textarea>
 						</div>
 					</td>
 				</tr>
@@ -35,8 +43,14 @@
 					<td>
 						<div class="form-group">
 							<label for="gateway-description">Description</label> 
-							<input data-rule-maxlength="255" maxlength="255"
-							type="text" data-value="description" class="form-control" id="gateway-description" name="description" placeholder="Gateway Description">
+							<input 	data-rule-maxlength="255" 
+									maxlength="255"
+									type="text" 
+									data-value="description" 
+									class="form-control" 
+									id="gateway-description" 
+									name="description" 
+									placeholder="Gateway Description">
 						</div>
 					</td>
 				</tr>
@@ -44,27 +58,38 @@
 					<td>
 						<div class="form-group">
 							<label for="gateway-inactivityPeriod">Inactivity Period</label> 
-							<input data-rule-required="true" data-rule-digits="true" data-rule-min="60"
-							type="text" data-value="inactivityPeriod" class="form-control" id="gateway-inactivityPeriod" name="inactivityPeriod" placeholder="Inactivity Period">
+							<input 	data-rule-required="true" 
+									data-rule-digits="true" 
+									data-rule-min="60"
+									type="text" 
+									data-value="inactivityPeriod" 
+									class="form-control" 
+									id="gateway-inactivityPeriod" 
+									name="inactivityPeriod" 
+									placeholder="Inactivity Period">
 						</div>
 					</td>
 				</tr>
 			</table>
 		</div>
-		<div class="card-footer">
-			<a href="#" id="gateway-cancel-button" class="btn btn-secondary">
-				<span class="fa fa-trash"></span> Cancel
+		<div class="modal-footer">
+			<a id="gateway-edit-modal-cancel-button" class="btn btn-secondary"> 
+				<i class="fa fa-trash"></i> Cancel
 			</a>
-			<button type="submit" id="gateway-submit-button" class="btn btn-primary">
-				<span class="fa fa-save"></span> Save
+			<button id="gateway-edit-modal-action-button" type="submit" class="btn btn-primary">
+				<i class="fa fa-save"></i> Save
 			</button>
 		</div>
 	</form>
+	</div>
 </div>
-
 <script>
-render = (function($){
-	var gateway = null;	
+renderModal = (function($){
+	
+	 $("#gateway-edit-modal-cancel-button").click(function(event){
+     	$("#gateway-form").trigger("cancel-gateway-edit");
+     });
+
 	var toView = function(gateway){
 		if(gateway){
 			$("#gateway-id").val(gateway.id);
@@ -74,18 +99,21 @@ render = (function($){
 			$("#gateway-properties").val(formatProperties(gateway.properties));
 		}
 	};
-	var toModel = function(gateway){
-		gateway.id = $("#gateway-id").val();
-		gateway.name = $("#gateway-name").val();
-		gateway.description = $("#gateway-description").val();
-		gateway.inactivityPeriod = $("#gateway-inactivityPeriod").val();
-		gateway.properties = parseProperties($("#gateway-properties").val());
+	
+	var toModel = function(){
+		return {
+			id : $("#gateway-id").val(),
+			name : $("#gateway-name").val(),
+			description : $("#gateway-description").val(),
+			inactivityPeriod : $("#gateway-inactivityPeriod").val(),
+			properties : parseProperties($("#gateway-properties").val())	
+		};
 	};
-	var bindEventHandlers = function(){
-		$("#gateway-cancel-button").click(function (event) {
-			window.history.back();
-		});
+	
+	var save = function(){
+		$("#gateway-form").trigger("save-gateway", toModel());
 	};
+	
 	$("#gateway-form").validate({
 		errorPlacement: function(error, element) {
 			$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
@@ -109,28 +137,12 @@ render = (function($){
 	        	propertiesMap : true
 	        }
 		},			
-		submitHandler: function(){
-			toModel(gateway);
-			gatewayService.save(gateway, function(data){
-				gateway = data;
-				toView(gateway);
-				toast('Gateway has been saved successfully');
-			});
-		}	
+		submitHandler: save
 	});
-	return function(id){
-		bindEventHandlers();
-		if(id && 0 < id){
-			$("#page-title").text("Edit Gateway Details");
-			gatewayService.findOne(id, function(data){
-				gateway = data;
-				toView(gateway);
-			});
-		}else{
-			$("#page-title").text("Create New Gateway");
-			gateway = {properties:{}};
-			toView(gateway);
-		}
+	
+	return function(gateway){
+		$("#page-title").text(gateway && gateway.id && 0 < gateway.id ? "Edit Gateway Details" : "Create New Gateway");
+		toView(gateway);
 	};
 })(jQuery);
 </script>

@@ -55,6 +55,9 @@ public class GatewayService {
 		if(null == gateway.getId() || 0 >= gateway.getId()){
 			throw new IllegalArgumentException("Id must not be null");
 		}
+		final Gateway managedGateway = findByIdIncludeThings(gateway.getId());
+		gateway.setThings(managedGateway.getThings());
+		gateway.setMqttClientConfig(managedGateway.getMqttClientConfig());
 		return gatewayRepository.save(gateway);
 	}
 	
