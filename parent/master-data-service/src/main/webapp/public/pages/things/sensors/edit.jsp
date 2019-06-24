@@ -155,31 +155,14 @@
 	</div>
 </div>
 <script>
-	$("#sensor-edit-modal-cancel-button").click(function(){
-		$.modal.close();
-	});
-	$("#sensor-form").validate({
-		errorPlacement: function(error, element) {
-			$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
-		},
-		errorElement: "span",			
-		rules:{
-			name: {
-				remote : {
-	                url : "/api/v1/things/"+$("#thing-id").val()+"/sensors",
-	                data : {
-	                    id : function() {
-		                    return $("#sensor-id").val();
-	                    },
-	                    name : function() {
-		                    return $("#sensor-name").val();
-	                    }
-	                }
-	            }
-			}
-		},			
-		submitHandler: function(){
-			sensorService.save($("#thing-id").val(), {
+	renderEditSensorView = (function($) {
+		var bind = function(){
+			$("#sensor-edit-modal-cancel-button").click(function(){
+				$.modal.close();
+			});
+		};
+		var toModel = function(){
+			return {
 				id : $("#sensor-id").val(),
 				name : $("#sensor-name").val(),
 				description : $("#sensor-description").val(),
@@ -189,10 +172,60 @@
 				inactivityPeriod : $("#sensor-inactivity-period").val(),
 				batchSize : $("#sensor-batch-size").val(),
 				normalizer : $("#sensor-normalizer").val()
-			}, function(data){
+			};
+		};
+		var toView = function(thingId, sensor){
+			$("#thing-id").val(thingId);
+			if(sensor){
+				$("#sensor-id").val(sensor.id);
+				$("#sensor-name").val(sensor.name);
+				$("#sensor-description").val(sensor.description);
+				$("#sensor-abbreviation").val(sensor.abbreviation);
+				$("#sensor-unit").val(sensor.unit);
+				$("#sensor-data-type").val(sensor.dataType);
+				$("#sensor-inactivity-period").val(sensor.inactivityPeriod);
+				$("#sensor-batch-size").val(sensor.batchSize);
+				$("#sensor-normalizer").val(sensor.normalizer);	
+			}
+		};
+		var save = function(){
+			sensorService.save($("#thing-id").val(), toModel(), function(data){
+				toView($("#thing-id").val(), data);
 				toast('Sensor has been saved successfully');
 				$("#sensor-form").trigger("sensor-save-success",data);
 			});
-		}	
-	});
+		};
+		$("#sensor-form").validate({
+			errorPlacement: function(error, element) {
+				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
+			},
+			errorElement: "span",			
+			rules:{
+				name: {
+					remote : {
+		                url : "/api/v1/things/"+$("#thing-id").val()+"/sensors",
+		                data : {
+		                    id : function() {
+			                    return $("#sensor-id").val();
+		                    },
+		                    name : function() {
+			                    return $("#sensor-name").val();
+		                    }
+		                }
+		            }
+				}
+			},			
+			submitHandler: save
+		});
+		return function(thingId, id){
+			bind();
+			if(id && 0 < id){
+				sensorService.findById(thingId, id, function(sensor){
+					toView(thingId, sensor);
+				});
+			}else{
+				toView(thingId);				
+			}
+		}
+	})(jQuery);
 </script>

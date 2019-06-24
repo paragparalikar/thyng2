@@ -23,27 +23,17 @@ var sensorService = {
 		}
 };
 $.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callback){
-	if(sensorId && 0 < sensorId){
-		sensorService.findById(thingId, sensorId, function(sensor){
-			sensor.thingId = thingId;
-			showSensorEditModal(sensor, callback);
-		});
-	}else{
-		var sensor = {};
-		sensor.thingId = thingId;
-		showSensorEditModal(sensor, callback);
-	}
-});
-var showSensorEditModal = function(sensor, callback){
-	$("#modal-container").loadTemplate("public/pages/things/sensors/edit.jsp", sensor, {
+	$("#modal-container").loadTemplate("public/pages/things/sensors/edit.jsp", null, {
 		success : function(){
 			$("#modal-container").modal();
+			renderEditSensorView(thingId, sensorId);
 			$("#sensor-form").on("sensor-save-success", function(event, data){
+				$.modal.close();
 				if(callback){
 					callback(data);
 				}
-				$.modal.close();
 			});
 		}
 	});
-}
+});
+
