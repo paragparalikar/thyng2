@@ -1,11 +1,9 @@
 <%@ page import="com.thyng.model.enumeration.DataType" %>
-<div id="sensor-edit-modal" class="modal modal-danger" style="display: block;">
+<div id="sensor-edit-modal" class="modal" style="display: block;">
 	<div class="modal-content" style="width: 50em;">
 	<form id="sensor-form">
 		<div class="modal-header">
-			<h4 class="modal-title" data-content="title">
-				<i class="fa fa-warning"></i> Edit Sensor
-			</h4>
+			<h4 class="modal-title" data-content="title">Edit Sensor</h4>
 		</div>
 		<div class="modal-body">
 			<input type="hidden" data-value="thingId" id="thing-id">

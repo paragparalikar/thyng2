@@ -1,35 +1,35 @@
-<style>
-#tenant-view-table tr td:LAST-CHILD {
-	padding: 0 0 0 1em;
-}
-#tenant-view-table tr td:FIRST-CHILD {
-	padding: 0 1em 0 0;
-	width: 50%;
-}
-#tenant-locked-label{
-	display: inline;
-}
-#tenant-properties-cell{
-	vertical-align: top;
-}
-</style>
-
-<div class="parent-center">
-	<form class="card" id="tenant-form" style="width: 60em;">
-		<div class="card-body">
-			<input type="text" style="display: none;" id="tenant-id" data-value="id">
-			<table id="tenant-view-table">
+<div id="tenant-edit-modal" class="modal" style="display: block;">
+	<div class="modal-content" style="width: 50em;">
+	<form id="tenant-form">
+		<div class="modal-header">
+			<h4 class="modal-title" data-content="title" id="edit-tenant-title">Edit Tenant</h4>
+		</div>
+		<div class="modal-body">
+			<input type="hidden" id="tenant-id" data-value="id">
+			<table id="tenant-edit-table" class="form-table">
 				<tr>
 					<td>
 						<div class="form-group">
 							<label for="tenant-name">Name</label> 
-							<input data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255"
-							type="text" data-value="name" class="form-control" id="tenant-name" name="name" placeholder="Tenant Name">
+							<input 	data-rule-required="true" 
+									data-rule-minlength="3" 
+									data-rule-maxlength="255" 
+									maxlength="255"
+									type="text" 
+									data-value="name" 
+									class="form-control" 
+									id="tenant-name" 
+									name="name" 
+									placeholder="Tenant Name">
 						</div>
 					</td>
 					<td>
 						<div class="form-group">
-							<input type="checkbox" data-value="locked" name="locked" id="tenant-locked" class="pull-right">
+							<input 	type="checkbox" 
+									data-value="locked" 
+									name="locked" 
+									id="tenant-locked" 
+									class="pull-right">
 							<label for="tenant-locked" id="tenant-locked-label">Locked</label>
 						</div>
 					</td>
@@ -38,15 +38,30 @@
 					<td>
 						<div class="form-group">
 							<label for="tenant-description">Description</label> 
-							<input data-rule-maxlength="255" maxlength="255" type="text" data-value="description" name="description"
-							class="form-control" id="tenant-description" placeholder="Description for the Tenant">
+							<input 	data-rule-maxlength="255" 
+									maxlength="255" 
+									type="text" 
+									data-value="description" 
+									name="description"
+									class="form-control" 
+									id="tenant-description" 
+									placeholder="Description for the Tenant">
 						</div>
 					</td>
 					<td rowspan="3" id="tenant-properties-cell">
 						<div class="form-group">
 							<label for="tenant-properties">Properties</label> 
-							<textarea data-rule-maxlength="255" maxlength="255" data-value="properties" data-format="MapFormatter" data-format-target="value" name="properties"
-							class="form-control" id="tenant-properties" placeholder="Tenant Properties" rows="9"></textarea>
+							<textarea 	data-rule-maxlength="255" 
+										maxlength="255" 
+										data-value="properties" 
+										data-format="MapFormatter" 
+										data-format-target="value" 
+										name="properties"
+										class="form-control" 
+										id="tenant-properties" 
+										placeholder="Tenant Properties" 
+										rows="9">
+							</textarea>
 						</div>
 					</td>
 				</tr>
@@ -55,7 +70,15 @@
 						<div class="form-group">
 							<label for="tenant-start">Start</label> 
 							<div class="input-group date" id="tenant-start-datepicker">
-								<input data-rule-required="true" data-rule-maxlength="255" maxlength="255" type="text" data-value="start" name="start" class="form-control" id="tenant-start" placeholder="Tenant Start Date">
+								<input 	data-rule-required="true" 
+										data-rule-maxlength="255" 
+										maxlength="255" 
+										type="text" 
+										data-value="start" 
+										name="start" 
+										class="form-control" 
+										id="tenant-start" 
+										placeholder="Tenant Start Date">
 								<span class="input-group-addon">
 									<span class="fa fa-calendar"></span>
 								</span>
@@ -68,7 +91,15 @@
 						<div class="form-group">
 							<label for="tenant-expiry">Expiry</label> 
 							<div class="input-group date" id="tenant-expiry-datepicker">
-								<input data-rule-required="true" data-rule-maxlength="255" maxlength="255" type="text" data-value="expiry" name="expiry" class="form-control" id="tenant-expiry" placeholder="Tenant Expiry Date">
+								<input 	data-rule-required="true" 
+										data-rule-maxlength="255" 
+										maxlength="255" 
+										type="text" 
+										data-value="expiry" 
+										name="expiry" 
+										class="form-control" 
+										id="tenant-expiry" 
+										placeholder="Tenant Expiry Date">
 								<span class="input-group-addon">
 									<span class="fa fa-calendar"></span>
 								</span>
@@ -78,28 +109,69 @@
 				</tr>
 			</table>
 		</div>
-		<div class="card-footer">
-			<a href="#" id="tenant-cancel-button" class="btn btn-secondary">
-				<span class="fa fa-trash"></span> Cancel
+		<div class="modal-footer">
+			<a id="tenant-edit-modal-cancel-button" class="btn btn-secondary"> 
+				<i class="fa fa-trash"></i> Cancel
 			</a>
-			<button type="submit" id="tenant-submit-button" class="btn btn-primary">
-				<span class="fa fa-save"></span> Save
+			<button id="tenant-edit-modal-action-button" type="submit" class="btn btn-primary">
+				<i class="fa fa-save"></i> Save
 			</button>
 		</div>
 	</form>
+	</div>
 </div>
-
 <script>
-	render = (function($){
-		var inputTenant = null;
+	renderModal = (function($){
 		
-		var tenantStartDatetimePicker = $("#tenant-start-datepicker").datetimepicker({
+		$("#tenant-start-datepicker").on("dp.change", function (e) {
+            $('#tenant-expiry-datepicker').data("DateTimePicker").minDate(e.date);
+        });
+		
+        $("#tenant-expiry-datepicker").on("dp.change", function (e) {
+            $('#tenant-start-datepicker').data("DateTimePicker").maxDate(e.date);
+        });
+        
+        $("#tenant-edit-modal-cancel-button").click(function(event){
+        	$("#tenant-form").trigger("cancel-tenant-edit");
+        });
+        
+        var tenantStartDatetimePicker = $("#tenant-start-datepicker").datetimepicker({
 			format: 'L'
 		});
+		
 		var tenantExpiryDatetimePicker = $("#tenant-expiry-datepicker").datetimepicker({
 			useCurrent: false,
 			format: 'L'
 		});
+		
+		var save = function(){
+			$("#tenant-form").trigger("save-tenant", toModel());
+		}
+		
+		var toView = function(tenant){
+			if(tenant){
+				$("#tenant-id").val(tenant.id);
+				$("#tenant-name").val(tenant.name);
+				$("#tenant-description").val(tenant.description);
+				$("#tenant-start").val(tenant.start ? new Date(tenant.start).toLocaleDateString() : new Date().toLocaleDateString());
+				$("#tenant-expiry").val(tenant.expiry ? new Date(tenant.expiry).toLocaleDateString() : new Date().toLocaleDateString());
+				$("#tenant-locked").prop("checked", tenant.locked);
+				$("#tenant-properties").val(formatProperties(tenant.properties));
+			}
+		};
+		
+		var toModel = function(){
+			return {
+				id : $("#tenant-id").val(),
+				name : $("#tenant-name").val(),
+				description : $("#tenant-description").val(),
+				start : new Date($("#tenant-start").val()).getTime(),
+				expiry : new Date($("#tenant-expiry").val()).getTime(),
+				locked : $("#tenant-locked").prop("checked"),
+				properties : parseProperties($("#tenant-properties").val())
+			};
+		};
+		
 		$("#tenant-form").validate({
 			errorPlacement: function(error, element) {
 				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
@@ -123,53 +195,12 @@
 		        	propertiesMap : true
 		        }
 			},			
-			submitHandler: function(){
-				toModel(inputTenant);
-				tenantService.save(inputTenant, function(data){
-					toast('Tenant has been saved successfully');
-				});
-			}	
+			submitHandler: save
 		});
 		
-		var bindEventHandlers = function(){
-			$("#tenant-cancel-button").click(function (event) {
-				window.history.back();
-			});
-			$("#tenant-start-datepicker").on("dp.change", function (e) {
-	            $('#tenant-expiry-datepicker').data("DateTimePicker").minDate(e.date);
-	        });
-	        $("#tenant-expiry-datepicker").on("dp.change", function (e) {
-	            $('#tenant-start-datepicker').data("DateTimePicker").maxDate(e.date);
-	        });
-		};
-		
-		var toView = function(tenant){
-			if(tenant){
-				$("#tenant-id").val(tenant.id);
-				$("#tenant-name").val(tenant.name);
-				$("#tenant-description").val(tenant.description);
-				$("#tenant-start").val(tenant.start ? new Date(tenant.start).toLocaleDateString() : new Date().toLocaleDateString());
-				$("#tenant-expiry").val(tenant.expiry ? new Date(tenant.expiry).toLocaleDateString() : new Date().toLocaleDateString());
-				$("#tenant-locked").prop("checked", tenant.locked);
-				$("#tenant-properties").val(formatProperties(tenant.properties));
-			}
-		};
-		
-		var toModel = function(tenant){
-			tenant.id = $("#tenant-id").val();
-			tenant.name= $("#tenant-name").val();
-			tenant.description= $("#tenant-description").val();
-			tenant.start = new Date($("#tenant-start").val()).getTime();
-			tenant.expiry = new Date($("#tenant-expiry").val()).getTime();
-			tenant.locked = $("#tenant-locked").prop("checked");
-			tenant.properties = parseProperties($("#tenant-properties").val());
-		};
-		
 		return function(tenant){
-			inputTenant = tenant;
 			toView(tenant);
-			bindEventHandlers();
-			$("#page-title").text(tenant && tenant.id ? "Edit Tenant Details" : "Create New Tenant");
+			$("#edit-tenant-title").text(tenant && tenant.id && 0 < tenant.id ? "Edit Tenant Details" : "Create New Tenant");
 			$("#tenant-name").focus();
 		};
 	})(jQuery);

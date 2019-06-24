@@ -31,9 +31,78 @@
 
 <script>
 render = (function($){
-	var tenantsDataTable = null;
+
+    var tenantsDataTable = $("#tenants").DataTable({
+        rowId: "id",
+        language: {
+            processing: "Loading ..."
+        },
+        processing: true,
+        columns: [
+            { data: "name",
+				render: function(data, type, row){
+					if(type === "sort" || type === "type"){
+                        return data;
+                    }
+					return user.hasAuthority("TENANT_VIEW") ? "<a href='#tenants/view/"+row.id+"'>"+data+"</a>" : data;
+				}	                	
+        	},
+            { data: "start",
+            	render: function(data, type, row){
+            		if(type === "sort" || type === "type"){
+                        return data;
+                    }
+            		return new Date(data).toLocaleString();
+            	}
+            },
+            { data: "expiry",
+            	render: function(data, type, row){
+            		if(type === "sort" || type === "type"){
+                        return data;
+                    }
+            		return new Date(data).toLocaleString();
+            	}
+            },
+            { data: "locked",
+				render: function(data, type, row){
+					return data ? "Yes" : "No";
+				}
+            },
+            { data: "description" }
+            
+            <% if(hasWriteAccess){%>
+            ,{
+                render: function (data, type, row, meta) {
+                	var editHtml = user.hasAuthority("TENANT_UPDATE") ? 
+                		'<a class="btn btn-warning btn-xs" onclick="$(\'#tenants\').trigger(\'edit-tenant\', [this, event,'+row.id+'])">' +
+                        	'<span class="fa fa-edit"></span> Edit' +
+                        '</a>' : "";
+                    var deleteHtml = user.hasAuthority("TENANT_DELETE") ? 
+                    	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#tenants\').trigger(\'delete-tenant\', [this, event,'+row.id+'])">' +
+                        	'<span class="fa fa-trash"></span> Delete' +
+                        '</button>' : "";
+                    return '<div class="btn-group" role="group">' + editHtml + deleteHtml + '</div>';
+                }
+            }<% } %>]
+        <% if(hasWriteAccess){%>
+        ,columnDefs: [{
+            targets: -1,
+            orderable: false,
+            className: "text-center"
+        }]
+        <% } %>
+    });
+    
+	$("#tenants").on("edit-tenant", function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = tenantsDataTable.row("#" + id);
+		$.publish("show-tenant-edit-modal", [row.data().id, function(data){
+			row.data(data).draw();
+		}]);
+	});
 	
-	var showDeleteTenantConfirmationModal = function(event, element, originalEvent, id){
+    $("#tenants").on("delete-tenant", function(event, element, originalEvent, id){
 		element.blur();
 		originalEvent.preventDefault();
 		row = tenantsDataTable.row("#" + id);
@@ -46,78 +115,11 @@ render = (function($){
                 $.modal.close();
             });
         }]);
-	};
-	
-	var showTenantsDataTable = function(){
-		tenantService.findAll(function (tenants) {
-	        tenantsDataTable = $("#tenants").DataTable({
-	            rowId: "id",
-	            language: {
-	                processing: "Loading ..."
-	            },
-	            processing: true,
-	            columns: [
-	                { data: "name",
-						render: function(data, type, row){
-							if(type === "sort" || type === "type"){
-	                            return data;
-	                        }
-							return user.hasAuthority("TENANT_VIEW") ? "<a href='#tenants/view/"+row.id+"'>"+data+"</a>" : data;
-						}	                	
-                	},
-	                { data: "start",
-	                	render: function(data, type, row){
-	                		if(type === "sort" || type === "type"){
-	                            return data;
-	                        }
-	                		return new Date(data).toLocaleString();
-	                	}
-	                },
-	                { data: "expiry",
-	                	render: function(data, type, row){
-	                		if(type === "sort" || type === "type"){
-	                            return data;
-	                        }
-	                		return new Date(data).toLocaleString();
-	                	}
-	                },
-	                { data: "locked",
-						render: function(data, type, row){
-							return data ? "Yes" : "No";
-						}
-	                },
-	                { data: "description" }
-	                
-	                <% if(hasWriteAccess){%>
-	                ,{
-	                    render: function (data, type, row, meta) {
-	                    	var editHtml = user.hasAuthority("TENANT_UPDATE") ? 
-	                    		'<a class="btn btn-warning btn-xs" href="#tenants/edit/'+row.id+'">' +
-		                        	'<span class="fa fa-edit"></span> Edit' +
-		                        '</a>' : "";
-		                    var deleteHtml = user.hasAuthority("TENANT_DELETE") ? 
-		                    	'<button type="button" class="btn btn-danger btn-xs" onclick="$(\'#tenants\').trigger(\'delete-tenant\', [this, event,'+row.id+'])">' +
-	                            	'<span class="fa fa-trash"></span> Delete' +
-	                            '</button>' : "";
-	                        return '<div class="btn-group" role="group">' + editHtml + deleteHtml + '</div>';
-	                    }
-	                }<% } %>],
-	            <% if(hasWriteAccess){%>
-	            columnDefs: [{
-	                targets: -1,
-	                orderable: false,
-	                className: "text-center"
-	            }],
-	            <% } %>
-	            data: tenants
-	        });
-	    });
-	};
-	
-	return function(){
+	});
+    
+	return function(tenants){
 		$("#page-title").html("Tenants");
-		showTenantsDataTable();
-		$("#tenants").on("delete-tenant", showDeleteTenantConfirmationModal);
+		tenantsDataTable.clear().rows.add(tenants).draw().columns.adjust();
 	}
 })(jQuery);
 </script>

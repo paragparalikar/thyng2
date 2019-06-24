@@ -3,7 +3,7 @@ tenantService = {
 			$.get(window.location.origin + "/api/v1/tenants")
 			.done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 		},
-		findOne : function(id, success, error, always) {
+		findById : function(id, success, error, always) {
 			$.get(window.location.origin + "/api/v1/tenants/" + id)
 			.done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 		},
@@ -27,7 +27,9 @@ $.router.add("#tenants", function(){
     $("#template-container").loadTemplate("list-tenants", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
-    		render();
+    		tenantService.findAll(function (tenants) {
+    			render(tenants);
+    		});
     	},
     	error: errorCallback
     });
@@ -36,8 +38,9 @@ $.router.add("#tenants", function(){
 $.router.add("#tenants/view/:id", function(){
 	var id = arguments[0];
     $("#template-container").loadTemplate("view-tenant", null, {
+    	beforeInsert: beforeTemplateInsert,
     	success: function(){
-    		tenantService.findOne(id, function(tenant){
+    		tenantService.findById(id, function(tenant){
     			render(tenant);
     		});
     	},
@@ -46,12 +49,27 @@ $.router.add("#tenants/view/:id", function(){
 });
 
 
-$.router.add("#tenants/edit/:id", function(){
-	var id = arguments[0];
-    $("#template-container").loadTemplate("edit-tenant", null, {
+$.subscribe("show-tenant-edit-modal", function(event, id, callback){
+    $("#modal-container").loadTemplate("edit-tenant", null, {
+    	beforeInsert: beforeTemplateInsert,
     	success: function(){
-    		tenantService.findOne(id, function(tenant){
-    			render(tenant);
+    		$("#modal-container").modal();
+    		$("#tenant-form").on("cancel-tenant-edit", function(event){
+    			$.modal.close();
+    			$("#tenant-form").unbind(event);
+    		});
+    		$("#tenant-form").on("save-tenant", function(event, tenant){
+    			tenantService.save(tenant, function(data){
+    				$("#tenant-form").unbind(event);
+					toast('Tenant has been saved successfully');
+					$.modal.close();
+					if(callback){
+						callback(data);
+					}
+				});
+    		});
+    		tenantService.findById(id, function(tenant){
+    			renderModal(tenant);
     		});
     	},
     	error: errorCallback
@@ -60,8 +78,9 @@ $.router.add("#tenants/edit/:id", function(){
 
 $.router.add("#tenants/create", function(){
     $("#template-container").loadTemplate("edit-tenant", null, {
+    	beforeInsert: beforeTemplateInsert,
     	success: function(){
-    		render({});
+    		renderModal({});
     	},
     	error: errorCallback
     });
