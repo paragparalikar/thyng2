@@ -143,6 +143,7 @@ renderModal = (function($){
 	return function(gateway){
 		$("#page-title").text(gateway && gateway.id && 0 < gateway.id ? "Edit Gateway Details" : "Create New Gateway");
 		toView(gateway);
+		$("#gateway-name").focus();
 	};
 })(jQuery);
 </script>

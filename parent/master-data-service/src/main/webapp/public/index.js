@@ -21,7 +21,6 @@ $(function() {
 		};
 	};
 	beforeTemplateInsert = function(content, data){
-		console.log(content);
 		if(content && 7 < content.length && "login-form" == content[7].id){
 			window.location.reload();
 			throw new Error("Login");
