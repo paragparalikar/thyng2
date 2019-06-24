@@ -47,6 +47,8 @@ public class TenantService {
 	@PreAuthorize("hasPermission(#tenant.id, 'TENANT', 'UPDATE')")
 	public Tenant update(@NotNull @Valid Tenant tenant){
 		if(null == tenant.getId() || 0 >= tenant.getId()) throw new IllegalArgumentException("Id must not be null");
+		final Tenant managedTenant = findById(tenant.getId());
+		tenant.setGateways(managedTenant.getGateways());
 		return tenantRepository.save(tenant);
 	}
 	

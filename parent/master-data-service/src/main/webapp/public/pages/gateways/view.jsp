@@ -1,77 +1,96 @@
-<style>
-#gateway-details-card{
-	margin: 0 1em 1em 0; 
-	width: 32em;
-}
-#gateway-details-table{
-	width: 100%;
-}
-#gateway-details-table tbody tr td:FIRST-CHILD label{
-	float: right;
-	padding-right: 1em;
-}
-#gateway-details-table tbody tr td:LAST-CHILD label{
-	float: left;
-}
-</style>
-
-<div class="card" style="" id="gateway-details-card">
-	<div class="card-body">
-		<table id="gateway-details-table">
-			<tbody>
+<div id="gateway-edit-modal" class="modal" style="display: block;">
+	<div class="modal-content" style="width: 50em;">
+	<form id="gateway-form">
+		<div class="modal-header">
+			<h4 class="modal-title" data-content="title" id="edit-gateway-title">Gateway Details</h4>
+		</div>
+		<div class="modal-body">
+			<input type="hidden" id="gateway-id" data-value="id">
+			<table id="gateway-view-table" class="form-table">
 				<tr>
-					<td><label>ID : </label></td>
-					<td id="gateway-id"></td>
+					<td>
+						<div class="form-group">
+							<label for="gateway-name">Name</label> 
+							<input 	data-rule-required="true" 
+									data-rule-minlength="3" 
+									data-rule-maxlength="255" 
+									maxlength="255"
+									type="text" 
+									data-value="name" 
+									class="form-control" 
+									id="gateway-name" 
+									name="name" 
+									disabled="disabled"
+									placeholder="Gateway Name">
+						</div>
+					</td>
+					<td rowspan="3" id="gateway-properties-cell">
+						<div class="form-group">
+							<label for="gateway-properties">Properties</label> 
+							<textarea 	data-rule-maxlength="255" 
+										maxlength="255" 
+										data-value="properties" 
+										data-format="MapFormatter" 
+										data-format-target="value" 
+										name="properties"
+										class="form-control" 
+										id="gateway-properties" 
+										placeholder="Gateway Properties" 
+										disabled="disabled"
+										rows="9"></textarea>
+						</div>
+					</td>
 				</tr>
 				<tr>
-					<td><label>Name : </label></td>
-					<td id="gateway-name"></td>
+					<td>
+						<div class="form-group">
+							<label for="gateway-description">Description</label> 
+							<input 	data-rule-maxlength="255" 
+									maxlength="255"
+									type="text" 
+									data-value="description" 
+									class="form-control" 
+									id="gateway-description" 
+									name="description" 
+									disabled="disabled"
+									placeholder="Gateway Description">
+						</div>
+					</td>
 				</tr>
 				<tr>
-					<td><label>Description : </label></td>
-					<td id="gateway-description"></td>
+					<td>
+						<div class="form-group">
+							<label for="gateway-inactivityPeriod">Inactivity Period</label> 
+							<input 	data-rule-required="true" 
+									data-rule-digits="true" 
+									data-rule-min="60"
+									type="text" 
+									data-value="inactivityPeriod" 
+									class="form-control" 
+									id="gateway-inactivityPeriod" 
+									name="inactivityPeriod" 
+									disabled="disabled"
+									placeholder="Inactivity Period">
+						</div>
+					</td>
 				</tr>
-				<tr>
-					<td><label>Active : </label></td>
-					<td id="gateway-active"></td>
-				</tr>
-				<tr>
-					<td><label>Inactivity Period : </label></td>
-					<td id="gateway-inactivityPeriod"></td>
-				</tr>
-				<tr>
-					<td><label>Host : </label></td>
-					<td id="gateway-host"></td>
-				</tr>
-				<tr>
-					<td><label>Port : </label></td>
-					<td id="gateway-port"></td>
-				</tr>
-				<tr>
-					<td><label>Properties : </label></td>
-					<td id="gateway-properties"></td>
-				</tr>
-			</tbody>
-		</table>
+			</table>
+		</div>
+	</form>
 	</div>
 </div>
 <script>
-render = (function($){
-	var toView = function(gateway){
+renderModal = (function($){
+	
+	return function(gateway){
 		if(gateway){
-			$("#gateway-id").text(gateway.id);
-			$("#gateway-name").text(gateway.name);
-			$("#gateway-description").text(gateway.description);
-			$("#gateway-active").text(gateway.active ? "Yes" : "No");
-			$("#gateway-inactivityPeriod").text(gateway.inactivityPeriod);
-			$("#gateway-host").text(gateway.host);
-			$("#gateway-port").text(gateway.port);
-			$("#gateway-properties").html(formatProperties(gateway.properties, "<br>"));
+			$("#gateway-id").val(gateway.id);
+			$("#gateway-name").val(gateway.name);
+			$("#gateway-description").val(gateway.description);
+			$("#gateway-inactivityPeriod").val(gateway.inactivityPeriod);
+			$("#gateway-properties").val(formatProperties(gateway.properties));
 		}
 	};
-	return function(id){
-		 $("#page-title").text("Gateway Details");
-		 gatewayService.findOne(id, toView);
-	};
+	
 })(jQuery);
 </script>

@@ -31,7 +31,7 @@ $.router.add("#gateways", function(){
     $("#template-container").loadTemplate("list-gateways", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
-    		$("#gateways").on("delete-gateway-1", function(event, gateway, callback){
+    		$("#gateways").on("show-delete-gateway-modal", function(event, gateway, callback){
     			$.publish("show-confirmation-modal", [{
     	            message: "Are you sure you want to delete gateway " + gateway.name + " ?"
     	        }, function () {
@@ -84,12 +84,16 @@ $.subscribe("show-edit-gateway-modal", function(event, id, callback){
     });
 });
 
-$.router.add("#gateways/view/:id", function(){
-	var id = arguments[0];
-    $("#template-container").loadTemplate("view-gateway", null, {
+$.subscribe("show-view-gateway-modal", function(event, id){
+	 $("#modal-container").loadTemplate("view-gateway", null, {
+		beforeInsert: beforeTemplateInsert,
     	success: function(){
-    		render(id);
+    		$("#modal-container").modal();
+    		gatewayService.findById(id, function(gateway){
+    			renderModal(gateway);
+    		});
     	},
     	error: errorCallback
     });
 });
+

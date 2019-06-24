@@ -47,7 +47,7 @@ render = (function($){
 					if(type === "sort" || type === "type"){
                         return data;
                     }
-					return user.hasAuthority("GATEWAY_VIEW") ? "<a href='#gateways/view/"+row.id+"'>"+data+"</a>" : data;
+					return user.hasAuthority("GATEWAY_VIEW") ? '<a href="" onclick="$(\'#gateways\').trigger(\'view-gateway\', [this, event,'+row.id+'])">'+data+"</a>" : data;
 				}	                	
         	},
             { data: "description" },
@@ -86,11 +86,18 @@ render = (function($){
     	});
     }
     
+    $("#gateways").on("view-gateway", function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = gatewaysDataTable.row("#" + id);
+		$.publish("show-view-gateway-modal", row.data().id);
+	});
+    
 	$("#gateways").on("delete-gateway", function(event, element, originalEvent, id){
 		element.blur();
 		originalEvent.preventDefault();
 		row = gatewaysDataTable.row("#" + id);
-		$("#gateways").trigger("delete-gateway-1", [row.data(), function(){
+		$("#gateways").trigger("show-delete-gateway-modal", [row.data(), function(){
 			 row.remove().draw();
 		}]);
 	});
