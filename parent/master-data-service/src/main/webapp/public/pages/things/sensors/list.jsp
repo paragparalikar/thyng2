@@ -12,7 +12,6 @@ final boolean hasSensorWriteAccess = user.hasAuthority(Authority.SENSOR_CREATE) 
 			<th scope="col">Abbreviation</th>
 			<th scope="col">Unit</th>
 			<th scope="col">Data Type</th>
-			<th scope="col">Active</th>
 			<% if(hasSensorWriteAccess){ %>
 			<th scope="col" width="100">
 				<%if(user.hasAuthority(Authority.SENSOR_CREATE)){ %>
@@ -44,13 +43,7 @@ renderSensorDataTable = (function($){
 	       }, 
 	       {data : "abbreviation" }, 
 	       {data : "unit"}, 
-	       {data : "dataType"}, 
-	       {
-	    	   data : "active",
-	    	   render: function(data, type, row, meta){
-	    		   return data ? "Yes" : "No";
-	    	   }
-	    	}
+	       {data : "dataType"}
 	       <% if(hasSensorWriteAccess){ %>
 	       ,{
 	            render: function (data, type, row, meta) {
