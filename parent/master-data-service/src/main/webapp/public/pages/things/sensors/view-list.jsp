@@ -1,3 +1,4 @@
+<input type="hidden" id="thing-id">
 <table id="sensor-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
 	<thead>
 		<tr>
@@ -21,7 +22,7 @@ renderSensorDataTable = (function($){
 	       {
 	    	   data : "name",
 	           render: function (data, type, row) {
-	               return user.hasAuthority("SENSOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+	               return user.hasAuthority("SENSOR_VIEW") ? '<a href="" onclick="$(\'#sensor-table\').trigger(\'view-sensor\', [this, event,'+row.id+'])">' + data + '</a>' : data;
 	           }
 	       }, 
 	       {data : "abbreviation" }, 
@@ -30,7 +31,15 @@ renderSensorDataTable = (function($){
 	    ]
 	});
 	
-	return function(sensors){
+	$("#sensor-table").on("view-sensor", function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = sensorDataTable.row("#" + id);
+		$.publish("show-sensor-view-modal", [$("#thing-id").val(), row.data().id]);
+	});
+	
+	return function(thingId, sensors){
+		$("#thing-id").val(thingId);
 		sensorDataTable.clear().rows.add(sensors).draw().columns.adjust();
 	};
 })(jQuery);

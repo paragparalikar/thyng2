@@ -57,14 +57,14 @@ $.subscribe("show-view-thing-modal", function(event, id){
     			$("#sensor-data-table-container").loadTemplate("public/pages/things/sensors/view-list.jsp", null, {
         			beforeInsert: beforeTemplateInsert,
         			success: function(){
-        				renderSensorDataTable(thing && thing.sensors ? thing.sensors : []);
+        				renderSensorDataTable(thing.id, thing.sensors);
         			},
         			error: errorCallback
         		});
     			$("#actuator-data-table-container").loadTemplate("public/pages/things/actuators/view-list.jsp", null, {
         			beforeInsert: beforeTemplateInsert,
         			success: function(){
-        				renderActuatorDataTable(thing && thing.actuators ? thing.actuators : []);
+        				renderActuatorDataTable(thing.id, thing.actuators);
         				$("#modal-container").modal();
         			},
         			error: errorCallback

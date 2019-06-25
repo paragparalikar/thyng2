@@ -3,7 +3,7 @@
 	<div class="modal-content" style="width: 50em;">
 	<form id="sensor-form">
 		<div class="modal-header">
-			<h4 class="modal-title" data-content="title">Edit Sensor</h4>
+			<h4 class="modal-title" id="sensor-edit-title" data-content="title">Edit Sensor</h4>
 		</div>
 		<div class="modal-body">
 			<input type="hidden" data-value="thingId" id="thing-id">
@@ -173,6 +173,7 @@
 			};
 		};
 		var toView = function(thingId, sensor){
+			//window.alert(JSON.stringify(sensor));
 			$("#thing-id").val(thingId);
 			if(sensor){
 				$("#sensor-id").val(sensor.id);
@@ -213,6 +214,7 @@
 			submitHandler: save
 		});
 		return function(thingId, sensor){
+			$("#sensor-edit-title").text(sensor && sensor.id && 0 < sensor.id ? "Edit Sensor Details" : "Create New Sensor");
 			toView(thingId, sensor);
 		}
 	})(jQuery);

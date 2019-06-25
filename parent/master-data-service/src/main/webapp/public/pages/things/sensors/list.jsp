@@ -24,7 +24,6 @@ final boolean hasSensorWriteAccess = user.hasAuthority(Authority.SENSOR_CREATE) 
 		</tr>
 	</thead>
 </table>
-<div id="sensor-modal-container"></div>
 <script>
 renderSensorDataTable = (function($){
 	
@@ -39,7 +38,7 @@ renderSensorDataTable = (function($){
 	       {
 	    	   data : "name",
 	           render: function (data, type, row) {
-	               return user.hasAuthority("SENSOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+	               return user.hasAuthority("SENSOR_VIEW") ? '<a href="" onclick="$(\'#sensor-table\').trigger(\'view-sensor\', [this, event,'+row.id+'])">' + data + '</a>' : data;
 	           }
 	       }, 
 	       {data : "abbreviation" }, 
@@ -74,6 +73,13 @@ renderSensorDataTable = (function($){
 			}]);
 		});	
 	}
+	
+	$("#sensor-table").on("view-sensor", function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = sensorDataTable.row("#" + id);
+		$.publish("show-sensor-view-modal", [$("#thing-id").val(), row.data().id]);
+	});
 	
 	$("#sensor-table").on("copy-sensor", function(){
 		

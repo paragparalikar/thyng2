@@ -1,47 +1,28 @@
-<%@ page import="com.thyng.model.enumeration.DataType" %>
-<div id="sensor-edit-modal" class="modal" style="display: block;">
+<div class="modal" style="display: block;">
 	<div class="modal-content" style="width: 50em;">
-	<form id="sensor-form">
 		<div class="modal-header">
-			<h4 class="modal-title" data-content="title">Edit Sensor</h4>
+			<h4 class="modal-title" data-content="title">Sensor Details</h4>
 		</div>
 		<div class="modal-body">
-			<input type="hidden" data-value="thingId" id="thing-id">
-			<input type="hidden" data-value="id" id="sensor-id">
 			<table class="form-table">
 				<tbody>
 					<tr>
 						<td>
 							<div class="form-group">
 								<label for="sensor-name">Name</label> 
-								<input 	data-rule-required="true" 
-										data-rule-minlength="3" 
-										data-rule-maxlength="255" 
-										maxlength="255" 
-										type="text" 
-										name="name" 
-										data-value="name"
+								<input 	type="text" 
+										disabled="disabled"
 										class="form-control" 
-										id="sensor-name" 
-										placeholder="Name">
+										id="sensor-name">
 							</div>
 						</td>
 						<td>
 							<div class="form-group">
 								<label for="sensor-inactivity-period">Inactivity Period</label> 
-								<input 	data-rule-required="true" 
-										data-rule-minlength="1" 
-										data-rule-maxlength="255" 
-										data-rule-min="10"
-										data-rule-digits="true"
-										maxlength="255" 
-										type="text" 
-										value="60"
-										data-value="inactivityPeriod"
-										name="inactivity-period" 
+								<input 	type="text" 
+										disabled="disabled"
 										class="form-control" 
-										id="sensor-inactivity-period" 
-										placeholder="Inactivity Period(Seconds)">
+										id="sensor-inactivity-period">
 							</div>
 						</td>
 					</tr>
@@ -49,34 +30,19 @@
 						<td>
 							<div class="form-group">
 								<label for="sensor-abbreviation">Abbreviation</label> 
-								<input 	data-rule-required="true" 
-										data-rule-minlength="1" 
-										data-rule-maxlength="255" 
-										maxlength="255" 
-										type="text" 
-										name="abbreviation" 
-										data-value="abbreviation"
+								<input 	type="text" 
+										disabled="disabled"
 										class="form-control" 
-										id="sensor-abbreviation" 
-										placeholder="Abbreviation">
+										id="sensor-abbreviation">
 							</div>
 						</td>
 						<td>
 							<div class="form-group">
 								<label for="sensor-batch-size">Batch Size</label> 
-								<input 	data-rule-required="true" 
-										data-rule-minlength="1" 
-										data-rule-maxlength="255"
-										data-rule-min="1" 
-										data-rule-digits="true"
-										maxlength="255" 
-										type="text" 
-										name="batch-size" 
-										data-value="batchSize"
+								<input 	type="text"
+										disabled="disabled" 
 										class="form-control" 
-										id="sensor-batch-size" 
-										placeholder="Batch Size" 
-										value="10">
+										id="sensor-batch-size">
 							</div>
 						</td>
 					</tr>
@@ -84,28 +50,19 @@
 						<td>
 							<div class="form-group">
 								<label for="sensor-description">Description</label> 
-								<input 	data-rule-maxlength="255" 
-										maxlength="255" 
-										type="text" 
-										name="description" 
-										data-value="description"
+								<input 	type="text"
+										disabled="disabled" 
 										class="form-control" 
-										id="sensor-description" 
-										placeholder="Description">
+										id="sensor-description">
 							</div>
 						</td>
 						<td rowspan="3">
 							<label for="sensor-normalizer">Normalizer</label> 
 							<div class="form-group">
-								<textarea 	rows="8" 
-											data-rule-maxlength="255" 
-											maxlength="255" 
+								<textarea 	rows="8"
+											disabled="disabled" 
 											class="form-control" 
-											name="normalizer"
-											data-value="normalizer" 
-											id="sensor-normalizer"
-											placeholder="Normalizer">
-								</textarea>
+											id="sensor-normalizer"></textarea>
 							</div>
 						</td>
 					</tr>
@@ -113,16 +70,10 @@
 						<td>
 							<div class="form-group">
 								<label for="sensor-unit">Unit</label> 
-								<input  data-rule-required="true" 
-										data-rule-minlength="1" 
-										data-rule-maxlength="255" 
-										maxlength="255" 
-										type="text" 
-										name="unit" 
-										data-value="unit"
+								<input  type="text"
+										disabled="disabled" 
 										class="form-control" 
-										id="sensor-unit" 
-										placeholder="Unit">
+										id="sensor-unit">
 							</div>
 						</td>
 					</tr>
@@ -130,9 +81,7 @@
 						<td>
 							<div class="form-group">
 								<label for="sensor-data-type">Data Type</label> 
-								<select id="sensor-data-type" name="data-type" data-value="dataType"  class="form-control">
-								<% for(DataType dataType : DataType.values()) out.print("<option value=\""+dataType.name()+"\">"+dataType.toString()+"</option>"); %>
-								</select>
+								<select id="sensor-data-type" disabled="disabled" class="form-control"></select>
 							</div>
 						</td>
 						<td>
@@ -141,88 +90,24 @@
 				</tbody>
 			</table>
 		</div>
-		<div class="modal-footer">
-			<a id="sensor-edit-modal-cancel-button" class="btn btn-secondary"> 
-				<i class="fa fa-trash"></i> Cancel
-			</a>
-			<button id="sensor-edit-modal-action-button" type="submit" class="btn btn-primary">
-				<i class="fa fa-save"></i> Save
-			</button>
-		</div>
-		</form>
 	</div>
 </div>
 <script>
-	renderEditSensorView = (function($) {
+	renderViewSensorModal = (function($) {
 		
-		$("#sensor-edit-modal-cancel-button").click(function(){
-			$("#sensor-form").trigger("sensor-edit-cancel");
-		});
-		
-		var toModel = function(){
-			return {
-				id : $("#sensor-id").val(),
-				name : $("#sensor-name").val(),
-				description : $("#sensor-description").val(),
-				abbreviation : $("#sensor-abbreviation").val(),
-				unit : $("#sensor-unit").val(),
-				dataType : $("#sensor-data-type").val(),
-				inactivityPeriod : $("#sensor-inactivity-period").val(),
-				batchSize : $("#sensor-batch-size").val(),
-				normalizer : $("#sensor-normalizer").val()
-			};
-		};
-		var toView = function(thingId, sensor){
-			$("#thing-id").val(thingId);
+		return function(sensor){
 			if(sensor){
-				$("#sensor-id").val(sensor.id);
 				$("#sensor-name").val(sensor.name);
 				$("#sensor-description").val(sensor.description);
 				$("#sensor-abbreviation").val(sensor.abbreviation);
 				$("#sensor-unit").val(sensor.unit);
-				$("#sensor-data-type").val(sensor.dataType);
 				$("#sensor-inactivity-period").val(sensor.inactivityPeriod);
 				$("#sensor-batch-size").val(sensor.batchSize);
 				$("#sensor-normalizer").val(sensor.normalizer);	
-			}
-		};
-		var save = function(){
-			sensorService.save($("#thing-id").val(), toModel(), function(data){
-				toView($("#thing-id").val(), data);
-				toast('Sensor has been saved successfully');
-				$("#sensor-form").trigger("sensor-save-success",data);
-			});
-		};
-		$("#sensor-form").validate({
-			errorPlacement: function(error, element) {
-				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
-			},
-			errorElement: "span",			
-			rules:{
-				name: {
-					remote : {
-		                url : "/api/v1/things/"+$("#thing-id").val()+"/sensors",
-		                data : {
-		                    id : function() {
-			                    return $("#sensor-id").val();
-		                    },
-		                    name : function() {
-			                    return $("#sensor-name").val();
-		                    }
-		                }
-		            }
-				}
-			},			
-			submitHandler: save
-		});
-		return function(thingId, id){
-			if(id && 0 < id){
-				sensorService.findById(thingId, id, function(sensor){
-					toView(thingId, sensor);
-				});
+				$('#sensor-data-type').empty().append("<option selected value='"+sensor.dataType+"'>"+sensor.dataType+"</option>");
 			}else{
-				toView(thingId);				
+				console.log("Received null sensor, can not view");
 			}
-		}
+		};
 	})(jQuery);
 </script>

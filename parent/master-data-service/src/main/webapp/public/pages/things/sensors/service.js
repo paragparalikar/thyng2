@@ -22,11 +22,28 @@ var sensorService = {
 			}).done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 		}
 };
-$.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callback){
-	$("#sensor-modal-container").loadTemplate("public/pages/things/sensors/edit.jsp", null, {
+
+
+$.subscribe("show-sensor-view-modal", function(event, thingId, sensorId){
+	$("#modal-container-1").loadTemplate("public/pages/things/sensors/view.jsp", null, {
 		beforeInsert: beforeTemplateInsert,
 		success : function(){
-			var sensorModal = $("#sensor-modal-container").modal({
+			$("#modal-container-1").modal({
+				closeExisting: false
+			});
+			sensorService.findById(thingId, sensorId, function(sensor){
+				renderViewSensorModal(sensor);
+			});
+		},
+    	error: errorCallback
+	});
+});
+
+$.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callback){
+	$("#modal-container-1").loadTemplate("public/pages/things/sensors/edit.jsp", null, {
+		beforeInsert: beforeTemplateInsert,
+		success : function(){
+			$("#modal-container-1").modal({
 				closeExisting: false
 			});
 			var form = $("#sensor-form");
@@ -57,12 +74,12 @@ $.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callbac
 });
 
 $.subscribe("show-sensor-delete-modal", function(event, thingId, sensor, callback){
-	$("#sensor-modal-container").loadTemplate("public/pages/utils/confirmation.html", {
+	$("#modal-container-1").loadTemplate("public/pages/utils/confirmation.html", {
         message: "Are you sure you want to delete sensor " + sensor.name + " ?"
     }, {
     	beforeInsert: beforeTemplateInsert,
 		success : function(){
-			$("#sensor-modal-container").modal({
+			$("#modal-container-1").modal({
 				closeExisting: false
 			});
 			$("#confirmation-action-button").click(function(){

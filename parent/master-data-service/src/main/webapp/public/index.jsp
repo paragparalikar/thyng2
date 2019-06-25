@@ -49,6 +49,7 @@
 		</main>
 	</div>
 	<div id="modal-container"></div>
+	<div id="modal-container-1"></div>
 	<script src="../public/libs/jquery/dist/jquery.min.js"></script>
 	<script src="../public/libs/jquery/dist/jquery-migrate-1.0.0.min.js"></script>
 	<script src="../public/libs/moment/moment.js"></script>

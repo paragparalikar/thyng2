@@ -31,7 +31,7 @@ renderActuatorDataTable = (function($){
 	    ]
 	});
 	
-	return function(actuators){
+	return function(thingId, actuators){
 		actuatorDataTable.clear().rows.add(actuators).draw().columns.adjust();
 	};
 })(jQuery);
