@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/things/{thingId}/sensors")
+@RequestMapping("/api/v1/sensors")
 public class SensorController {
 
 	private final ThingService thingService;
@@ -32,18 +32,17 @@ public class SensorController {
 	private final SensorService sensorService;
 	
 	@GetMapping
-	public Set<SensorDTO> findByThingId(@PathVariable @NonNull @Positive final Long thingId){
+	public Set<SensorDTO> findByThingId(@RequestParam @NonNull @Positive final Long thingId){
 		return sensorMapper.toDTO(sensorService.findByThingId(thingId));
 	}
 	
 	@GetMapping("/{sensorId}")
-	public SensorDTO findById(@PathVariable @NonNull @Positive final Long thingId, 
-			@PathVariable @NonNull @Positive final Long sensorId) {
+	public SensorDTO findById(@PathVariable @NonNull @Positive final Long sensorId) {
 		return sensorMapper.toDTO(sensorService.findById(sensorId));
 	}
 	
 	@PostMapping
-	public SensorDTO create(@PathVariable @NonNull @Positive final Long thingId, 
+	public SensorDTO create(@RequestParam @NonNull @Positive final Long thingId, 
 			@RequestBody @NonNull @Valid final SensorDTO dto) {
 		final Thing thing = thingService.findById(thingId);
 		final Sensor sensor = sensorMapper.toEntity(dto);
@@ -52,7 +51,7 @@ public class SensorController {
 	}
 	
 	@PutMapping
-	public SensorDTO update(@PathVariable @NonNull @Positive final Long thingId, 
+	public SensorDTO update(@RequestParam @NonNull @Positive final Long thingId, 
 			@RequestBody @NonNull @Valid final SensorDTO dto) {
 		final Thing thing = thingService.findById(thingId);
 		final Sensor sensor = sensorMapper.toEntity(dto);
@@ -61,13 +60,12 @@ public class SensorController {
 	}
 	
 	@DeleteMapping("/{sensorId}")
-	public void delete(@PathVariable @NonNull @Positive final Long thingId, 
-			@PathVariable @NonNull @Positive final Long sensorId) {
+	public void delete(@PathVariable @NonNull @Positive final Long sensorId) {
 		sensorService.delete(sensorId);
 	}
 
-	@GetMapping(params={"id", "name"})
-	public String existsByIdNotAndNameAndTenantId(@RequestParam(defaultValue="0") Long id, @RequestParam String name, @PathVariable Long thingId){
+	@GetMapping(params={"id", "name", "thingId"})
+	public String existsByIdNotAndNameAndTenantId(@RequestParam(defaultValue="0") Long id, @RequestParam String name, @RequestParam Long thingId){
 		return sensorService.existsByIdNotAndNameAndThingId(id, name, thingId) ? "[\"This name is already taken\"]" : Boolean.TRUE.toString();
 	}
 }

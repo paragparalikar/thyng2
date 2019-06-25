@@ -199,13 +199,16 @@
 			rules:{
 				name: {
 					remote : {
-		                url : "/api/v1/things/"+$("#thing-id").val()+"/sensors",
+		                url : "/api/v1/sensors",
 		                data : {
 		                    id : function() {
 			                    return $("#sensor-id").val();
 		                    },
 		                    name : function() {
 			                    return $("#sensor-name").val();
+		                    },
+		                    thingId : function(){
+		                    	return $("#thing-id").val();
 		                    }
 		                }
 		            }
