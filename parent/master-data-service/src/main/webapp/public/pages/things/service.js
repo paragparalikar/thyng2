@@ -52,6 +52,7 @@ $.subscribe("show-view-thing-modal", function(event, id){
 	 $("#modal-container").loadTemplate("public/pages/things/view.jsp", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
+    		$("#modal-container").modal();
     		thingService.findById(id, function(thing){
     			renderModal(thing);
     			$("#sensor-data-table-container").loadTemplate("public/pages/things/sensors/view-list.jsp", null, {
@@ -65,7 +66,6 @@ $.subscribe("show-view-thing-modal", function(event, id){
         			beforeInsert: beforeTemplateInsert,
         			success: function(){
         				renderActuatorDataTable(thing.id, thing.actuators);
-        				$("#modal-container").modal();
         			},
         			error: errorCallback
         		});
