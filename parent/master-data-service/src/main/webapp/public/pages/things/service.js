@@ -3,7 +3,7 @@ var thingService = {
 		$.get(window.location.origin + "/api/v1/things")
 		.done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 	},
-	findOne : function(id, success, error, always) {
+	findById : function(id, success, error, always) {
 		$.get(window.location.origin + "/api/v1/things/" + id)
 		.done(successCallback(success)).fail(error ? error : errorCallback).always(always);
 	},
@@ -42,6 +42,33 @@ $.router.add("#things", function(){
     		});
     		thingService.findAll(function (things) {
     			render(things);
+    		});
+    	},
+    	error: errorCallback
+    });
+});
+
+$.subscribe("show-view-thing-modal", function(event, id){
+	 $("#modal-container").loadTemplate("view-thing", null, {
+    	beforeInsert: beforeTemplateInsert,
+    	success: function(){
+    		$("#modal-container").modal();
+    		thingService.findById(id, function(thing){
+    			renderModal(thing);
+    			$("#sensonr-table-container").loadTemplate("public/pages/things/sensors/view-list.jsp", null, {
+        			beforeInsert: beforeTemplateInsert,
+        			success: function(){
+        				renderSensorDataTable(thing.sensors);
+        			},
+        			error: errorCallback
+        		});
+    			$("#actuator-table-container").loadTemplate("public/pages/things/actuators/view-list.jsp", null, {
+        			beforeInsert: beforeTemplateInsert,
+        			success: function(){
+        				renderActuatorDataTable(thing.actuators);
+        			},
+        			error: errorCallback
+        		});
     		});
     	},
     	error: errorCallback

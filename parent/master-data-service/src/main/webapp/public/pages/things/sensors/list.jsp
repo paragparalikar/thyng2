@@ -85,20 +85,30 @@ var sensorDataTable = $("#sensor-table").DataTable({
        <%}%>
     ]
 });
-var showCopySensorConfirmationModal = function(){
-	
-};
 
-var showEditSensorModal =  function(event, element, originalEvent, id){
+if($("#newSensorBtn")){
+	$("#newSensorBtn").click(function(){
+		$.publish("show-sensor-edit-modal", [sensorsListView.thingId, 0, function(data){
+			sensorDataTable.row.add(data).draw();
+		}]);
+	});	
+}
+
+
+$("#sensor-table").on("copy-sensor", function(){
+	
+});
+
+$("#sensor-table").on("edit-sensor", function(event, element, originalEvent, id){
 	element.blur();
 	originalEvent.preventDefault();
 	row = sensorDataTable.row("#" + id);
 	$.publish("show-sensor-edit-modal", [sensorsListView.thingId, row.data().id, function(data){
 		row.data(data).draw();
 	}]);
-};
+});
 
-var showDeleteSensorConfirmationModal = function(event, element, originalEvent, id){
+$("#sensor-table").on("delete-sensor", function(event, element, originalEvent, id){
 	element.blur();
 	originalEvent.preventDefault();
 	row = sensorDataTable.row("#" + id);
@@ -111,16 +121,8 @@ var showDeleteSensorConfirmationModal = function(event, element, originalEvent, 
             $.modal.close();
         });
     }]);
-};
-
-$("#newSensorBtn").click(function(){
-	$.publish("show-sensor-edit-modal", [sensorsListView.thingId, 0, function(data){
-		sensorDataTable.row.add(data).draw();
-	}]);
 });
-$("#sensor-table").on("copy-sensor", showCopySensorConfirmationModal);
-$("#sensor-table").on("edit-sensor", showEditSensorModal);
-$("#sensor-table").on("delete-sensor", showDeleteSensorConfirmationModal);
+
 </script>
 <%} %>
 <script>

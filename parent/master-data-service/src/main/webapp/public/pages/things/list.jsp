@@ -41,7 +41,7 @@
                 {
                     data: "name",
                     render: function (data, type, row) {
-                        return user.hasAuthority("THING_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+                        return user.hasAuthority("THING_VIEW") ? '<a href="" onclick="$(\'#things\').trigger(\'view-thing\', [this, event,'+row.id+'])">' + data + '</a>' : data;
                     }
                 },
                 { data: "description" },
@@ -104,6 +104,13 @@
 			$("#things").trigger("show-delete-thing-modal", [row.data(), function(){
 				row.remove().draw();	
 			}]);
+		});
+		
+		$("#things").on("view-thing", function(event, element, originalEvent, id){
+			element.blur();
+			originalEvent.preventDefault();
+			row = thingsDataTable.row("#" + id);
+			$.publish("show-view-thing-modal", row.data().id);
 		});
 		
 		$("#things").on("view-gateway", function(event, element, originalEvent, id){
