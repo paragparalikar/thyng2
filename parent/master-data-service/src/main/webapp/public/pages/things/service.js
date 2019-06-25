@@ -75,6 +75,68 @@ $.subscribe("show-view-thing-modal", function(event, id){
     });
 });
 
+$.subscribe("show-edit-thing-modal", function(event, id){
+	 $("#modal-container").loadTemplate("public/pages/things/edit.jsp", null, {
+   	beforeInsert: beforeTemplateInsert,
+   	success: function(){
+   		$("#modal-container").modal();
+   		$("#thing-form").on("save-thing", function(event, thing, callback){
+			thingService.save(thing, function(data){
+				toast('Thing "'+data.name+'" has been saved successfully');
+				if(callback){
+					callback(data);
+				}
+			});
+		});
+   		
+   		if(user.hasAuthority("SENSOR_LIST")){
+   			$("#thing-form").on("load-sensor-data-table", function(event, thing){
+   	   			if(thing && thing.id && 0 < thing.id){
+   	   				$("#sensor-data-table-container").show();
+   	   				$("#sensor-data-table-container").loadTemplate("public/pages/things/sensors/list.jsp", null, {
+   	   	   	   			beforeInsert: beforeTemplateInsert,
+   	   	   	   			success: function(){
+   	   	   	   				renderSensorDataTable(thing.id, thing.sensors);
+   	   	   	   			},
+   	   	   	   			error: errorCallback
+   	   	   	   		});
+   	   			}else{
+   	   				$("#sensor-data-table-container").hide();
+   	   			}
+   	   		});
+   		}
+   		
+   		if(user.hasAuthority("ACTUATOR_LIST")){
+   			$("#thing-form").on("load-actuator-data-table", function(event, thing){
+   	   			if(thing && thing.id && 0 < thing.id){
+   	   				$("#actuator-data-table-container").show();
+   	   				$("#actuator-data-table-container").loadTemplate("public/pages/things/actuators/list.jsp", null, {
+   	   	   	   			beforeInsert: beforeTemplateInsert,
+   	   	   	   			success: function(){
+   	   	   	   				renderActuatorDataTable(thing.id, thing.actuators);
+   	   	   	   			},
+   	   	   	   			error: errorCallback
+   	   	   	   		});
+   	   			}else{
+   	   				$("#actuator-data-table-container").hide();
+   	   			}
+   	   		});
+   		}
+   		
+		gatewayService.findAllThin(function(gateways){
+			if(id && 0 < id){
+				thingService.findById(id, function(thing){
+					renderModal(thing, gateways);
+				});
+			}else{
+				renderModal(null, gateways);
+			}
+		});
+   	},
+   	error: errorCallback
+   });
+});
+
 $.router.add("#things/view/:id", function(params){
 	var id = arguments[0];
     $("#template-container").loadTemplate("public/pages/things/view.jsp", null, {

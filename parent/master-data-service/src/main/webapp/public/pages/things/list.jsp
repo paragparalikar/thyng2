@@ -61,11 +61,11 @@
                 ,{
                     mRender: function (data, type, row, meta) {
                     	var copyHtml = user.hasAuthority("THING_CREATE") ? 
-	                    		'<a class="btn btn-success btn-xs" href="#things/copy/'+row.id+'">' +
+	                    		'<a class="btn btn-success btn-xs" onclick="$(\'#things\').trigger(\'copy-thing\', [this, event,'+row.id+'])">' +
 		                        	'<span class="fa fa-copy"></span> Copy' +
 		                        '</a>' : "";
                     	var editHtml = user.hasAuthority("THING_UPDATE") ? 
-                    		'<a class="btn btn-warning btn-xs" href="#things/edit/'+row.id+'">' +
+                    		'<a class="btn btn-warning btn-xs" onclick="$(\'#things\').trigger(\'edit-thing\', [this, event,'+row.id+'])">' +
                                 '<span class="fa fa-edit"></span> Edit' +
                             '</a>' : "";
                         var deleteHtml = user.hasAuthority("THING_DELETE") ?
@@ -118,6 +118,13 @@
 			originalEvent.preventDefault();
 			row = thingsDataTable.row("#" + id);
 			$.publish("show-view-gateway-modal", row.data().gatewayId);
+		});
+		
+		$("#things").on("edit-thing", function(event, element, originalEvent, id){
+			element.blur();
+			originalEvent.preventDefault();
+			row = thingsDataTable.row("#" + id);
+			$.publish("show-edit-thing-modal", row.data().id);
 		});
 		
 		return function(things){
