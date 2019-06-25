@@ -10,10 +10,10 @@
 					<li class="active" target="#thing-details-form-container">
 						<a>Details</a>
 					</li>
-					<li target="#sensor-data-table-container">
+					<li id="sensor-tab" target="#sensor-data-table-container">
 						<a>Sensors</a>
 					</li>
-					<li target="#actuator-data-table-container">
+					<li id="actuator-tab" target="#actuator-data-table-container">
 						<a>Actuators</a>
 					</li>
 				</ul>
@@ -138,10 +138,12 @@
 		var tabify = function(element){
 			element.children("li").click(function(event){
 				var li = $(event.target).parent();
-				li.siblings().each(function(){
-					$($(this).removeClass("active").css("cursor","pointer").attr("target")).hide();
-				});
-				$(li.addClass("active").css("cursor","default").attr("target")).show();
+				if(!li.hasClass("disabled")){
+					li.siblings().each(function(){
+						$($(this).removeClass("active").css("cursor","pointer").attr("target")).hide();
+					});
+					$(li.addClass("active").css("cursor","default").attr("target")).show();
+				}
 			});
 		};
 		

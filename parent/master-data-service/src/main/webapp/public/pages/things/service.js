@@ -96,7 +96,7 @@ $.subscribe("show-edit-thing-modal", function(event, id, callback){
    		if(user.hasAuthority("SENSOR_LIST")){
    			$("#thing-form").on("load-sensor-data-table", function(event, thing){
    	   			if(thing && thing.id && 0 < thing.id){
-   	   				//$("#sensor-tab").removeClass("disabled").children('a').first().attr("data-toggle","tab");
+   	   				$("#sensor-tab").removeClass("disabled");
    	   				$("#sensor-data-table-container").loadTemplate("public/pages/things/sensors/list.jsp", null, {
    	   	   	   			beforeInsert: beforeTemplateInsert,
    	   	   	   			success: function(){
@@ -105,7 +105,7 @@ $.subscribe("show-edit-thing-modal", function(event, id, callback){
    	   	   	   			error: errorCallback
    	   	   	   		});
    	   			}else{
-   	   				//$("#sensor-tab").addClass("disabled").children('a').first().attr("data-toggle","");
+   	   				$("#sensor-tab").addClass("disabled");
    	   			}
    	   		});
    		}
@@ -113,7 +113,7 @@ $.subscribe("show-edit-thing-modal", function(event, id, callback){
    		if(user.hasAuthority("ACTUATOR_LIST")){
    			$("#thing-form").on("load-actuator-data-table", function(event, thing){
    	   			if(thing && thing.id && 0 < thing.id){
-   	   				//$("#actuator-tab").removeClass("disabled").children('a').first().attr("data-toggle","tab");
+   	   				$("#actuator-tab").removeClass("disabled");
    	   				$("#actuator-data-table-container").loadTemplate("public/pages/things/actuators/list.jsp", null, {
    	   	   	   			beforeInsert: beforeTemplateInsert,
    	   	   	   			success: function(){
@@ -122,7 +122,7 @@ $.subscribe("show-edit-thing-modal", function(event, id, callback){
    	   	   	   			error: errorCallback
    	   	   	   		});
    	   			}else{
-   	   				//$("#actuator-tab").addClass("disabled").children('a').first().attr("data-toggle","");
+   	   				$("#actuator-tab").addClass("disabled");
    	   			}
    	   		});
    		}
