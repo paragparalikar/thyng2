@@ -28,7 +28,7 @@ gatewayService = {
 };
 
 $.router.add("#gateways", function(){
-    $("#template-container").loadTemplate("list-gateways", null, {
+    $("#template-container").loadTemplate("public/pages/gateways/list.jsp", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
     		$("#gateways").on("show-delete-gateway-modal", function(event, gateway, callback){
@@ -53,7 +53,7 @@ $.router.add("#gateways", function(){
 });
 
 $.subscribe("show-edit-gateway-modal", function(event, id, callback){
-	 $("#modal-container").loadTemplate("edit-gateway", null, {
+	 $("#modal-container").loadTemplate("public/pages/gateways/edit.jsp", null, {
 	 	beforeInsert: beforeTemplateInsert,
     	success: function(){
     		$("#modal-container").modal();
@@ -85,7 +85,7 @@ $.subscribe("show-edit-gateway-modal", function(event, id, callback){
 });
 
 $.subscribe("show-view-gateway-modal", function(event, id){
-	 $("#modal-container").loadTemplate("view-gateway", null, {
+	 $("#modal-container").loadTemplate("public/pages/gateways/view.jsp", null, {
 		beforeInsert: beforeTemplateInsert,
     	success: function(){
     		$("#modal-container").modal();

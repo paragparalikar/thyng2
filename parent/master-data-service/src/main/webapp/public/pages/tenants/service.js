@@ -24,10 +24,10 @@ tenantService = {
 };
 
 $.router.add("#tenants", function(){
-    $("#template-container").loadTemplate("list-tenants", null, {
+    $("#template-container").loadTemplate("public/pages/tenants/list.jsp", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
-    		$("#tenants").on("delete-tenant-1", function(event, tenant, callback){
+    		$("#tenants").on("show-tenant-delete-modal", function(event, tenant, callback){
     			 $.publish("show-confirmation-modal", [{
     		            message: "Are you sure you want to delete tenant " + tenant.name + " ?"
     		        }, function () {
@@ -49,7 +49,7 @@ $.router.add("#tenants", function(){
 });
 
 $.subscribe("show-tenant-view-modal", function(event, id){
-	 $("#modal-container").loadTemplate("view-tenant", null, {
+	 $("#modal-container").loadTemplate("public/pages/tenants/view.jsp", null, {
 	    	beforeInsert: beforeTemplateInsert,
 	    	success: function(){
 	    		$("#modal-container").modal();
@@ -62,7 +62,7 @@ $.subscribe("show-tenant-view-modal", function(event, id){
 });
 
 $.subscribe("show-tenant-edit-modal", function(event, id, callback){
-    $("#modal-container").loadTemplate("edit-tenant", null, {
+    $("#modal-container").loadTemplate("public/pages/tenants/edit.jsp", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
     		$("#modal-container").modal();

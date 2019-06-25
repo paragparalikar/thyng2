@@ -24,7 +24,7 @@ var thingService = {
 };
 
 $.router.add("#things", function(){
-    $("#template-container").loadTemplate("list-things", null, {
+    $("#template-container").loadTemplate("public/pages/things/list.jsp", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
     		$("#things").on("show-delete-thing-modal", function(event, thing, callback){
@@ -49,10 +49,9 @@ $.router.add("#things", function(){
 });
 
 $.subscribe("show-view-thing-modal", function(event, id){
-	 $("#modal-container").loadTemplate("view-thing", null, {
+	 $("#modal-container").loadTemplate("public/pages/things/view.jsp", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
-    		$("#modal-container").modal();
     		thingService.findById(id, function(thing){
     			renderModal(thing);
     			$("#sensonr-table-container").loadTemplate("public/pages/things/sensors/view-list.jsp", null, {
@@ -66,6 +65,7 @@ $.subscribe("show-view-thing-modal", function(event, id){
         			beforeInsert: beforeTemplateInsert,
         			success: function(){
         				renderActuatorDataTable(thing.actuators);
+        				$("#modal-container").modal();
         			},
         			error: errorCallback
         		});
@@ -77,7 +77,7 @@ $.subscribe("show-view-thing-modal", function(event, id){
 
 $.router.add("#things/view/:id", function(params){
 	var id = arguments[0];
-    $("#template-container").loadTemplate("view-thing", null, {
+    $("#template-container").loadTemplate("public/pages/things/view.jsp", null, {
     	beforeInsert: beforeTemplateInsert,
     	success: function(){
     		thingService.findOne(id, function(thing){
@@ -90,7 +90,7 @@ $.router.add("#things/view/:id", function(params){
 
 $.router.add("#things/edit/:id", function(params){
 	var id = arguments[0];
-	$("#template-container").loadTemplate("edit-thing", null, {
+	$("#template-container").loadTemplate("public/pages/things/edit.jsp", null, {
 		beforeInsert: beforeTemplateInsert,
 		success : function(){
 			$("#thing-form").on("save-thing", function(event, thing, callback){

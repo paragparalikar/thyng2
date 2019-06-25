@@ -121,7 +121,7 @@ render = (function($){
 		element.blur();
 		originalEvent.preventDefault();
 		row = tenantsDataTable.row("#" + id);
-		$("#tenants").trigger("delete-tenant-1", [row.data(), function(){
+		$("#tenants").trigger("show-tenant-delete-modal", [row.data(), function(){
 			row.remove().draw();
 		}]);
 	});
