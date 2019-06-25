@@ -24,24 +24,35 @@ var sensorService = {
 };
 $.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callback){
 	$("#sensor-modal-container").loadTemplate("public/pages/things/sensors/edit.jsp", null, {
+		beforeInsert: beforeTemplateInsert,
 		success : function(){
 			var sensorModal = $("#sensor-modal-container").modal({
 				closeExisting: false
 			});
 			var form = $("#sensor-form");
-			renderEditSensorView(thingId, sensorId);
 			form.on("sensor-edit-cancel", function(event, data){
 				$.modal.close();
 				form.unbind(event);
 			});
-			form.on("sensor-save-success", function(event, data){
-				$.modal.close();
-				form.unbind(event);
-				if(callback){
-					callback(data);
-				}
+			form.on("save-sensor", function(event, thingId, sensor){
+				sensorService.save(thingId, sensor, function(data){
+					toast('Sensor "'+data.name+'" has been saved successfully');
+					$.modal.close();
+					form.unbind(event);
+					if(callback){
+						callback(data);
+					}
+				});
 			});
-		}
+			if(sensorId && 0 < sensorId){
+				sensorService.findById(thingId, sensorId, function(sensor){
+					renderEditSensorView(thingId, sensor);
+				});
+			}else{
+				renderEditSensorView(thingId, null);
+			}
+		},
+    	error: errorCallback
 	});
 });
 
@@ -49,6 +60,7 @@ $.subscribe("show-sensor-delete-modal", function(event, thingId, sensor, callbac
 	$("#sensor-modal-container").loadTemplate("public/pages/utils/confirmation.html", {
         message: "Are you sure you want to delete sensor " + sensor.name + " ?"
     }, {
+    	beforeInsert: beforeTemplateInsert,
 		success : function(){
 			$("#sensor-modal-container").modal({
 				closeExisting: false
@@ -56,12 +68,13 @@ $.subscribe("show-sensor-delete-modal", function(event, thingId, sensor, callbac
 			$("#confirmation-action-button").click(function(){
 				sensorService.deleteById(thingId, sensor.id, function () {
 					 $.modal.close();
-		        	toast('Sensor has been deleted successfully');
+		        	toast('Sensor "'+sensor.name+'" has been deleted successfully');
 		        	if(callback){
 		        		callback();
 		        	}
 		        });
 			});
-		}
+		},
+    	error: errorCallback
 	});
 });

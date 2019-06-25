@@ -187,9 +187,12 @@
 			}
 		};
 		var save = function(){
-			$("#sensor-form").trigger("save-sensor",[$("#thing-id").val(), toModel()]);
+			sensorService.save($("#thing-id").val(), toModel(), function(data){
+				toView($("#thing-id").val(), data);
+				toast('Sensor has been saved successfully');
+				$("#sensor-form").trigger("sensor-save-success",data);
+			});
 		};
-		
 		$("#sensor-form").validate({
 			errorPlacement: function(error, element) {
 				$(element).closest("form").find( "label[for='"+element.attr( "id" ) + "']").append( error );
@@ -212,8 +215,14 @@
 			},			
 			submitHandler: save
 		});
-		return function(thingId, sensor){
-			toView(thingId, sensor);
+		return function(thingId, id){
+			if(id && 0 < id){
+				sensorService.findById(thingId, id, function(sensor){
+					toView(thingId, sensor);
+				});
+			}else{
+				toView(thingId);				
+			}
 		}
 	})(jQuery);
 </script>
