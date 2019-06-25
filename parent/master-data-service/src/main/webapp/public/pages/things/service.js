@@ -75,13 +75,17 @@ $.subscribe("show-view-thing-modal", function(event, id){
     });
 });
 
-$.subscribe("show-edit-thing-modal", function(event, id){
+$.subscribe("show-edit-thing-modal", function(event, id, callback){
 	 $("#modal-container").loadTemplate("public/pages/things/edit.jsp", null, {
    	beforeInsert: beforeTemplateInsert,
    	success: function(){
    		$("#modal-container").modal();
-   		$("#thing-form").on("save-thing", function(event, thing, callback){
+   		$("#thing-form").on("thing-edit-cancel", function(event){
+   			$.modal.close();
+   		});
+   		$("#thing-form").on("save-thing", function(event, thing){
 			thingService.save(thing, function(data){
+				$.modal.close();
 				toast('Thing "'+data.name+'" has been saved successfully');
 				if(callback){
 					callback(data);
@@ -92,7 +96,7 @@ $.subscribe("show-edit-thing-modal", function(event, id){
    		if(user.hasAuthority("SENSOR_LIST")){
    			$("#thing-form").on("load-sensor-data-table", function(event, thing){
    	   			if(thing && thing.id && 0 < thing.id){
-   	   				$("#sensor-data-table-container").show();
+   	   				//$("#sensor-tab").removeClass("disabled").children('a').first().attr("data-toggle","tab");
    	   				$("#sensor-data-table-container").loadTemplate("public/pages/things/sensors/list.jsp", null, {
    	   	   	   			beforeInsert: beforeTemplateInsert,
    	   	   	   			success: function(){
@@ -101,7 +105,7 @@ $.subscribe("show-edit-thing-modal", function(event, id){
    	   	   	   			error: errorCallback
    	   	   	   		});
    	   			}else{
-   	   				$("#sensor-data-table-container").hide();
+   	   				//$("#sensor-tab").addClass("disabled").children('a').first().attr("data-toggle","");
    	   			}
    	   		});
    		}
@@ -109,7 +113,7 @@ $.subscribe("show-edit-thing-modal", function(event, id){
    		if(user.hasAuthority("ACTUATOR_LIST")){
    			$("#thing-form").on("load-actuator-data-table", function(event, thing){
    	   			if(thing && thing.id && 0 < thing.id){
-   	   				$("#actuator-data-table-container").show();
+   	   				//$("#actuator-tab").removeClass("disabled").children('a').first().attr("data-toggle","tab");
    	   				$("#actuator-data-table-container").loadTemplate("public/pages/things/actuators/list.jsp", null, {
    	   	   	   			beforeInsert: beforeTemplateInsert,
    	   	   	   			success: function(){
@@ -118,7 +122,7 @@ $.subscribe("show-edit-thing-modal", function(event, id){
    	   	   	   			error: errorCallback
    	   	   	   		});
    	   			}else{
-   	   				$("#actuator-data-table-container").hide();
+   	   				//$("#actuator-tab").addClass("disabled").children('a').first().attr("data-toggle","");
    	   			}
    	   		});
    		}
@@ -135,44 +139,4 @@ $.subscribe("show-edit-thing-modal", function(event, id){
    	},
    	error: errorCallback
    });
-});
-
-$.router.add("#things/view/:id", function(params){
-	var id = arguments[0];
-    $("#template-container").loadTemplate("public/pages/things/view.jsp", null, {
-    	beforeInsert: beforeTemplateInsert,
-    	success: function(){
-    		thingService.findOne(id, function(thing){
-    			render(thing);
-    		});
-    	},
-    	error: errorCallback
-    });
-});
-
-$.router.add("#things/edit/:id", function(params){
-	var id = arguments[0];
-	$("#template-container").loadTemplate("public/pages/things/edit.jsp", null, {
-		beforeInsert: beforeTemplateInsert,
-		success : function(){
-			$("#thing-form").on("save-thing", function(event, thing, callback){
-				thingService.save(thing, function(data){
-					toast('Thing "'+data.name+'" has been saved successfully');
-					if(callback){
-						callback(data);
-					}
-				});
-			});
-			gatewayService.findAllThin(function(gateways){
-				if(id && 0 < id){
-					thingService.findOne(id, function(thing){
-						render(thing, gateways);
-					});
-				}else{
-					render(null, gateways);
-				}
-			});
-		},
-    	error: errorCallback
-	});
 });

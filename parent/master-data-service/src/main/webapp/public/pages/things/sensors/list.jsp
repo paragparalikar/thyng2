@@ -24,6 +24,7 @@ final boolean hasSensorWriteAccess = user.hasAuthority(Authority.SENSOR_CREATE) 
 		</tr>
 	</thead>
 </table>
+<div id="sensor-modal-container"></div>
 <script>
 renderSensorDataTable = (function($){
 	

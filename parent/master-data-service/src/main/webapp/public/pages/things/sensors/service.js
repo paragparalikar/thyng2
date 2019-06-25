@@ -23,12 +23,20 @@ var sensorService = {
 		}
 };
 $.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callback){
-	$("#modal-container").loadTemplate("public/pages/things/sensors/edit.jsp", null, {
+	$("#sensor-modal-container").loadTemplate("public/pages/things/sensors/edit.jsp", null, {
 		success : function(){
-			$("#modal-container").modal();
+			$("#sensor-modal-container").modal({
+				closeExisting: false
+			});
+			var form = $("#sensor-form");
 			renderEditSensorView(thingId, sensorId);
-			$("#sensor-form").on("sensor-save-success", function(event, data){
+			form.on("sensor-edit-cancel", function(event, data){
 				$.modal.close();
+				form.unbind(event);
+			});
+			form.on("sensor-save-success", function(event, data){
+				$.modal.close();
+				form.unbind(event);
 				if(callback){
 					callback(data);
 				}

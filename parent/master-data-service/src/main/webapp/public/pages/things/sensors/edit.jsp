@@ -154,11 +154,11 @@
 </div>
 <script>
 	renderEditSensorView = (function($) {
-		var bind = function(){
-			$("#sensor-edit-modal-cancel-button").click(function(){
-				$.modal.close();
-			});
-		};
+		
+		$("#sensor-edit-modal-cancel-button").click(function(){
+			$("#sensor-form").trigger("sensor-edit-cancel");
+		});
+		
 		var toModel = function(){
 			return {
 				id : $("#sensor-id").val(),

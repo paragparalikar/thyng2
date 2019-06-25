@@ -16,7 +16,7 @@
                     <% if(hasWriteAccess){ %>
                     <th>
                     	<%if(user.hasAuthority(Authority.THING_CREATE)){ %>
-                        <a class="btn btn-primary btn-sm" href="#things/edit/0">
+                        <a class="btn btn-primary btn-sm" id="new-thing-button">
                             <span class="fa fa-plus"></span> New Thing
                         </a>
                         <%} %>
@@ -97,6 +97,12 @@
             ]
         });
 		
+		$("#new-thing-button").click(function(){
+			$.publish("show-edit-thing-modal", [null, function(thing){
+				thingsDataTable.row.add(thing).draw();
+			}]);
+		});
+		
 		$("#things").on("delete-thing", function(event, element, originalEvent, id){
 			element.blur();
 			originalEvent.preventDefault();
@@ -124,7 +130,9 @@
 			element.blur();
 			originalEvent.preventDefault();
 			row = thingsDataTable.row("#" + id);
-			$.publish("show-edit-thing-modal", row.data().id);
+			$.publish("show-edit-thing-modal", [row.data().id, function(thing){
+				row.data(thing).draw();
+			}]);
 		});
 		
 		return function(things){
