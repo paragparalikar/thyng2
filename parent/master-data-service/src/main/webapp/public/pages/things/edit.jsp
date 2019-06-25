@@ -24,7 +24,7 @@
 							<tbody>
 								<tr>
 									<td>
-										<div class="form-group">
+										<div class="form-group required">
 											<label for="thing-name">Name</label> 
 											<input type="hidden" id="thing-id">
 											<input data-rule-required="true" data-rule-minlength="3" data-rule-maxlength="255" maxlength="255" type="text" name="name" class="form-control" id="thing-name" placeholder="Thing name">

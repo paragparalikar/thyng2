@@ -12,7 +12,7 @@
 				<tbody>
 					<tr>
 						<td>
-							<div class="form-group">
+							<div class="form-group required">
 								<label for="sensor-name">Name</label> 
 								<input 	data-rule-required="true" 
 										data-rule-minlength="3" 
@@ -27,7 +27,7 @@
 							</div>
 						</td>
 						<td>
-							<div class="form-group">
+							<div class="form-group required">
 								<label for="sensor-inactivity-period">Inactivity Period</label> 
 								<input 	data-rule-required="true" 
 										data-rule-minlength="1" 
@@ -47,7 +47,7 @@
 					</tr>
 					<tr>
 						<td>
-							<div class="form-group">
+							<div class="form-group required">
 								<label for="sensor-abbreviation">Abbreviation</label> 
 								<input 	data-rule-required="true" 
 										data-rule-minlength="1" 
@@ -62,7 +62,7 @@
 							</div>
 						</td>
 						<td>
-							<div class="form-group">
+							<div class="form-group required">
 								<label for="sensor-batch-size">Batch Size</label> 
 								<input 	data-rule-required="true" 
 										data-rule-minlength="1" 
@@ -111,7 +111,7 @@
 					</tr>
 					<tr>
 						<td>
-							<div class="form-group">
+							<div class="form-group required">
 								<label for="sensor-unit">Unit</label> 
 								<input  data-rule-required="true" 
 										data-rule-minlength="1" 

@@ -9,7 +9,7 @@
 			<table id="gateway-view-table" class="form-table">
 				<tr>
 					<td>
-						<div class="form-group">
+						<div class="form-group required">
 							<label for="gateway-name">Name</label> 
 							<input 	data-rule-required="true" 
 									data-rule-minlength="3" 
@@ -56,7 +56,7 @@
 				</tr>
 				<tr>
 					<td>
-						<div class="form-group">
+						<div class="form-group required">
 							<label for="gateway-inactivityPeriod">Inactivity Period</label> 
 							<input 	data-rule-required="true" 
 									data-rule-digits="true" 

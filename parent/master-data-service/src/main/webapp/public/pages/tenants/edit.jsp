@@ -9,7 +9,7 @@
 			<table id="tenant-edit-table" class="form-table">
 				<tr>
 					<td>
-						<div class="form-group">
+						<div class="form-group required">
 							<label for="tenant-name">Name</label> 
 							<input 	data-rule-required="true" 
 									data-rule-minlength="3" 
@@ -66,7 +66,7 @@
 				</tr>
 				<tr>
 					<td>
-						<div class="form-group">
+						<div class="form-group required">
 							<label for="tenant-start">Start</label> 
 							<div class="input-group date" id="tenant-start-datepicker">
 								<input 	data-rule-required="true" 
@@ -87,7 +87,7 @@
 				</tr>
 				<tr>
 					<td>
-						<div class="form-group">
+						<div class="form-group required">
 							<label for="tenant-expiry">Expiry</label> 
 							<div class="input-group date" id="tenant-expiry-datepicker">
 								<input 	data-rule-required="true" 

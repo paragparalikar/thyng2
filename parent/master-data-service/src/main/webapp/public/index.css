@@ -42,6 +42,11 @@ form{
 .form-group > label > .error{
 	float: right;
 }
+.form-group.required label:after{
+	content:"*";
+	color:red;
+	margin-left: 4px;
+}
 .form-control.error{
 	border-color: #ffaaaa;
 }
