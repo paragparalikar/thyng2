@@ -74,6 +74,8 @@
 <script>
 	renderModal = (function($) {
 		
+		tabify($("#thing-edit-tab-pane"));
+		
 		$("#thing-edit-modal-cancel-button").click(function(){
 			$("#thing-form").trigger("thing-edit-cancel");
 		});
@@ -135,18 +137,6 @@
 			submitHandler: save
 		});
 		
-		var tabify = function(element){
-			element.children("li").click(function(event){
-				var li = $(event.target).parent();
-				if(!li.hasClass("disabled")){
-					li.siblings().each(function(){
-						$($(this).removeClass("active").css("cursor","pointer").attr("target")).hide();
-					});
-					$(li.addClass("active").css("cursor","default").attr("target")).show();
-				}
-			});
-		};
-		
 	    return function(thing, gateways) {
 	    	$("#thing-edit-page-title").text(thing && thing.id && 0 < thing.id ? "Edit Thing Details" : "Create New Thing");
 	    	$('#thing-gateway').empty();
@@ -154,7 +144,6 @@
 	    	     $('#thing-gateway').append("<option value='"+gateway.id+"'>"+gateway.name+"</option>"); 
 	    	});
 	    	toView(thing);
-	    	tabify($("#thing-edit-tab-pane"));
 	    	$("#thing-name").focus();
 	    };
     })(jQuery);

@@ -2,6 +2,31 @@ errorCallback = null;
 toast = null;
 
 $(function() {
+	
+	tabify = function(element){
+		element.children("li").each(function(){
+			var node = $(this);
+			if(node.hasClass("active")){
+				$(node.css("cursor","default").attr("target")).show();
+			}else{
+				if(!node.hasClass("disabled")){
+					$(node.css("cursor","pointer").attr("target")).hide();
+				}else{
+					$(node.attr("target")).hide();
+				}
+			}
+		});
+		element.children("li").click(function(event){
+			var li = $(event.target).parent();
+			if(!li.hasClass("disabled")){
+				li.siblings().each(function(){
+					$($(this).removeClass("active").css("cursor","pointer").attr("target")).hide();
+				});
+				$(li.addClass("active").css("cursor","default").attr("target")).show();
+			}
+		});
+	};
+	
 	toast = function(message, title, toastIcon){
 		$.toast({
     		heading: title ? title : "Success",
@@ -11,6 +36,7 @@ $(function() {
     	    icon: toastIcon ? toastIcon : 'success'
     	});
 	};
+	
 	successCallback = function(callback){
 		return function(xhr, status, text){
 			if(text && text.responseText && text.responseText.startsWith("<!--login-->")){
@@ -20,12 +46,14 @@ $(function() {
 			}
 		};
 	};
+	
 	beforeTemplateInsert = function(content, data){
 		if(content && 7 < content.length && "login-form" == content[7].id){
 			window.location.reload();
 			throw new Error("Login");
 		}
 	};
+	
 	errorCallback = function(xhr, status, text){
 		if(xhr && xhr.status && 401 == xhr.status){
 			window.location.reload();

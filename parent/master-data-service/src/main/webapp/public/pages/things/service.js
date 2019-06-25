@@ -54,17 +54,17 @@ $.subscribe("show-view-thing-modal", function(event, id){
     	success: function(){
     		thingService.findById(id, function(thing){
     			renderModal(thing);
-    			$("#sensonr-table-container").loadTemplate("public/pages/things/sensors/view-list.jsp", null, {
+    			$("#sensor-data-table-container").loadTemplate("public/pages/things/sensors/view-list.jsp", null, {
         			beforeInsert: beforeTemplateInsert,
         			success: function(){
-        				renderSensorDataTable(thing.sensors);
+        				renderSensorDataTable(thing && thing.sensors ? thing.sensors : []);
         			},
         			error: errorCallback
         		});
-    			$("#actuator-table-container").loadTemplate("public/pages/things/actuators/view-list.jsp", null, {
+    			$("#actuator-data-table-container").loadTemplate("public/pages/things/actuators/view-list.jsp", null, {
         			beforeInsert: beforeTemplateInsert,
         			success: function(){
-        				renderActuatorDataTable(thing.actuators);
+        				renderActuatorDataTable(thing && thing.actuators ? thing.actuators : []);
         				$("#modal-container").modal();
         			},
         			error: errorCallback

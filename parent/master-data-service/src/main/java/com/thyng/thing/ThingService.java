@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.thyng.aspect.persistence.NotFoundException;
+import com.thyng.gateway.Gateway;
+import com.thyng.gateway.GatewayService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 public class ThingService {
 
 	private final ThingRepository thingRepository;
+	private final GatewayService gatewayService;
 	
 	@PreAuthorize("hasPermission(null, 'THING', 'LIST')")
 	public List<Thing> findByTenantId(@NotNull @Positive Long tenantId){
@@ -54,6 +57,8 @@ public class ThingService {
 	public Thing create(@NotNull Thing thing){
 		if(null == thing.getId() || 0 >= thing.getId()){
 			if(null != thing.getId() && 0 == thing.getId()) thing.setId(null);
+			final Gateway managedGateway = gatewayService.findById(thing.getGateway().getId());
+			thing.setGateway(managedGateway);
 			return thingRepository.save(thing);
 		}
 		throw new IllegalArgumentException("Id must be null");
