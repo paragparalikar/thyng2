@@ -216,7 +216,6 @@
 			submitHandler: save
 		});
 		return function(thingId, id){
-			bind();
 			if(id && 0 < id){
 				sensorService.findById(thingId, id, function(sensor){
 					toView(thingId, sensor);

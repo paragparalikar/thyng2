@@ -25,7 +25,7 @@ var sensorService = {
 $.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callback){
 	$("#sensor-modal-container").loadTemplate("public/pages/things/sensors/edit.jsp", null, {
 		success : function(){
-			$("#sensor-modal-container").modal({
+			var sensorModal = $("#sensor-modal-container").modal({
 				closeExisting: false
 			});
 			var form = $("#sensor-form");
@@ -45,3 +45,23 @@ $.subscribe("show-sensor-edit-modal", function(event, thingId, sensorId, callbac
 	});
 });
 
+$.subscribe("show-sensor-delete-modal", function(event, thingId, sensor, callback){
+	$("#sensor-modal-container").loadTemplate("public/pages/utils/confirmation.html", {
+        message: "Are you sure you want to delete sensor " + sensor.name + " ?"
+    }, {
+		success : function(){
+			$("#sensor-modal-container").modal({
+				closeExisting: false
+			});
+			$("#confirmation-action-button").click(function(){
+				sensorService.deleteById(thingId, sensor.id, function () {
+					 $.modal.close();
+		        	toast('Sensor has been deleted successfully');
+		        	if(callback){
+		        		callback();
+		        	}
+		        });
+			});
+		}
+	});
+});

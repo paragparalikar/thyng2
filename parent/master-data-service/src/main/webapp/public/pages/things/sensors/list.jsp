@@ -92,14 +92,8 @@ renderSensorDataTable = (function($){
 		element.blur();
 		originalEvent.preventDefault();
 		row = sensorDataTable.row("#" + id);
-	    $.publish("show-confirmation-modal", [{
-	        message: "Are you sure you want to delete sensor " + row.data().name + " ?"
-	    }, function () {
-	        sensorService.deleteById($("#thing-id").val(), id, function () {
-	        	toast('Sensor has been deleted successfully');
-	            row.remove().draw();
-	            $.modal.close();
-	        });
+	    $.publish("show-sensor-delete-modal", [$("#thing-id").val(), row.data(), function(){
+	    	row.remove().draw();
 	    }]);
 	});
 	
