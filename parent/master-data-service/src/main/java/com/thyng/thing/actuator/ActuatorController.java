@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/things/{thingId}/actuators")
+@RequestMapping("/api/v1/actuators")
 public class ActuatorController {
 
 	private final ThingService thingService;
@@ -32,18 +32,17 @@ public class ActuatorController {
 	private final ActuatorService actuatorService;
 	
 	@GetMapping
-	public Set<ActuatorDTO> findByThingId(@PathVariable @NonNull @Positive final Long thingId){
+	public Set<ActuatorDTO> findByThingId(@RequestParam @NonNull @Positive final Long thingId){
 		return actuatorMapper.toDTO(actuatorService.findByThingId(thingId));
 	}
 	
 	@GetMapping("/{actuatorId}")
-	public ActuatorDTO findById(@PathVariable @NonNull @Positive final Long thingId, 
-			@PathVariable @NonNull @Positive final Long actuatorId) {
+	public ActuatorDTO findById(@PathVariable @NonNull @Positive final Long actuatorId) {
 		return actuatorMapper.toDTO(actuatorService.findById(actuatorId));
 	}
 	
 	@PostMapping
-	public ActuatorDTO create(@PathVariable @NonNull @Positive final Long thingId, 
+	public ActuatorDTO create(@RequestParam @NonNull @Positive final Long thingId, 
 			@RequestBody @NonNull @Valid final ActuatorDTO dto) {
 		final Thing thing = thingService.findById(thingId);
 		final Actuator actuator = actuatorMapper.toEntity(dto);
@@ -52,7 +51,7 @@ public class ActuatorController {
 	}
 	
 	@PutMapping
-	public ActuatorDTO update(@PathVariable @NonNull @Positive final Long thingId, 
+	public ActuatorDTO update(@RequestParam @NonNull @Positive final Long thingId, 
 			@RequestBody @NonNull @Valid final ActuatorDTO dto) {
 		final Thing thing = thingService.findById(thingId);
 		final Actuator actuator = actuatorMapper.toEntity(dto);
@@ -61,8 +60,7 @@ public class ActuatorController {
 	}
 	
 	@DeleteMapping("/{actuatorId}")
-	public void delete(@PathVariable @NonNull @Positive final Long thingId, 
-			@PathVariable @NonNull @Positive final Long actuatorId) {
+	public void delete(@PathVariable @NonNull @Positive final Long actuatorId) {
 		actuatorService.delete(actuatorId);
 	}
 

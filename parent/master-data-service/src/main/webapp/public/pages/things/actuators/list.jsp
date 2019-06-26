@@ -38,7 +38,7 @@ renderActuatorDataTable = (function($){
 	       {
 	    	   data : "name",
 	           render: function (data, type, row) {
-	               return user.hasAuthority("ACTUATOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+	               return user.hasAuthority("ACTUATOR_VIEW") ? '<a href="" onclick="$(\'#actuator-table\').trigger(\'view-actuator\', [this, event,'+row.id+'])">' + data + '</a>' : data;
 	           }
 	       }, 
 	       {data : "abbreviation" }, 
@@ -74,6 +74,13 @@ renderActuatorDataTable = (function($){
 		});	
 	}
 	
+	$("#actuator-table").on("view-actuator", function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = actuatorDataTable.row("#" + id);
+		$.publish("show-actuator-view-modal", [$("#thing-id").val(), row.data().id]);
+	});
+	
 	$("#actuator-table").on("copy-actuator", function(){
 		
 	});
@@ -91,14 +98,8 @@ renderActuatorDataTable = (function($){
 		element.blur();
 		originalEvent.preventDefault();
 		row = actuatorDataTable.row("#" + id);
-	    $.publish("show-confirmation-modal", [{
-	        message: "Are you sure you want to delete actuator " + row.data().name + " ?"
-	    }, function () {
-	        actuatorService.deleteById($("#thing-id").val(), id, function () {
-	        	toast('Actuator has been deleted successfully');
-	            row.remove().draw();
-	            $.modal.close();
-	        });
+	    $.publish("show-actuator-delete-modal", [$("#thing-id").val(), row.data(), function(){
+	    	row.remove().draw();
 	    }]);
 	});
 	

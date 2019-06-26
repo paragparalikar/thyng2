@@ -1,3 +1,4 @@
+<input type="hidden" id="thing-id">
 <table id="actuator-table" class="table table-striped table-bordered table-sm" style="width: 100%;">
 	<thead>
 		<tr>
@@ -10,7 +11,6 @@
 </table>
 <script>
 renderActuatorDataTable = (function($){
-	
 	var actuatorDataTable = $("#actuator-table").DataTable({
 	    searching : false,
 	    ordering : false,
@@ -22,16 +22,24 @@ renderActuatorDataTable = (function($){
 	       {
 	    	   data : "name",
 	           render: function (data, type, row) {
-	               return user.hasAuthority("ACTUATOR_VIEW") ? '<a href="#things/view/'+row.id+'">' + data + '</a>' : data;
+	               return user.hasAuthority("ACTUATOR_VIEW") ? '<a href="" onclick="$(\'#actuator-table\').trigger(\'view-actuator\', [this, event,'+row.id+'])">' + data + '</a>' : data;
 	           }
-	    	}, 
+	       }, 
 	       {data : "abbreviation" }, 
 	       {data : "unit"}, 
 	       {data : "dataType"}
 	    ]
 	});
 	
+	$("#actuator-table").on("view-actuator", function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = actuatorDataTable.row("#" + id);
+		$.publish("show-actuator-view-modal", [$("#thing-id").val(), row.data().id]);
+	});
+	
 	return function(thingId, actuators){
+		$("#thing-id").val(thingId);
 		actuatorDataTable.clear().rows.add(actuators).draw().columns.adjust();
 	};
 })(jQuery);

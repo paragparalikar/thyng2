@@ -3,6 +3,7 @@ package com.thyng.thing.actuator;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,14 +34,14 @@ public class ActuatorService {
 	}
 	
 	@PreAuthorize("hasPermission(null, 'ACTUATOR', 'CREATE')")
-	public Actuator create(@NonNull final Actuator actuator) {
+	public Actuator create(@NonNull @Valid final Actuator actuator) {
 		if(null != actuator.getId() || 0 < actuator.getId()) throw new IllegalArgumentException("Id must be null");
 		return actuatorRepository.save(actuator);
 	}
 	
 	@Transactional
 	@PreAuthorize("hasPermission(#actuator.id, 'ACTUATOR', 'UPDATE')")
-	public Actuator update(@NonNull final Actuator actuator) {
+	public Actuator update(@NonNull @Valid final Actuator actuator) {
 		if(null == actuator.getId() || 0 >= actuator.getId()) throw new IllegalArgumentException("Id must not be null");
 		return actuatorRepository.save(actuator);
 	}
