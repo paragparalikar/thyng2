@@ -15,9 +15,6 @@ import com.thyng.gateway.provider.property.MutablePropertyProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.gateway.service.health.HeartbeatService;
 import com.thyng.gateway.service.health.StatusMonitoringService;
-import com.thyng.gateway.service.message.MessageDispatchService;
-import com.thyng.gateway.service.message.MessageNormalizationService;
-import com.thyng.gateway.service.message.MessagePersistenceService;
 import com.thyng.gateway.service.server.coap.CoapServerService;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 
@@ -33,9 +30,6 @@ public class BootstrapService extends CompositeService {
 		context = buildContext();
 		add(new HeartbeatService(context));
 		add(new CoapServerService(context));
-		add(new MessageNormalizationService(context));
-		add(new MessagePersistenceService(context));
-		add(new MessageDispatchService(context));
 		add(new StatusMonitoringService(context));
 	}
 	

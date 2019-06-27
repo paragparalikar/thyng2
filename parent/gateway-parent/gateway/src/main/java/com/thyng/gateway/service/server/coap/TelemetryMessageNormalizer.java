@@ -1,41 +1,26 @@
-package com.thyng.gateway.service.message;
-
-import java.util.function.Consumer;
+package com.thyng.gateway.service.server.coap;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
 import com.thyng.gateway.model.Context;
-import com.thyng.gateway.model.Message;
-import com.thyng.gateway.service.Service;
+import com.thyng.gateway.model.TelemetryMessage;
 import com.thyng.model.Lambda;
 import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
 import com.thyng.util.StringUtil;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 
 @RequiredArgsConstructor
-public class MessageNormalizationService implements Service, Consumer<Message> {
+public class TelemetryMessageNormalizer {
 	private static final ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
-	
+
 	private final Context context;
 	
-	@Override
-	public void start() throws Exception {
-		context.getEventBus().register(Message.RECEIVED, this);
-	}
-
-	@Override
-	public void stop() throws Exception {
-		context.getEventBus().unregister(Message.RECEIVED, this);
-	}
-
-	@Override
-	@SneakyThrows
-	public void accept(Message message) {
+	public void normalize(TelemetryMessage message) throws ScriptException {
 		message.getValues().replaceAll(Lambda.uncheck((sensorId, value) -> {
 			final SensorDTO sensor = context.getSensor(sensorId);
 			final ThingDetailsDTO thing = context.getThing(sensorId);
@@ -50,7 +35,6 @@ public class MessageNormalizationService implements Service, Consumer<Message> {
 			}
 			return value;
 		}));
-		context.getEventBus().publish(Message.NORMALIZED, message);
 	}
-
+	
 }

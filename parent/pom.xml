@@ -57,9 +57,8 @@
 	</build>
 
 	<modules>
-		<module>master-data-service</module>
 		<module>core</module>
-		<module>gateway</module>
 		<module>gateway-parent</module>
+		<module>master-data-service</module>
 	</modules>
 </project>
