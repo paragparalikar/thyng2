@@ -24,8 +24,8 @@ import com.thyng.model.enumeration.Protocol;
 
 public class Serializer {
 
-	private static Kryo kryo;
-	public static Kryo kryo(){
+	private static volatile Kryo kryo;
+	public static synchronized Kryo kryo(){
 		if(null == kryo){
 			kryo = new Kryo();
 			kryo.register(ActuatorDTO.class);

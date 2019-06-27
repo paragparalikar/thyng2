@@ -60,5 +60,6 @@
 		<module>master-data-service</module>
 		<module>core</module>
 		<module>gateway</module>
+		<module>gateway-parent</module>
 	</modules>
 </project>

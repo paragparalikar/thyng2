@@ -1,12 +1,13 @@
 package com.thyng.model;
 
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public final class Lambda {
-
+	
 	@FunctionalInterface
 	public interface Consumer_WithExceptions<T, E extends Exception> {
 		void accept(T t) throws E;
@@ -15,6 +16,11 @@ public final class Lambda {
 	@FunctionalInterface
 	public interface BiConsumer_WithExceptions<T, U, E extends Exception> {
 		void accept(T t, U u) throws E;
+	}
+	
+	@FunctionalInterface
+	public interface BiFunction_WithExceptions<T, U, R, E extends Exception> {
+		R accept(T t, U u) throws E;
 	}
 
 	@FunctionalInterface
@@ -43,7 +49,7 @@ public final class Lambda {
 		};
 	}
 
-	public static <T, U, E extends Exception> BiConsumer<T, U> biConsumer(
+	public static <T, U, E extends Exception> BiConsumer<T, U> uncheck(
 			BiConsumer_WithExceptions<T, U, E> biConsumer) throws E {
 		return (t, u) -> {
 			try {
@@ -54,6 +60,18 @@ public final class Lambda {
 		};
 	}
 
+	public static <T, U, R, E extends Exception> BiFunction<T, U, R> uncheck(
+			BiFunction_WithExceptions<T, U, R, E> biConsumer) throws E {
+		return (t, u) -> {
+			try {
+				return biConsumer.accept(t, u);
+			} catch (Exception exception) {
+				throwAsUnchecked(exception);
+				return null;
+			}
+		};
+	}
+	
 	public static <T, R, E extends Exception> Function<T, R> function(Function_WithExceptions<T, R, E> function)
 			throws E {
 		return t -> {

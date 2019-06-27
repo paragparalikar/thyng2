@@ -1,4 +1,4 @@
-package com.thyng.gateway;
+package com.thyng.data.injestion.coap;
 
 import java.nio.ByteBuffer;
 
@@ -6,6 +6,8 @@ import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.springframework.stereotype.Component;
+
+import com.thyng.gateway.GatewayService;
 
 @Component
 public class HeartbeatResource extends CoapResource{

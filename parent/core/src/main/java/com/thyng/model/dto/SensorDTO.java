@@ -9,6 +9,8 @@ public class SensorDTO {
 
 	private Long id;
 	
+	private Long thingId;
+	
 	private String name;
 	
 	private String abbreviation;

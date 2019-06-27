@@ -1,12 +1,9 @@
-package com.thyng.aspect.web.coap;
+package com.thyng.data.injestion.coap;
 
 import org.eclipse.californium.core.CoapServer;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.thyng.gateway.GatewayResource;
-import com.thyng.gateway.HeartbeatResource;
 
 @Configuration
 public class GatewayConfiguration {

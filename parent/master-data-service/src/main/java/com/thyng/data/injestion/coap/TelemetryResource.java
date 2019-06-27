@@ -1,11 +1,11 @@
-package com.thyng.aspect.web.coap;
+package com.thyng.data.injestion.coap;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
 import org.eclipse.californium.core.server.resources.CoapExchange;
 import org.springframework.stereotype.Component;
 
-import com.thyng.model.dto.TelemetryDTO;
+import com.thyng.model.Telemetry;
 
 import lombok.SneakyThrows;
 
@@ -19,12 +19,14 @@ public class TelemetryResource extends CoapResource {
 	@Override
 	@SneakyThrows
 	public void handlePOST(CoapExchange exchange) {
-		final Long gatewayId = Long.parseLong(exchange.getQueryParameter("gatewayId"));
-		final Long thingId = Long.parseLong(exchange.getQueryParameter("thingId"));
+		final String uuid = exchange.getQueryParameter("uuid");
 		final Long sensorId = Long.parseLong(exchange.getQueryParameter("sensorId"));
-		final Byte dataType = Byte.parseByte(exchange.getQueryParameter("dataType"));
-		final TelemetryDTO telemetry = new TelemetryDTO(thingId, sensorId, dataType, exchange.getRequestPayload());
-		System.out.println("Received thingId:"+thingId+", sensorId:"+sensorId+", dataType:"+dataType);
+		final Telemetry telemetry = Telemetry.builder()
+				.sensorId(sensorId)
+				.uuid(uuid)
+				.payload(new String(exchange.getRequestPayload(),"UTF-8"))
+				.build();
+		System.out.println("Received sensorId:" + sensorId+", uuid:" + uuid);
 		exchange.respond(ResponseCode.CREATED);
 	}
 	

@@ -1,4 +1,4 @@
-package com.thyng.gateway;
+package com.thyng.data.injestion.coap;
 
 import org.eclipse.californium.core.CoapResource;
 import org.eclipse.californium.core.coap.CoAP.ResponseCode;
@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.esotericsoftware.kryo.io.Input;
+import com.thyng.gateway.Gateway;
+import com.thyng.gateway.GatewayMapper;
+import com.thyng.gateway.GatewayService;
 import com.thyng.model.Serializer;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.GatewayRegistrationDTO;
