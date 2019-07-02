@@ -9,7 +9,6 @@ import com.thyng.util.StringUtil;
 
 import lombok.Builder;
 import lombok.NonNull;
-import lombok.SneakyThrows;
 import lombok.Value;
 
 @Value
@@ -46,15 +45,9 @@ public class Telemetry {
 		return values;
 	}
 	
-	@SneakyThrows
-	public byte[] toByteArray() {
-		final String payload = values.entrySet().stream()
+	@Override
+	public String toString() {
+		return values.entrySet().stream()
 				.map(e -> e.getKey()+","+e.getValue()).collect(Collectors.joining("\n"));
-		return payload.getBytes("UTF-8");
 	}
-
-
-
-
-	
 }

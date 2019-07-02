@@ -11,7 +11,7 @@ import org.mapstruct.Mapping;
 
 import com.thyng.model.dto.ThingDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
-import com.thyng.thing.sensor.SensorMapper;
+import com.thyng.sensor.SensorMapper;
 
 @DecoratedWith(ThingMapperDecorator.class)
 @Mapper(componentModel="spring", uses={SensorMapper.class})

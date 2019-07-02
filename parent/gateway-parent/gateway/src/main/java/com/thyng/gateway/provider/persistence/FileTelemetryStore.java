@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
-import com.thyng.gateway.model.Constant;
+import com.thyng.gateway.Constant;
 import com.thyng.model.Telemetry;
 
 import lombok.Builder;

@@ -8,10 +8,10 @@ import org.springframework.security.access.expression.method.MethodSecurityExpre
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
 
+import com.thyng.actuator.ActuatorService;
 import com.thyng.gateway.GatewayService;
+import com.thyng.sensor.SensorService;
 import com.thyng.thing.ThingService;
-import com.thyng.thing.actuator.ActuatorService;
-import com.thyng.thing.sensor.SensorService;
 import com.thyng.user.UserService;
 
 import lombok.RequiredArgsConstructor;

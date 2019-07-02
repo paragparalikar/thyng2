@@ -84,7 +84,9 @@ public class GatewayController {
 	
 	@PostMapping("/registrations")
 	public GatewayConfigurationDTO register(@RequestBody GatewayRegistrationDTO dto, HttpServletRequest request){
-		final Gateway gateway = gatewayService.register(dto.getGatewayId(), request.getRemoteHost(), dto.getPort());
+		final String host = request.getRemoteHost();
+		final Integer port = request.getRemotePort();
+		final Gateway gateway = gatewayService.register(dto.getGatewayId(), host, port);
 		return gatewayMapper.toExtendedDTO(gateway);
 	}
 

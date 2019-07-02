@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Properties;
 
-import com.thyng.gateway.model.Constant;
+import com.thyng.gateway.Constant;
 import com.thyng.util.StringUtil;
 
 import lombok.extern.slf4j.Slf4j;

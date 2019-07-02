@@ -9,11 +9,36 @@
 	</parent>
 	<artifactId>gateway</artifactId>
 
+	<properties>
+		<unirest.version>2.3.08</unirest.version>
+		<httpserver.version>20070405</httpserver.version>
+		<californium.version>2.0.0-M14</californium.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>com.thyng</groupId>
 			<artifactId>core</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.konghq</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>${unirest.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.net.httpserver</groupId>
+			<artifactId>http</artifactId>
+			<version>${httpserver.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.californium</groupId>
+			<artifactId>californium-core</artifactId>
+			<version>${californium.version}</version>
 		</dependency>
 	</dependencies>
 

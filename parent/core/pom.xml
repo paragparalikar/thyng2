@@ -8,31 +8,10 @@
 	</parent>
 	<artifactId>core</artifactId>
 
-	<properties>
-		<kryo.version>5.0.0-RC2</kryo.version>
-		<paho.version>1.2.1</paho.version>
-		<californium.version>2.0.0-M14</californium.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.esotericsoftware</groupId>
-			<artifactId>kryo</artifactId>
-			<version>${kryo.version}</version>
-		</dependency>
-		<!-- <dependency>
-			<groupId>org.eclipse.paho</groupId>
-			<artifactId>org.eclipse.paho.client.mqttv3</artifactId>
-			<version>${paho.version}</version>
-		</dependency> -->
-		<dependency>
-			<groupId>org.eclipse.californium</groupId>
-			<artifactId>californium-core</artifactId>
-			<version>${californium.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

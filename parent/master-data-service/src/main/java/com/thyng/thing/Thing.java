@@ -63,10 +63,10 @@ public class Thing extends AuditableEntity implements Cloneable{
 	private Gateway gateway;
 	
 	@OneToMany(mappedBy="thing", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<com.thyng.thing.sensor.Sensor> sensors;
+	private Set<com.thyng.sensor.Sensor> sensors;
 	
 	@OneToMany(mappedBy="thing", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<com.thyng.thing.actuator.Actuator> actuators;
+	private Set<com.thyng.actuator.Actuator> actuators;
 	
 	@ElementCollection
 	private Map<@NotBlank String,@NotBlank  String> properties;

@@ -105,13 +105,15 @@ public final class Lambda {
 		}
 	}
 
-	public static <R, E extends Exception> R uncheck(Supplier_WithExceptions<R, E> supplier) {
-		try {
-			return supplier.get();
-		} catch (Exception exception) {
-			throwAsUnchecked(exception);
-			return null;
-		}
+	public static <R, E extends Exception> Supplier<R> uncheck(Supplier_WithExceptions<R, E> supplier) {
+		return () -> {
+			try {
+				return supplier.get();
+			} catch (Exception exception) {
+				throwAsUnchecked(exception);
+				return null;
+			}
+		};
 	}
 
 	public static <T, R, E extends Exception> R uncheck(Function_WithExceptions<T, R, E> function, T t) {

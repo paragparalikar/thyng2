@@ -3,8 +3,9 @@ package com.thyng.gateway.provider.persistence;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.thyng.gateway.model.Constant;
+import com.thyng.gateway.Constant;
 import com.thyng.gateway.provider.property.PropertyProvider;
+import com.thyng.gateway.provider.serialization.SerializationProvider;
 
 import lombok.NonNull;
 
@@ -15,9 +16,10 @@ public class FilePersistenceProvider implements PersistenceProvider {
 	private final Map<Long, TelemetryStore> telemetryStoreChache = new HashMap<>();
 	private final FileConfigurationStore configurationStore;
 	
-	public FilePersistenceProvider(@NonNull final PropertyProvider properties) {
+	public FilePersistenceProvider(@NonNull final PropertyProvider properties,
+			@NonNull final SerializationProvider<String> serializationProvider) {
 		this.properties = properties;
-		configurationStore = new FileConfigurationStore(properties);
+		configurationStore = new FileConfigurationStore(properties, serializationProvider);
 	}
 	
 	@Override
