@@ -1,0 +1,12 @@
+server:
+  port: 8081
+  gateway:
+    port: 5684
+
+spring:
+  main:
+    banner-mode: CONSOLE
+  mvc:
+    view:
+      prefix: /views/
+      suffix: .jsp
