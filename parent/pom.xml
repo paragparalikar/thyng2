@@ -63,6 +63,6 @@
 		<module>commons-service</module>
 		<module>commons-mapper</module>
 		<module>gateway-parent</module>
-		<module>master-data-service</module>
+		<module>web-api-service</module>
 	</modules>
 </project>
