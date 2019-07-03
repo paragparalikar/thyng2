@@ -57,7 +57,11 @@
 	</build>
 
 	<modules>
-		<module>core</module>
+		<module>commons-model</module>
+		<module>commons-entity</module>
+		<module>commons-repository</module>
+		<module>commons-service</module>
+		<module>commons-mapper</module>
 		<module>gateway-parent</module>
 		<module>master-data-service</module>
 	</modules>

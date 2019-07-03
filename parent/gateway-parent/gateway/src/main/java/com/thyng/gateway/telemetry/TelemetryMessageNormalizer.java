@@ -7,9 +7,9 @@ import javax.script.ScriptException;
 
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.model.TelemetryMessage;
-import com.thyng.model.Lambda;
 import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
+import com.thyng.util.Lambda;
 import com.thyng.util.StringUtil;
 
 import lombok.RequiredArgsConstructor;

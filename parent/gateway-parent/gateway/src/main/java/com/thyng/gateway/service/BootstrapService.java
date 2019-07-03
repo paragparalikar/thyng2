@@ -19,8 +19,8 @@ import com.thyng.gateway.service.health.HeartbeatService;
 import com.thyng.gateway.service.health.StatusMonitoringService;
 import com.thyng.gateway.service.server.coap.CoapServerService;
 import com.thyng.gateway.service.server.http.HttpServerService;
-import com.thyng.model.Lambda;
 import com.thyng.model.dto.GatewayConfigurationDTO;
+import com.thyng.util.Lambda;
 
 import lombok.extern.slf4j.Slf4j;
 

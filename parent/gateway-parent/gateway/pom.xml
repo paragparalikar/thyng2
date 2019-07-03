@@ -18,7 +18,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.thyng</groupId>
-			<artifactId>core</artifactId>
+			<artifactId>commons-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

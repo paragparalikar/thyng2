@@ -1,5 +1,5 @@
-<%@ page import="com.thyng.user.UserDTO" %>
-<%@ page import="com.thyng.aspect.security.Authority" %>
+<%@ page import="com.thyng.model.dto.UserDTO" %>
+<%@ page import="com.thyng.model.enumeration.Authority" %>
 <% 
 	final UserDTO user = (UserDTO)session.getAttribute("user");
 	final boolean hasWriteAccess = user.hasAuthority(Authority.GATEWAY_CREATE) || user.hasAuthority(Authority.GATEWAY_UPDATE) || user.hasAuthority(Authority.GATEWAY_DELETE);

@@ -1,4 +1,6 @@
-- Things CRUD
+Authorities to not implement security intf
+Authorities are transient, make them persistent set
+
 - Users CRUD
 - ThingGroups CRUD
 - Rules CRUD
