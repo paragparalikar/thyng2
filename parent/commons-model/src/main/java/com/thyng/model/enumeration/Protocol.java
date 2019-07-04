@@ -1,7 +1,20 @@
 package com.thyng.model.enumeration;
 
+import lombok.NonNull;
+
 public enum Protocol {
 
-	MQTT, COAP, HTTP;
+	MQTT("mqtt"), COAP("coap"), HTTP("http");
 
+	private final String text;
+	
+	private Protocol(@NonNull final String text) {
+		this.text = text;
+	}
+	
+	@Override
+	public String toString() {
+		return text;
+	}
+	
 }

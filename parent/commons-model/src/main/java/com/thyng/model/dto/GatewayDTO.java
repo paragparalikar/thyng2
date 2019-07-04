@@ -1,10 +1,13 @@
 package com.thyng.model.dto;
 
+import com.thyng.model.enumeration.Protocol;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper=true, exclude={"description","active", "inactivityPeriod", "host", "port"})
+@EqualsAndHashCode(callSuper=true, exclude={"description","active", 
+		"inactivityPeriod", "host", "port", "protocol", "ssl"})
 public class GatewayDTO extends GatewayThinDTO{
 
 	private String description;
@@ -12,6 +15,10 @@ public class GatewayDTO extends GatewayThinDTO{
 	private Boolean active;
 
 	private Integer inactivityPeriod;
+	
+	private Protocol protocol = Protocol.HTTP;
+	
+	private Boolean ssl = Boolean.FALSE;
 	
 	private String host;
 	

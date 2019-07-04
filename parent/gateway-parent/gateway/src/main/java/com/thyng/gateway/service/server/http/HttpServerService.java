@@ -22,7 +22,7 @@ public class HttpServerService implements Service {
 		final int backlog = context.getProperties().getInteger("thyng.gateway.http.server.backlog", 0);
 		log.info("Starting HTTP server at port "+port+" and backlog "+backlog);
 		httpServer = HttpServer.create(new InetSocketAddress(port), backlog);
-		httpServer.createContext("/telemetry", new HttpTelemetryHandler(context));
+		httpServer.createContext("/telemetries", new HttpTelemetryHandler(context));
 		log.info("HTTT server started successfully");
 	}
 

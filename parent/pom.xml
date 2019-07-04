@@ -64,5 +64,7 @@
 		<module>commons-mapper</module>
 		<module>gateway-parent</module>
 		<module>web-api-service</module>
+		<module>data-injestion-service</module>
+		<module>data-processing-service</module>
 	</modules>
 </project>

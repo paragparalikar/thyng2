@@ -10,6 +10,8 @@ import javax.persistence.Cacheable;
 import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,17 +22,21 @@ import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.envers.Audited;
 
+import com.thyng.model.enumeration.Protocol;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 @Data
 @Entity
@@ -61,6 +67,20 @@ public class Gateway extends AuditableEntity implements Cloneable{
 
 	@ElementCollection
 	private Map<@NotBlank String,@NotBlank  String> properties;
+	
+	@NotNull
+	@NonNull
+	@Builder.Default
+	@Enumerated(EnumType.STRING)
+	private Protocol protocol = Protocol.HTTP;
+	
+	@NotNull
+	@NonNull
+	@Builder.Default
+	private Boolean ssl = Boolean.FALSE;
+	
+	// private byte[] keyStore;
+	// private String keyStorePassword;
 	
 	@Size(max=255)
 	private String host;

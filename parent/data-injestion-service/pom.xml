@@ -7,8 +7,8 @@
 		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
+	<artifactId>data-injestion-service</artifactId>
 	<packaging>war</packaging>
-	<artifactId>web-api-service</artifactId>
 
 	<dependencies>
 		<dependency>
@@ -42,21 +42,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.tomcat.embed</groupId>
-			<artifactId>tomcat-embed-jasper</artifactId>
-			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -85,4 +71,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

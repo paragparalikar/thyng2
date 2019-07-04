@@ -5,10 +5,5 @@
     <artifactId>parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>gateway-parent</artifactId>
-  <packaging>pom</packaging>
-  <modules>
-  	<module>gateway</module>
-  	<module>gateway-client</module>
-  </modules>
+  <artifactId>data-processing-service</artifactId>
 </project>

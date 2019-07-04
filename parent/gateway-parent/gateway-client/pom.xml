@@ -4,21 +4,29 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.thyng</groupId>
-		<artifactId>parent</artifactId>
+		<artifactId>gateway-parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>commons-service</artifactId>
+	<artifactId>gateway-client</artifactId>
+
+	<properties>
+		<unirest.version>2.3.08</unirest.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.thyng</groupId>
-			<artifactId>commons-repository</artifactId>
+			<artifactId>commons-model</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.thyng</groupId>
-			<artifactId>gateway-client</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>com.konghq</groupId>
+			<artifactId>unirest-java</artifactId>
+			<version>${unirest.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
 		</dependency>
 	</dependencies>
 
