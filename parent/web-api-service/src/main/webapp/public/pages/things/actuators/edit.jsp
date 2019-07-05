@@ -53,7 +53,7 @@
 							</div>
 						</td>
 						<td>
-							<div class="form-group">
+							<div id="topic-form-group" class="form-group">
 								<label for="actuator-topic">Topic</label> 
 								<input 	data-rule-maxlength="255"
 										maxlength="255" 
@@ -63,6 +63,17 @@
 										class="form-control" 
 										id="actuator-topic" 
 										placeholder="Topic">
+							</div>
+							<div id="url-form-group" class="form-group">
+								<label for="actuator-url">Url</label> 
+								<input 	data-rule-maxlength="255" 
+										maxlength="255" 
+										type="text" 
+										name="url" 
+										data-value="url"
+										class="form-control" 
+										id="actuator-url" 
+										placeholder="Url">
 							</div>
 						</td>
 					</tr>
@@ -80,21 +91,6 @@
 										placeholder="Description">
 							</div>
 						</td>
-						<td>
-							<div class="form-group">
-								<label for="actuator-url">Url</label> 
-								<input 	data-rule-maxlength="255" 
-										maxlength="255" 
-										type="text" 
-										name="url" 
-										data-value="url"
-										class="form-control" 
-										id="actuator-url" 
-										placeholder="Url">
-							</div>
-						</td>
-					</tr>
-					<tr>
 						<td>
 							<div class="form-group required">
 								<label for="actuator-unit">Unit</label> 
@@ -156,7 +152,21 @@
 				$("#actuator-topic").val(actuator.topic);
 				$("#actuator-url").val(actuator.url);
 			}
+			$("#actuator-protocol").trigger("change");
 		};
+		
+		var showHideByProtocol = function(){
+			if('MQTT' == $("#actuator-protocol").val()){
+				$("#topic-form-group").show();
+				$("#url-form-group").hide();
+			}else{
+				$("#topic-form-group").hide();
+				$("#url-form-group").show();
+			}
+		};
+		
+		$("#actuator-protocol").change(showHideByProtocol);
+		
 		var save = function(){
 			$("#actuator-form").trigger("save-actuator",[$("#thing-id").val(), toModel()]);
 		};

@@ -37,12 +37,19 @@
 							</div>
 						</td>
 						<td>
-							<div class="form-group">
+							<div id="topic-form-group" class="form-group">
 								<label for="actuator-topic">Topic</label> 
 								<input 	type="text"
 										disabled="disabled" 
 										class="form-control" 
 										id="actuator-topic">
+							</div>
+							<div id="url-form-group" class="form-group">
+								<label for="actuator-url">Url</label>
+								<input 	type="text"
+										disabled="disabled" 
+										class="form-control" 
+										id="actuator-url">
 							</div>
 						</td>
 					</tr>
@@ -56,17 +63,6 @@
 										id="actuator-description">
 							</div>
 						</td>
-						<td>
-							<div class="form-group">
-								<label for="actuator-url">Url</label>
-								<input 	type="text"
-										disabled="disabled" 
-										class="form-control" 
-										id="actuator-url">
-							</div>
-						</td>
-					</tr>
-					<tr>
 						<td>
 							<div class="form-group">
 								<label for="actuator-unit">Unit</label> 
@@ -94,6 +90,14 @@
 				$("#actuator-topic").val(actuator.topic);
 				$('#actuator-protocol').empty().append("<option selected value='"+actuator.protocol+"'>"+actuator.protocol+"</option>");
 				$("#actuator-url").val(actuator.url);
+				
+				if('MQTT' == actuator.protocol){
+					$("#topic-form-group").show();
+					$("#url-form-group").hide();
+				}else{
+					$("#topic-form-group").hide();
+					$("#url-form-group").show();
+				}
 			}else{
 				console.log("Received null actuator, can not view");
 			}
