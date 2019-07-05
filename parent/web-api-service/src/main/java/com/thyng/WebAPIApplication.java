@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
-public class ThyngDeviceRegistryApplication extends SpringBootServletInitializer {
+public class WebAPIApplication extends SpringBootServletInitializer {
 	
 	@Bean
 	@Profile("dev")
@@ -20,12 +20,12 @@ public class ThyngDeviceRegistryApplication extends SpringBootServletInitializer
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(ThyngDeviceRegistryApplication.class, args);
+		SpringApplication.run(WebAPIApplication.class, args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(ThyngDeviceRegistryApplication.class);
+		return application.sources(WebAPIApplication.class);
 	}
 
 }

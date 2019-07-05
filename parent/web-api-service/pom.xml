@@ -13,15 +13,9 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.thyng</groupId>
-			<artifactId>commons-service</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.thyng</groupId>
 			<artifactId>commons-mapper</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
