@@ -1,5 +1,7 @@
-Authorities to not implement security intf
-Authorities are transient, make them persistent set
+Secondary cache configuration
+Audit configuration
+Discovery service
+Gateway service
 
 - Users CRUD
 - ThingGroups CRUD

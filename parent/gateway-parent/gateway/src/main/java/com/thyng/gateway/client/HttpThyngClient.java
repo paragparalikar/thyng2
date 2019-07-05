@@ -6,6 +6,8 @@ import com.thyng.model.Telemetry;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.GatewayRegistrationDTO;
 
+import kong.unirest.ContentType;
+import kong.unirest.HeaderNames;
 import kong.unirest.ObjectMapper;
 import kong.unirest.Unirest;
 import lombok.NonNull;
@@ -24,6 +26,7 @@ public class HttpThyngClient implements ThyngClient, ObjectMapper {
 		final String password = properties.get("thyng.server.password", "thyng");
 		Unirest.config()
 			.setObjectMapper(this)
+			.setDefaultHeader(HeaderNames.CONTENT_TYPE, ContentType.APPLICATION_JSON.getMimeType())
 			.setDefaultBasicAuth(username, password);
 	}
 
@@ -32,6 +35,7 @@ public class HttpThyngClient implements ThyngClient, ObjectMapper {
 		final Long gatewayId = properties.getLong("thyng.gateway.id", null);
 		final Integer port = properties.getInteger("thyng.gateway.http.server.port", null); 
 		final String url = properties.get("thyng.server.url", null) + properties.get("thyng.server.url.registration",null);
+		
 		return Unirest
 			.post(url)
 			.body(GatewayRegistrationDTO.builder()
@@ -39,14 +43,20 @@ public class HttpThyngClient implements ThyngClient, ObjectMapper {
 				.port(port)
 				.build())
 			.asObject(GatewayConfigurationDTO.class)
+			.ifFailure(response -> {
+				throw new RuntimeException(response.getStatus()+" : "+response.getStatusText());
+			})
 			.getBody();
 	}
 
+	
 	@Override
 	public void heartbeat() throws Exception {
 		final Long gatewayId = properties.getLong("thyng.gateway.id", null);
 		final String url = properties.get("thyng.server.url", null) + properties.get("thyng.server.url.heartbeat",null);
-		Unirest.head(url).routeParam("id", gatewayId.toString()).asEmpty();
+		Unirest.head(url).routeParam("id", gatewayId.toString()).asString().ifFailure(response -> {
+			throw new RuntimeException(response.getStatus()+" : "+response.getStatusText());
+		});
 	}
 
 	@Override
@@ -57,7 +67,10 @@ public class HttpThyngClient implements ThyngClient, ObjectMapper {
 			.body(telemetry.toString())
 			.queryString("sensorId", telemetry.getSensorId())
 			.queryString("uuid", telemetry.getUuid())
-			.asEmpty();
+			.asString()
+			.ifFailure(response -> {
+				throw new RuntimeException(response.getStatus()+" : "+response.getStatusText());
+			});
 	}
 
 	@Override

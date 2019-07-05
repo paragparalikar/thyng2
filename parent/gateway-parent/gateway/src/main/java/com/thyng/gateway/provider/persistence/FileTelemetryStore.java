@@ -95,10 +95,9 @@ public class FileTelemetryStore implements TelemetryStore {
 		storeLock.writeLock().lock();
 		try  (final FileChannel storeFileChannel = FileChannel.open(storePath, 
 				StandardOpenOption.CREATE,
-				StandardOpenOption.WRITE, 
-				StandardOpenOption.APPEND);
-				final BufferedReader bufferedReader = new BufferedReader(Channels.newReader(storeFileChannel, Constant.CHARSET));
-				final FileLock storeFileLock = storeFileChannel.lock()){
+				StandardOpenOption.READ);
+				final BufferedReader bufferedReader = 
+						new BufferedReader(Channels.newReader(storeFileChannel, Constant.CHARSET))){
 			bufferedReader.lines().forEach(line -> {
 				if(null != line && 0 < line.trim().length()) {
 					final String[] tokens = line.split(",");
@@ -110,7 +109,8 @@ public class FileTelemetryStore implements TelemetryStore {
 			storeFileChannel.transferTo(0, Long.MAX_VALUE, 
 					FileChannel.open(Paths.get(inFlightPath, uuid), 
 					StandardOpenOption.CREATE,
-					StandardOpenOption.WRITE));
+					StandardOpenOption.WRITE,
+					StandardOpenOption.APPEND));
 			storeFileChannel.truncate(0);
 		}finally {
 			storeLock.writeLock().unlock();
@@ -129,12 +129,13 @@ public class FileTelemetryStore implements TelemetryStore {
 		storeLock.writeLock().lock();
 		try  (final FileChannel storeFileChannel = FileChannel.open(storePath, 
 													StandardOpenOption.CREATE,
-													StandardOpenOption.WRITE, 
+													StandardOpenOption.WRITE,
 													StandardOpenOption.APPEND);
 				final BufferedReader bufferedReader = new BufferedReader(Channels.newReader(storeFileChannel, Constant.CHARSET));
 				final FileLock storeFileLock = storeFileChannel.lock();
 				final FileChannel inFlightFileChannel = FileChannel.open(inFlightFilePath, 
-														StandardOpenOption.READ);
+													StandardOpenOption.CREATE,
+													StandardOpenOption.READ);
 				final FileLock inFlightFileLock = inFlightFileChannel.lock()){
 			storeFileChannel.transferFrom(inFlightFileChannel, 0, Long.MAX_VALUE);
 		}finally {
@@ -155,7 +156,8 @@ public class FileTelemetryStore implements TelemetryStore {
 													StandardOpenOption.APPEND);
 				final FileLock storeFileLock = archiveFileChannel.lock();
 				final FileChannel inFlightFileChannel = FileChannel.open(inFlightFilePath, 
-														StandardOpenOption.READ);
+													StandardOpenOption.CREATE,
+													StandardOpenOption.READ);
 				final FileLock inFlightFileLock = inFlightFileChannel.lock()){
 			archiveFileChannel.transferFrom(inFlightFileChannel, 0, Long.MAX_VALUE);
 		}finally {
@@ -170,7 +172,8 @@ public class FileTelemetryStore implements TelemetryStore {
 		countLock.readLock().lock();
 		try (final FileChannel countFileChannel = FileChannel.open(countPath, 
 				StandardOpenOption.CREATE,
-				StandardOpenOption.READ);
+				StandardOpenOption.WRITE,
+				StandardOpenOption.APPEND);
 				final FileLock storeFileLock = countFileChannel.lock()){
 			final ByteBuffer byteBuffer = ByteBuffer.allocate(MAX_INT_BYTES);
 			if(0 < countFileChannel.size() && 0 < countFileChannel.read(byteBuffer)) {
@@ -203,19 +206,19 @@ public class FileTelemetryStore implements TelemetryStore {
 				+ sensorId.toString();
 	}
 	
-	private Path buildArchivePath() {
-		return Paths.get(baseStoragePath, "data", 
-				sensorId.toString(), "telemetry.archive.csv");
+	private Path buildArchivePath() throws IOException {
+		return Files.createDirectories(Paths.get(baseStoragePath, "data", 
+				sensorId.toString())).resolve("telemetry.archive.csv");
 	}
 	
-	private Path buildCountPath() {
-		return Paths.get(baseStoragePath, "data", 
-				sensorId.toString(), "telemetry.count.csv");
+	private Path buildCountPath() throws IOException {
+		return Files.createDirectories(Paths.get(baseStoragePath, "data", 
+				sensorId.toString())).resolve( "telemetry.count.csv");
 	}
 
-	private Path buildStorePath() {
-		return Paths.get(baseStoragePath, "data", 
-				sensorId.toString(), "telemetry.csv");
+	private Path buildStorePath() throws IOException {
+		return Files.createDirectories(Paths.get(baseStoragePath, "data", 
+				sensorId.toString())).resolve( "telemetry.csv");
 	}
 	
 }

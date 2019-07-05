@@ -41,7 +41,7 @@ public class HeartbeatService implements Service, Runnable, Consumer<Long> {
 				context.getClient().heartbeat();
 			}
 		}catch(Exception e){
-			e.printStackTrace();
+			log.error("Failed heartbeat", e);
 		}
 	}
 	

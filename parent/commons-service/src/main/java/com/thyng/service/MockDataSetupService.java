@@ -1,4 +1,4 @@
-package com.thyng;
+package com.thyng.service;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.Scope;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.thyng.entity.Actuator;
@@ -33,7 +32,9 @@ import com.thyng.repository.spring.data.jpa.ThingRepository;
 import com.thyng.repository.spring.data.jpa.UserRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional
 @Profile("dev")
@@ -49,8 +50,6 @@ public class MockDataSetupService {
 	
 	private final ThingRepository thingRepository;
 	
-	private final PasswordEncoder passwordEncoder;
-	
 	private final SensorRepository sensorRepository;
 	
 	private final ActuatorRepository actuatorRepository;
@@ -59,13 +58,16 @@ public class MockDataSetupService {
 	public void setup(){
 		for(int index = 0; index < 4; index++){
 			final Tenant tenant = tenantRepository.save(buildTenant(index));
+			log.info(tenant.toString());
 			for(int userIndex = 0; userIndex < 10; userIndex++){
 				userRepository.save(buildUser(tenant, userIndex, index));
 			}
 			for(int gatewayIndex = 0; gatewayIndex < 2; gatewayIndex++){
 				final Gateway gateway = gatewayRepository.save(buildGateway(tenant, gatewayIndex));
+				log.info(gateway.toString());
 				for(int thingIndex = 0; thingIndex < 5; thingIndex++){
 					final Thing thing = thingRepository.save(buildThing(tenant, gateway, thingIndex));
+					log.info(thing.toString());
 					sensorRepository.saveAll(buildSensors(thing));
 					actuatorRepository.saveAll(buildActuators(thing));
 				}
@@ -191,7 +193,7 @@ public class MockDataSetupService {
 						.build())
 				.email(tenantIndex+"."+userIndex+"@gmail.com")
 				.phone("+91-9960739342")
-				.password(passwordEncoder.encode("thyng"))
+				.password("$2a$10$cmMk5hOSGKJ/96oQ5jXIv..FP7zCVUVKvi2Q28qS2tS08gvLghU42") // thyng
 				.properties(buildProperties())
 				.authorities(new HashSet<>(Arrays.asList(Authority.values())))
 				.build();

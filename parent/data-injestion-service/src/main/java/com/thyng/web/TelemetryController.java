@@ -1,8 +1,13 @@
 package com.thyng.web;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.thyng.entity.Sensor;
@@ -17,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("\telemetries")
+@RequestMapping("/api/v1/telemetries")
 @RequiredArgsConstructor
 public class TelemetryController {
 
@@ -26,7 +31,15 @@ public class TelemetryController {
 	private final GatewayClientFactory gatewayClientFactory;
 	
 	@PostMapping
-	public void save(@RequestBody final Telemetry telemetry) {
+	public void save(
+			@RequestParam @NotNull final Long sensorId, 
+			@RequestParam @NotNull final String uuid, 
+			final HttpServletRequest request) throws IOException {
+		final Telemetry telemetry = Telemetry.builder()
+				.sensorId(sensorId)
+				.uuid(uuid)
+				.inputStream(request.getInputStream())
+				.build();
 		if(log.isTraceEnabled()) {
 			log.trace("Received telemetry from sensor id "+telemetry.getSensorId()
 			+ ", uuid "+telemetry.getUuid());

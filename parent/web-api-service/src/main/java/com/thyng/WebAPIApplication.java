@@ -8,6 +8,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
+import com.thyng.service.MockDataSetupService;
+
 @SpringBootApplication
 public class WebAPIApplication extends SpringBootServletInitializer {
 	

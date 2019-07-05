@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.thyng.entity.Gateway;
 import com.thyng.entity.User;
 import com.thyng.mapper.GatewayMapper;
-import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.GatewayDTO;
 import com.thyng.model.dto.GatewayDetailsDTO;
-import com.thyng.model.dto.GatewayRegistrationDTO;
 import com.thyng.model.dto.GatewayThinDTO;
 import com.thyng.service.GatewayService;
 
@@ -82,20 +79,6 @@ public class GatewayController {
 			@RequestParam String name, @AuthenticationPrincipal User user){
 		return gatewayService.existsByIdNotAndNameAndTenantId(id, name, user.getTenant().getId()) ? 
 				"[\"This name is already taken\"]" : Boolean.TRUE.toString();
-	}
-	
-	
-	@PostMapping("/registrations")
-	public GatewayConfigurationDTO register(@RequestBody GatewayRegistrationDTO dto, HttpServletRequest request){
-		final String host = request.getRemoteHost();
-		final Integer port = request.getRemotePort();
-		final Gateway gateway = gatewayService.register(dto.getGatewayId(), host, port);
-		return gatewayMapper.toExtendedDTO(gateway);
-	}
-
-	@GetMapping("/{id}/heartbeats") //For Head
-	public void heartbeat(@PathVariable Long id){
-		System.out.println("Heart beat received for id "+id);
 	}
 	
 }

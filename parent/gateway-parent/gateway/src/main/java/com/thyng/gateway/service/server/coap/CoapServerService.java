@@ -11,8 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 public class CoapServerService extends CoapServer implements Service{
 	public static final String KEY_COAP_PORT = "thyng.gateway.coap.server.port";
 	
+	private final Context context;
+	
 	public CoapServerService(Context context) {
 		super(context.getProperties().getInteger(KEY_COAP_PORT, 5683));
+		this.context = context;
 		setExecutor(context.getExecutor(), true);
 		add(new TelemetryResource(context));
 	}
@@ -20,8 +23,10 @@ public class CoapServerService extends CoapServer implements Service{
 	@Override
 	public synchronized void start() {
 		log.info("Starting COAP server at port "+getEndpoints().get(0).getAddress().getPort());
-		super.start();
-		log.info("Successfully started COAP server");
+		context.getExecutor().submit(() -> {
+			super.start();
+			log.info("Successfully started COAP server");
+		});
 	}
 	
 	@Override
