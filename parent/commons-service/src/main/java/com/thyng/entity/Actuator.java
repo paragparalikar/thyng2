@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.envers.Audited;
 
-import com.thyng.model.enumeration.DataType;
 import com.thyng.model.enumeration.Protocol;
 
 import lombok.AllArgsConstructor;
@@ -57,12 +56,6 @@ public class Actuator extends AuditableEntity {
 	@Size(max=255)
 	@Column(nullable=false)
 	private String unit;
-	
-	@NotNull
-	@Builder.Default
-	@Column(nullable=false)
-	@Enumerated(EnumType.STRING)
-	private DataType dataType = DataType.NUMBER; 
 	
 	@NotNull
 	@Builder.Default

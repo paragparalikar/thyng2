@@ -11,6 +11,6 @@ public class TelemetryMessage {
 	public static final String RECEIVED = "telemetry-message-received";
 	
 	private final Long timestamp;
-	private final Map<Long,String> values;
+	private final Map<Long,Double> values;
 	
 }

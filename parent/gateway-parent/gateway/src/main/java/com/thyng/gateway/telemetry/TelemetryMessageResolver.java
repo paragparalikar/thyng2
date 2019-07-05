@@ -11,13 +11,13 @@ import com.thyng.util.StringUtil;
 public class TelemetryMessageResolver {
 
 	public TelemetryMessage resolve(final String payload) {
-		final Map<Long, String> values = new HashMap<>();
+		final Map<Long, Double> values = new HashMap<>();
 		Arrays.asList(payload.split(Constant.LINEFEED))
 			.forEach(line -> {
 				if(StringUtil.hasText(line)) {
 					final String[] tokens = line.split(",");
 					if(2 <= tokens.length) {
-						values.put(Long.parseLong(tokens[0]), tokens[1]);
+						values.put(Long.parseLong(tokens[0]), Double.parseDouble(tokens[1]));
 					}
 				}
 			});

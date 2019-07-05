@@ -60,13 +60,13 @@ public class FileTelemetryStore implements TelemetryStore {
 	}
 	
 	@Override
-	public TelemetryStore save(final Long timestamp,final String value) {
+	public TelemetryStore save(final Long timestamp,final Double value) {
 		return save(Collections.singletonMap(timestamp.toString(), value));
 	}
 	
 	@Override
 	@SneakyThrows
-	public TelemetryStore save(final Map<String, String> values) {
+	public TelemetryStore save(final Map<String, Double> values) {
 		final ByteBuffer byteBuffer = ByteBuffer.wrap(
 				(values.keySet().stream()
 				.map(key -> key+","+values.get(key))
@@ -91,7 +91,7 @@ public class FileTelemetryStore implements TelemetryStore {
 	@SneakyThrows
 	public Telemetry read() {
 		final String uuid = UUID.randomUUID().toString();
-		final Map<String,String> values = new HashMap<>();
+		final Map<Long,Double> values = new HashMap<>();
 		storeLock.writeLock().lock();
 		try  (final FileChannel storeFileChannel = FileChannel.open(storePath, 
 				StandardOpenOption.CREATE,
@@ -103,7 +103,7 @@ public class FileTelemetryStore implements TelemetryStore {
 				if(null != line && 0 < line.trim().length()) {
 					final String[] tokens = line.split(",");
 					if(2 == tokens.length) {
-						values.put(tokens[0], tokens[1]);
+						values.put(Long.parseLong(tokens[0]), Double.parseDouble(tokens[1]));
 					}
 				}
 			});

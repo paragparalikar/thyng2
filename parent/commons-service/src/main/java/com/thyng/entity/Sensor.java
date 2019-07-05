@@ -3,8 +3,6 @@ package com.thyng.entity;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -17,8 +15,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.envers.Audited;
-
-import com.thyng.model.enumeration.DataType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -61,12 +57,6 @@ public class Sensor extends AuditableEntity {
 	@Size(max=255)
 	@Column(nullable=false)
 	private String unit;
-	
-	@NotNull
-	@Builder.Default
-	@Column(nullable=false)
-	@Enumerated(EnumType.STRING)
-	private DataType dataType = DataType.NUMBER; 
 	
 	private Boolean active;
 	

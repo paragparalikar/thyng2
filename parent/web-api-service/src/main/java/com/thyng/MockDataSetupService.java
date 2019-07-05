@@ -24,7 +24,6 @@ import com.thyng.entity.Tenant;
 import com.thyng.entity.Thing;
 import com.thyng.entity.User;
 import com.thyng.model.enumeration.Authority;
-import com.thyng.model.enumeration.DataType;
 import com.thyng.model.enumeration.MqttQoS;
 import com.thyng.repository.spring.data.jpa.ActuatorRepository;
 import com.thyng.repository.spring.data.jpa.GatewayRepository;
@@ -155,7 +154,6 @@ public class MockDataSetupService {
 					.id(null)
 					.thing(thing)
 					.abbreviation("ABB"+index)
-					.dataType(DataType.values()[index % DataType.values().length])
 					.description("Description for Sensor -"+index)
 					.name("Sensor-"+index+"-"+thing.getName())
 					.unit("Unit-"+index)
@@ -171,7 +169,6 @@ public class MockDataSetupService {
 			actuators.add(Actuator.builder()
 					.id(null)
 					.thing(thing)
-					.dataType(DataType.values()[index % DataType.values().length])
 					.description("Description for Actuator -"+index)
 					.name("Actuator-"+index+"-"+thing.getName())
 					.abbreviation("ACT-"+index)

@@ -31,7 +31,7 @@ public class TelemetryMessageNormalizer {
 				bindings.put("sensor", sensor);
 				bindings.put("value", value);
 				final Object normalizedValue = engine.eval(sensor.getNormalizer(), bindings);
-				return null == normalizedValue ? null : normalizedValue.toString();
+				return null == normalizedValue ? null : (Double)normalizedValue;
 			}
 			return value;
 		}));

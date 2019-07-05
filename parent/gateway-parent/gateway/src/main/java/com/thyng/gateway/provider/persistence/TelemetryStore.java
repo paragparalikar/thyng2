@@ -10,7 +10,7 @@ public interface TelemetryStore {
 	
 	Long getSensorId();
 
-	TelemetryStore save(Map<String, String> values);
+	TelemetryStore save(Map<String, Double> values);
 
 	Telemetry read();
 
@@ -18,6 +18,6 @@ public interface TelemetryStore {
 
 	TelemetryStore commit(String uuid);
 
-	TelemetryStore save(Long timestamp, String value);
+	TelemetryStore save(Long timestamp, Double value);
 
 }

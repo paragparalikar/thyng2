@@ -1,6 +1,5 @@
 package com.thyng.model.dto;
 
-import com.thyng.model.enumeration.DataType;
 import com.thyng.model.enumeration.Protocol;
 
 import lombok.Data;
@@ -18,8 +17,6 @@ public class ActuatorDTO{
 
 	private String unit;
 
-	private DataType dataType;
-	
 	private Protocol protocol;	// depending upon protocol, some of below values will be used 
 	
 	private String topic;		// mqtt topic
