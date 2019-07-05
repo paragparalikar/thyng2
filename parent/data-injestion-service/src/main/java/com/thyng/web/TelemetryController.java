@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.thyng.entity.Sensor;
 import com.thyng.gateway.client.GatewayClient;
 import com.thyng.gateway.client.GatewayClientFactory;
 import com.thyng.model.Telemetry;
+import com.thyng.service.SensorService;
 import com.thyng.service.TelemetryService;
 
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class TelemetryController {
 
+	private final SensorService sensorService;
 	private final TelemetryService telemetryService;
 	private final GatewayClientFactory gatewayClientFactory;
 	
@@ -29,8 +32,9 @@ public class TelemetryController {
 			+ ", uuid "+telemetry.getUuid());
 		}
 		
+		final Sensor sensor = sensorService.findById(telemetry.getSensorId());
 		final GatewayClient gatewayClient = gatewayClientFactory
-				.get(telemetry.getSensorId());
+				.get(sensor.getThing().getGateway().getId());
 		try {
 			if(log.isDebugEnabled()) {
 				log.debug("Attempting to persiste telemetry sensorId: "+telemetry.getSensorId()
