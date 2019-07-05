@@ -23,7 +23,7 @@ public class HeartbeatService implements Service, Runnable, Consumer<Long> {
 	
 	@Override
 	public void start() throws Exception {
-		delay = context.getProperties().getLong(KEY_HEARTBEAT_INTERVAL, 10000l);
+		delay = context.getProperties().getLong(KEY_HEARTBEAT_INTERVAL , 10000l);
 		log.info("Starting heartbeat service width interval "+delay);
 		context.getEventBus().register(ThyngClient.ACTIVITY, this);
 		future = context.getExecutor().scheduleWithFixedDelay(this, 0, delay, TimeUnit.MILLISECONDS);
