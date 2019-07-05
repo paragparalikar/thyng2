@@ -56,10 +56,10 @@
 										id="sensor-description">
 							</div>
 						</td>
-						<td rowspan="3">
+						<td rowspan="2">
 							<label for="sensor-normalizer">Normalizer</label> 
 							<div class="form-group">
-								<textarea 	rows="8"
+								<textarea 	rows="5"
 											disabled="disabled" 
 											class="form-control" 
 											id="sensor-normalizer"></textarea>
@@ -75,16 +75,6 @@
 										class="form-control" 
 										id="sensor-unit">
 							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="form-group">
-								<label for="sensor-data-type">Data Type</label> 
-								<select id="sensor-data-type" disabled="disabled" class="form-control"></select>
-							</div>
-						</td>
-						<td>
 						</td>
 					</tr>
 				</tbody>
@@ -104,7 +94,6 @@
 				$("#sensor-inactivity-period").val(sensor.inactivityPeriod);
 				$("#sensor-batch-size").val(sensor.batchSize);
 				$("#sensor-normalizer").val(sensor.normalizer);	
-				$('#sensor-data-type').empty().append("<option selected value='"+sensor.dataType+"'>"+sensor.dataType+"</option>");
 			}else{
 				console.log("Received null sensor, can not view");
 			}

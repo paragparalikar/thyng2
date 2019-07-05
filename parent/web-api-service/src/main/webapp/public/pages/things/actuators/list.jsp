@@ -11,7 +11,6 @@ final boolean hasActuatorWriteAccess = user.hasAuthority(Authority.ACTUATOR_CREA
 			<th scope="col">Name</th>
 			<th scope="col">Abbreviation</th>
 			<th scope="col">Unit</th>
-			<th scope="col">Data Type</th>
 			<% if(hasActuatorWriteAccess){ %>
 			<th scope="col" width="100">
 				<%if(user.hasAuthority(Authority.ACTUATOR_CREATE)){ %>
@@ -42,8 +41,7 @@ renderActuatorDataTable = (function($){
 	           }
 	       }, 
 	       {data : "abbreviation" }, 
-	       {data : "unit"}, 
-	       {data : "dataType"}
+	       {data : "unit"}
 	       <% if(hasActuatorWriteAccess){ %>
 	       ,{
 	            render: function (data, type, row, meta) {

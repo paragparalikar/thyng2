@@ -1,4 +1,3 @@
-<%@ page import="com.thyng.model.enumeration.DataType" %>
 <%@ page import="com.thyng.model.enumeration.Protocol" %>
 
 <div id="actuator-edit-modal" class="modal" style="display: block;">
@@ -83,15 +82,15 @@
 						</td>
 						<td>
 							<div class="form-group">
-								<label for="actuator-host">Host</label> 
+								<label for="actuator-url">Url</label> 
 								<input 	data-rule-maxlength="255" 
 										maxlength="255" 
 										type="text" 
-										name="host" 
-										data-value="host"
+										name="url" 
+										data-value="url"
 										class="form-control" 
-										id="actuator-host" 
-										placeholder="Host">
+										id="actuator-url" 
+										placeholder="Url">
 							</div>
 						</td>
 					</tr>
@@ -109,43 +108,6 @@
 										class="form-control" 
 										id="actuator-unit" 
 										placeholder="Unit">
-							</div>
-						</td>
-						<td>
-							<div class="form-group">
-								<label for="actuator-port">Port</label> 
-								<input 	data-rule-maxlength="255" 
-										data-rule-digits="true"
-										maxlength="255" 
-										type="text" 
-										data-value="port"
-										name="port" 
-										class="form-control" 
-										id="actuator-port" 
-										placeholder="Port">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="form-group">
-								<label for="actuator-data-type">Data Type</label> 
-								<select id="actuator-data-type" name="data-type" data-value="dataType"  class="form-control">
-								<% for(DataType dataType : DataType.values()) out.print("<option value=\""+dataType.name()+"\">"+dataType.toString()+"</option>"); %>
-								</select>
-							</div>
-						</td>
-						<td>
-							<div class="form-group">
-								<label for="actuator-path">Path</label> 
-								<input 	data-rule-maxlength="255" 
-										maxlength="255" 
-										type="text" 
-										name="path" 
-										data-value="path"
-										class="form-control" 
-										id="actuator-path" 
-										placeholder="Path">
 							</div>
 						</td>
 					</tr>
@@ -177,12 +139,9 @@
 				description : $("#actuator-description").val(),
 				abbreviation : $("#actuator-abbreviation").val(),
 				unit : $("#actuator-unit").val(),
-				dataType : $("#actuator-data-type").val(),
 				protocol : $("#actuator-protocol").val(),
 				topic : $("#actuator-topic").val(),
-				host : $("#actuator-host").val(),
-				port : $("#actuator-port").val(),
-				path : $("#actuator-path").val(),
+				url : $("#actuator-url").val(),
 			};
 		};
 		var toView = function(thingId, actuator){
@@ -193,12 +152,9 @@
 				$("#actuator-description").val(actuator.description);
 				$("#actuator-abbreviation").val(actuator.abbreviation);
 				$("#actuator-unit").val(actuator.unit);
-				$("#actuator-data-type").val(actuator.dataType);
 				$("#actuator-protocol").val(actuator.protocol);
 				$("#actuator-topic").val(actuator.topic);
-				$("#actuator-host").val(actuator.host);
-				$("#actuator-port").val(actuator.port);
-				$("#actuator-path").val(actuator.path);
+				$("#actuator-url").val(actuator.url);
 			}
 		};
 		var save = function(){

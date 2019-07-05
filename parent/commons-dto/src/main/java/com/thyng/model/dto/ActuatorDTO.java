@@ -19,12 +19,10 @@ public class ActuatorDTO{
 
 	private Protocol protocol;	// depending upon protocol, some of below values will be used 
 	
+	private Boolean ssl;
+	
 	private String topic;		// mqtt topic
 	
-	private String host;		// coap, http, https IP address
-	
-	private Integer port;		// coap, http, https port
-	
-	private String path;		// http, https context path
+	private String url;		// coap, http
 
 }

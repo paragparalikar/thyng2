@@ -5,7 +5,6 @@
 			<th scope="col">Name</th>
 			<th scope="col">Abbreviation</th>
 			<th scope="col">Unit</th>
-			<th scope="col">Data Type</th>
 		</tr>
 	</thead>
 </table>
@@ -26,8 +25,7 @@ renderActuatorDataTable = (function($){
 	           }
 	       }, 
 	       {data : "abbreviation" }, 
-	       {data : "unit"}, 
-	       {data : "dataType"}
+	       {data : "unit"}
 	    ]
 	});
 	

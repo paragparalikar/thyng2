@@ -19,8 +19,7 @@ public class HttpGatewayClient implements GatewayClient, ObjectMapper {
 	@Builder
 	public HttpGatewayClient(final GatewayConfigurationDTO details) {
 		this.details = details;
-		final String protocol = details.getProtocol().toString() + (details.getSsl() ? "s" : "");
-		baseUrl = protocol+"://"+details.getHost()+":"+details.getPort();
+		baseUrl = (details.getSsl() ? "https" : "http")+"://"+details.getHost()+":"+details.getPort();
 		if(details.getSsl()) {
 			//Unirest.config().clientCertificateStore(store, password);
 		}

@@ -58,11 +58,11 @@
 						</td>
 						<td>
 							<div class="form-group">
-								<label for="actuator-host">Host</label>
+								<label for="actuator-url">Url</label>
 								<input 	type="text"
 										disabled="disabled" 
 										class="form-control" 
-										id="actuator-host">
+										id="actuator-url">
 							</div>
 						</td>
 					</tr>
@@ -74,32 +74,6 @@
 										disabled="disabled" 
 										class="form-control" 
 										id="actuator-unit">
-							</div>
-						</td>
-						<td>
-							<div class="form-group">
-								<label for="actuator-port">Port</label> 
-								<input  type="text"
-										disabled="disabled" 
-										class="form-control" 
-										id="actuator-port">
-							</div>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<div class="form-group">
-								<label for="actuator-data-type">Data Type</label> 
-								<select id="actuator-data-type" disabled="disabled" class="form-control"></select>
-							</div>
-						</td>
-						<td>
-							<div class="form-group">
-								<label for="actuator-path">Path</label> 
-								<input  type="text"
-										disabled="disabled" 
-										class="form-control" 
-										id="actuator-path">
 							</div>
 						</td>
 					</tr>
@@ -117,12 +91,9 @@
 				$("#actuator-description").val(actuator.description);
 				$("#actuator-abbreviation").val(actuator.abbreviation);
 				$("#actuator-unit").val(actuator.unit);
-				$('#actuator-data-type').empty().append("<option selected value='"+actuator.dataType+"'>"+actuator.dataType+"</option>");
 				$("#actuator-topic").val(actuator.topic);
 				$('#actuator-protocol').empty().append("<option selected value='"+actuator.protocol+"'>"+actuator.protocol+"</option>");
-				$("#actuator-host").val(actuator.host);
-				$("#actuator-port").val(actuator.port);
-				$("#actuator-path").val(actuator.path);
+				$("#actuator-url").val(actuator.url);
 			}else{
 				console.log("Received null actuator, can not view");
 			}

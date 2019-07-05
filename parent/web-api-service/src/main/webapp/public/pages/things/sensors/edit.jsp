@@ -1,4 +1,3 @@
-<%@ page import="com.thyng.model.enumeration.DataType" %>
 <div id="sensor-edit-modal" class="modal" style="display: block;">
 	<div class="modal-content" style="width: 50em;">
 	<form id="sensor-form">
@@ -94,10 +93,10 @@
 										placeholder="Description">
 							</div>
 						</td>
-						<td rowspan="3">
+						<td rowspan="2">
 							<label for="sensor-normalizer">Normalizer</label> 
 							<div class="form-group">
-								<textarea 	rows="8" 
+								<textarea 	rows="5" 
 											data-rule-maxlength="255" 
 											maxlength="255" 
 											class="form-control" 
@@ -128,12 +127,7 @@
 					</tr>
 					<tr>
 						<td>
-							<div class="form-group">
-								<label for="sensor-data-type">Data Type</label> 
-								<select id="sensor-data-type" name="data-type" data-value="dataType"  class="form-control">
-								<% for(DataType dataType : DataType.values()) out.print("<option value=\""+dataType.name()+"\">"+dataType.toString()+"</option>"); %>
-								</select>
-							</div>
+							
 						</td>
 						<td>
 						</td>
@@ -166,7 +160,6 @@
 				description : $("#sensor-description").val(),
 				abbreviation : $("#sensor-abbreviation").val(),
 				unit : $("#sensor-unit").val(),
-				dataType : $("#sensor-data-type").val(),
 				inactivityPeriod : $("#sensor-inactivity-period").val(),
 				batchSize : $("#sensor-batch-size").val(),
 				normalizer : $("#sensor-normalizer").val()
@@ -181,7 +174,6 @@
 				$("#sensor-description").val(sensor.description);
 				$("#sensor-abbreviation").val(sensor.abbreviation);
 				$("#sensor-unit").val(sensor.unit);
-				$("#sensor-data-type").val(sensor.dataType);
 				$("#sensor-inactivity-period").val(sensor.inactivityPeriod);
 				$("#sensor-batch-size").val(sensor.batchSize);
 				$("#sensor-normalizer").val(sensor.normalizer);	

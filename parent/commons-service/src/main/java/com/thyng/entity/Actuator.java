@@ -61,17 +61,17 @@ public class Actuator extends AuditableEntity {
 	@Builder.Default
 	@Column(nullable=false)
 	@Enumerated(EnumType.STRING)
-	private Protocol protocol = Protocol.COAP; 
+	private Protocol protocol = Protocol.HTTP;
+	
+	@NotNull
+	@Builder.Default
+	@Column(nullable=false)
+	private Boolean ssl = Boolean.FALSE;
 	
 	@Size(max=255)
-	private String topic;
+	private String topic; // only in case of mqtt
 	
 	@Size(max=255)
-	private String host;
-	
-	private Integer port;
-	
-	@Size(max=255)
-	private String path;
+	private String url;
 
 }

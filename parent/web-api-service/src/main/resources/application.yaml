@@ -1,0 +1,7 @@
+spring:
+  main:
+    banner-mode: CONSOLE
+  mvc:
+    view:
+      prefix: /views/
+      suffix: .jsp
