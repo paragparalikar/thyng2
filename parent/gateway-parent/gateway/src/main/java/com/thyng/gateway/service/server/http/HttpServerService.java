@@ -23,6 +23,7 @@ public class HttpServerService implements Service {
 		log.info("Starting HTTP server at port "+port+" and backlog "+backlog);
 		httpServer = HttpServer.create(new InetSocketAddress(port), backlog);
 		httpServer.createContext("/telemetries", new HttpTelemetryHandler(context));
+		httpServer.start();
 		log.info("HTTP server started successfully");
 	}
 

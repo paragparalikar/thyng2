@@ -26,7 +26,7 @@ public class SensorMonitoringService implements Service, Runnable, Consumer<Long
 		return TOPIC_STATUS_CHANGED_PREFIX + sensorId;
 	}
 	
-	private Boolean active;
+	private Boolean active = Boolean.TRUE;
 	private Long timestamp;
 	private final Context context;
 	private final SensorDTO sensor;
@@ -42,7 +42,7 @@ public class SensorMonitoringService implements Service, Runnable, Consumer<Long
 	public void accept(Long timestamp) {
 		try {
 			this.timestamp = timestamp;
-			if(null == this.active || !active){
+			if(!active){
 				statusChanged();
 			}
 		} catch (Exception e) {

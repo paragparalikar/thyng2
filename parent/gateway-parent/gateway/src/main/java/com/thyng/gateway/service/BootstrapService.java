@@ -33,7 +33,7 @@ public class BootstrapService extends CompositeService {
 		initShutdownHook();
 		context = buildContext();
 		add(new HeartbeatService(context));
-		add(new CoapServerService(context));
+		//add(new CoapServerService(context));
 		add(new HttpServerService(context));
 		add(new StatusMonitoringService(context));
 	}

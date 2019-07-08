@@ -37,7 +37,7 @@ public class FileTelemetryStore implements TelemetryStore {
 	private final Path countPath;
 	private final String inFlightPath;
 	private final String baseStoragePath;
-	private final AtomicInteger count = new AtomicInteger();
+	private final AtomicInteger count = new AtomicInteger(0);
 	private final ReentrantReadWriteLock archiveLock = new ReentrantReadWriteLock();
 	private final ReentrantReadWriteLock storeLock = new ReentrantReadWriteLock();
 	private final ReentrantReadWriteLock countLock = new ReentrantReadWriteLock();
@@ -135,8 +135,7 @@ public class FileTelemetryStore implements TelemetryStore {
 				final FileLock storeFileLock = storeFileChannel.lock();
 				final FileChannel inFlightFileChannel = FileChannel.open(inFlightFilePath, 
 													StandardOpenOption.CREATE,
-													StandardOpenOption.READ);
-				final FileLock inFlightFileLock = inFlightFileChannel.lock()){
+													StandardOpenOption.READ)){
 			storeFileChannel.transferFrom(inFlightFileChannel, 0, Long.MAX_VALUE);
 		}finally {
 			storeLock.writeLock().unlock();
@@ -157,8 +156,7 @@ public class FileTelemetryStore implements TelemetryStore {
 				final FileLock storeFileLock = archiveFileChannel.lock();
 				final FileChannel inFlightFileChannel = FileChannel.open(inFlightFilePath, 
 													StandardOpenOption.CREATE,
-													StandardOpenOption.READ);
-				final FileLock inFlightFileLock = inFlightFileChannel.lock()){
+													StandardOpenOption.READ)){
 			archiveFileChannel.transferFrom(inFlightFileChannel, 0, Long.MAX_VALUE);
 		}finally {
 			archiveLock.writeLock().unlock();
@@ -169,20 +167,20 @@ public class FileTelemetryStore implements TelemetryStore {
 	
 	
 	private void readCount() throws NumberFormatException, IOException {
-		countLock.readLock().lock();
-		try (final FileChannel countFileChannel = FileChannel.open(countPath, 
-				StandardOpenOption.CREATE,
-				StandardOpenOption.WRITE,
-				StandardOpenOption.APPEND);
-				final FileLock storeFileLock = countFileChannel.lock()){
-			final ByteBuffer byteBuffer = ByteBuffer.allocate(MAX_INT_BYTES);
-			if(0 < countFileChannel.size() && 0 < countFileChannel.read(byteBuffer)) {
-				count.set(Integer.parseInt(new String(byteBuffer.array(),Constant.CHARSET)));
-			}else {
-				count.set(0);
+		if(Files.exists(countPath)) {
+			countLock.readLock().lock();
+			try (final FileChannel countFileChannel = FileChannel.open(countPath, 
+					StandardOpenOption.CREATE,
+					StandardOpenOption.READ)){
+				final ByteBuffer byteBuffer = ByteBuffer.allocate(MAX_INT_BYTES);
+				if(0 < countFileChannel.size() && 0 < countFileChannel.read(byteBuffer)) {
+					count.set(Integer.parseInt(new String(byteBuffer.array(),Constant.CHARSET).trim()));
+				}else {
+					count.set(0);
+				}
+			}finally {
+				countLock.readLock().unlock();
 			}
-		}finally {
-			countLock.readLock().unlock();
 		}
 	}
 

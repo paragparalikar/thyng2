@@ -1,28 +1,33 @@
 package com.thyng.gateway;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
+import java.util.Collections;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import org.eclipse.californium.core.CoapClient;
-import org.eclipse.californium.core.CoapResponse;
-import org.eclipse.californium.core.coap.MediaTypeRegistry;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
 
 public class Client {
 
 	public static void main(String[] args) throws Exception {
 		while(true){
-			final ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			final DataOutputStream out = new DataOutputStream(baos);
-			
-			out.writeLong(197);
-			out.writeByte(1);
-			out.writeBoolean(Boolean.TRUE);
-			final CoapResponse response = new CoapClient("coap","localhost",5683,"telemetry")
-			.post(baos.toByteArray(), MediaTypeRegistry.APPLICATION_OCTET_STREAM);
-			
-			System.out.println("success : "+(null == response? "null" : response.isSuccess()));
-			
-			Thread.sleep(3000);
+			sendHttp(Collections.singletonMap(197l,1d));
+			Thread.sleep(1000);
+		}
+	}
+	
+	private static void sendHttp(Map<Long, Double> values) {
+		final String payload = values.entrySet().stream()
+		.map(e -> e.getKey()+","+e.getValue()).collect(Collectors.joining("\n"));
+		System.out.print(payload);
+		final HttpResponse response = Unirest.post("http://localhost:8080/telemetries")
+			.body(payload)
+			.asEmpty();
+		
+		if(response.isSuccess()) {
+			System.out.println("\tSuccess");
+		}else {
+			System.out.println("\tFailure, HTTP code: "+response.getStatus()+", text: "+response.getStatusText());
 		}
 	}
 

@@ -13,6 +13,9 @@ import com.thyng.gateway.provider.persistence.TelemetryStore;
 import com.thyng.gateway.telemetry.TelemetryMessageHandler;
 import com.thyng.util.StringUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class HttpTelemetryHandler implements HttpHandler {
 
 	private final Context context;
@@ -25,13 +28,20 @@ public class HttpTelemetryHandler implements HttpHandler {
 	
 	@Override
 	public void handle(HttpExchange exchange) throws IOException {
-		switch(exchange.getRequestMethod()) {
-		case "POST": post(exchange); break;
-		case "DELETE": delete(exchange); break;
-		case "PUT": put(exchange); break;
+		try{
+			switch(exchange.getRequestMethod()) {
+			case "POST": post(exchange); break;
+			case "DELETE": delete(exchange); break;
+			case "PUT": put(exchange); break;
+			case "GET": break;
+			}
+			exchange.sendResponseHeaders(200, 0);
+		}catch(Throwable throwable) {
+			log.error("Failed to process telemetry", throwable);
+			exchange.sendResponseHeaders(500, 0);
+		}finally {
+			exchange.close();
 		}
-		exchange.sendResponseHeaders(200, 0);
-		exchange.close();
 	}
 	
 	private void post(HttpExchange exchange) throws IOException {
