@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ThingMonitoringService extends CompositeService implements Consumer<SensorStatus>{
 
-	private Boolean active;
+	private Boolean active = Boolean.TRUE;
 	private final Context context;
 	private final ThingDetailsDTO thing;
 	private final Map<Long, Boolean> sensorStatuses = new HashMap<>();

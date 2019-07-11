@@ -16,6 +16,7 @@ public class Client {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	private static void sendHttp(Map<Long, Double> values) {
 		final String payload = values.entrySet().stream()
 		.map(e -> e.getKey()+","+e.getValue()).collect(Collectors.joining("\n"));

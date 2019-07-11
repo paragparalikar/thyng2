@@ -95,7 +95,8 @@ public class FileTelemetryStore implements TelemetryStore {
 		storeLock.writeLock().lock();
 		try  (final FileChannel storeFileChannel = FileChannel.open(storePath, 
 				StandardOpenOption.CREATE,
-				StandardOpenOption.READ);
+				StandardOpenOption.READ, 
+				StandardOpenOption.WRITE);
 				final BufferedReader bufferedReader = 
 						new BufferedReader(Channels.newReader(storeFileChannel, Constant.CHARSET))){
 			bufferedReader.lines().forEach(line -> {

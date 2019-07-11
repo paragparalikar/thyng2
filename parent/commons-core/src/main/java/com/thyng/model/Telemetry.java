@@ -20,7 +20,6 @@ public class Telemetry {
 	@NonNull private final Long sensorId;
 	@NonNull private final Map<Long, Double> values;
 	
-	@Builder
 	@SneakyThrows
 	public Telemetry(final String uuid, final Long sensorId, final InputStream inputStream) {
 		super();

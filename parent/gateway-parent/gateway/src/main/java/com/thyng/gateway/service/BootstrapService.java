@@ -17,7 +17,6 @@ import com.thyng.gateway.provider.serialization.GsonSerializationProvider;
 import com.thyng.gateway.provider.serialization.SerializationProvider;
 import com.thyng.gateway.service.health.HeartbeatService;
 import com.thyng.gateway.service.health.StatusMonitoringService;
-import com.thyng.gateway.service.server.coap.CoapServerService;
 import com.thyng.gateway.service.server.http.HttpServerService;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.util.Lambda;

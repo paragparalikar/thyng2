@@ -1,7 +1,6 @@
 package com.thyng.gateway.provider.persistence;
 
 import java.io.IOException;
-import java.io.StringWriter;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;

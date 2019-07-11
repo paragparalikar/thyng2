@@ -35,11 +35,7 @@ public class TelemetryController {
 			@RequestParam @NotNull final Long sensorId, 
 			@RequestParam @NotNull final String uuid, 
 			final HttpServletRequest request) throws IOException {
-		final Telemetry telemetry = Telemetry.builder()
-				.sensorId(sensorId)
-				.uuid(uuid)
-				.inputStream(request.getInputStream())
-				.build();
+		final Telemetry telemetry = new Telemetry(uuid, sensorId, request.getInputStream());
 		if(log.isTraceEnabled()) {
 			log.trace("Received telemetry from sensor id "+telemetry.getSensorId()
 			+ ", uuid "+telemetry.getUuid());
