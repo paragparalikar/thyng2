@@ -8,7 +8,6 @@ import com.thyng.gateway.EventBus;
 import com.thyng.gateway.client.ThyngClient;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
-import com.thyng.gateway.provider.serialization.SerializationProvider;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
@@ -26,7 +25,6 @@ public class Context {
 	
 	private final PropertyProvider properties;
 	private final PersistenceProvider persistenceProvider;
-	private final SerializationProvider<String> serializationProvider;
 
 	private final Map<Long, ThingDetailsDTO> sensorIdToThingDTO = new HashMap<>();
 	private final Map<Long, SensorDTO> sensorIdToSensorDTO = new HashMap<>();
@@ -37,8 +35,7 @@ public class Context {
 					ScheduledExecutorService executor,
 					PropertyProvider properties, 
 					GatewayConfigurationDTO details, 
-					PersistenceProvider persistenceProvider,
-					SerializationProvider<String> serializationProvider) {
+					PersistenceProvider persistenceProvider) {
 		super();
 		this.eventBus = eventBus;
 		this.client = client;
@@ -46,7 +43,6 @@ public class Context {
 		this.properties = properties;
 		this.details = details;
 		this.persistenceProvider = persistenceProvider;
-		this.serializationProvider = serializationProvider;
 		init();
 	}
 

@@ -1,12 +1,14 @@
 package com.thyng.model.dto;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
 import lombok.Data;
 
 @Data
-public class TenantDTO {
+public class TenantDTO implements Serializable {
+	private static final long serialVersionUID = 811520489186816667L;
 
 	private Long id;
 	

@@ -1,23 +1,21 @@
 package com.thyng.gateway.service;
 
+import java.util.ServiceLoader;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import com.thyng.gateway.EventBus;
+import com.thyng.gateway.client.EventPublisherThyngClient;
 import com.thyng.gateway.client.ThyngClient;
-import com.thyng.gateway.client.ThyngClientFactory;
+import com.thyng.gateway.client.ThyngClientBuilder;
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.provider.persistence.ConfigurationStore;
 import com.thyng.gateway.provider.persistence.FilePersistenceProvider;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
 import com.thyng.gateway.provider.property.MutablePropertyProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
-import com.thyng.gateway.provider.serialization.GsonSerializationProvider;
-import com.thyng.gateway.provider.serialization.SerializationProvider;
-import com.thyng.gateway.service.health.HeartbeatService;
-import com.thyng.gateway.service.health.StatusMonitoringService;
-import com.thyng.gateway.service.server.http.HttpServerService;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.util.Lambda;
 
@@ -31,10 +29,7 @@ public class BootstrapService extends CompositeService {
 	public BootstrapService() throws Exception {
 		initShutdownHook();
 		context = buildContext();
-		add(new HeartbeatService(context));
-		//add(new CoapServerService(context));
-		add(new HttpServerService(context));
-		add(new StatusMonitoringService(context));
+		ServiceLoader.load(ServiceBuilder.class).forEach(builder -> add(builder.newInstance(context)));
 	}
 	
 	@Override
@@ -55,24 +50,28 @@ public class BootstrapService extends CompositeService {
 	}
 	
 	private void initShutdownHook(){
-		final Thread thread = new Thread(() -> {
-			try {
-				stop();
-			} catch (Exception e) {
-				e.printStackTrace();
+		final Thread thread = new Thread("Gateway-Shutdown-Hook") {
+			@Override
+			public void run() {
+				try {
+					BootstrapService.this.stop();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-		});
+		};
 		Runtime.getRuntime().addShutdownHook(thread);
 	}
 	
 	private Context buildContext() throws Exception{
 		final PropertyProvider properties = new MutablePropertyProvider().load();
-		final SerializationProvider<String> serializationProvider = new GsonSerializationProvider();
+		final ThreadFactory threadFactory = runnable -> new Thread(runnable, "Gateway-executor-thread");
 		final ScheduledExecutorService executor = Executors.newScheduledThreadPool
-				(Runtime.getRuntime().availableProcessors());
+				(Runtime.getRuntime().availableProcessors(), threadFactory);
 		final EventBus eventBus = new EventBus(executor);
-		final ThyngClient client = new ThyngClientFactory(eventBus, properties, serializationProvider).getClient();
-		final PersistenceProvider persistenceProvider = new FilePersistenceProvider(properties, serializationProvider);
+		final ThyngClientBuilder clientBuilder = ServiceLoader.load(ThyngClientBuilder.class).iterator().next();
+		final ThyngClient client = new EventPublisherThyngClient(eventBus, clientBuilder.newInstance(properties));
+		final PersistenceProvider persistenceProvider = new FilePersistenceProvider(properties);
 		
 		final GatewayConfigurationDTO details =  getDetails(client, persistenceProvider.getConfigurationStore());
 		return Context.builder()
@@ -82,7 +81,6 @@ public class BootstrapService extends CompositeService {
 				.details(details)
 				.client(client)
 				.persistenceProvider(persistenceProvider)
-				.serializationProvider(serializationProvider)
 				.build();
 	}
 	

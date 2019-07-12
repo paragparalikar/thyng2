@@ -9,6 +9,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper=true)
 public class ThingDetailsDTO extends ThingDTO{
+	private static final long serialVersionUID = -3677623336031513193L;
 
 	private Set<SensorDTO> sensors;
 	

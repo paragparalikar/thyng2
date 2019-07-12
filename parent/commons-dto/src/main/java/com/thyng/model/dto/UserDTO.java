@@ -1,5 +1,6 @@
 package com.thyng.model.dto;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import com.thyng.model.enumeration.Authority;
@@ -7,11 +8,12 @@ import com.thyng.model.enumeration.Authority;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class UserDTO implements Serializable {
+	private static final long serialVersionUID = 4876218028798611614L;
 
 	private Long id;
 
-private String prefix;
+	private String prefix;
 	
 	private String givenName;
 	

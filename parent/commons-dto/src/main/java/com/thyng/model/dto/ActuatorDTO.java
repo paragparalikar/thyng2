@@ -1,11 +1,14 @@
 package com.thyng.model.dto;
 
+import java.io.Serializable;
+
 import com.thyng.model.enumeration.Protocol;
 
 import lombok.Data;
 
 @Data
-public class ActuatorDTO{
+public class ActuatorDTO implements Serializable{
+	private static final long serialVersionUID = -2884676290657804833L;
 
 	private Long id;
 

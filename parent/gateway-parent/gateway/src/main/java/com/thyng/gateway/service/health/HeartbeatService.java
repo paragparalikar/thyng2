@@ -38,6 +38,7 @@ public class HeartbeatService implements Service, Runnable, Consumer<Long> {
 	public void run() {
 		try{
 			if(shouldBeat()){
+				log.debug("Sending Heartbeat");
 				context.getClient().heartbeat();
 			}
 		}catch(Exception e){

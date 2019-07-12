@@ -14,7 +14,7 @@ public class CoapServerService extends CoapServer implements Service{
 	private final Context context;
 	
 	public CoapServerService(Context context) {
-		super(context.getProperties().getInteger(KEY_COAP_PORT, 5683));
+		super(context.getDetails().getPort());
 		this.context = context;
 		setExecutor(context.getExecutor(), true);
 		add(new TelemetryResource(context));

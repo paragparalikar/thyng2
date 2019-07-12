@@ -24,7 +24,12 @@ public class GatewayClientFactory {
 		return gatewayClientCache.computeIfAbsent(gatewayId, id -> {
 			final Gateway gateway = gatewayService.findByIdIncludeThings(gatewayId);
 			final GatewayConfigurationDTO details = gatewayMapper.toExtendedDTO(gateway);
-			return new HttpGatewayClient(details);
+			switch(gateway.getProtocol()) {
+				case HTTP: return new HttpGatewayClient(details);
+				case COAP: return new CoapGatewayClient(details);
+				case MQTT: return null;
+				default: return null;
+			}
 		});
 	}
 

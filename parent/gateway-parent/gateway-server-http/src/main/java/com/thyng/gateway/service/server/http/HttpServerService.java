@@ -18,7 +18,7 @@ public class HttpServerService implements Service {
 
 	@Override
 	public void start() throws Exception {
-		final int port = context.getProperties().getInteger("thyng.gateway.http.server.port", 80);
+		final int port = context.getDetails().getPort();
 		final int backlog = context.getProperties().getInteger("thyng.gateway.http.server.backlog", 0);
 		log.info("Starting HTTP server at port "+port+" and backlog "+backlog);
 		httpServer = HttpServer.create(new InetSocketAddress(port), backlog);

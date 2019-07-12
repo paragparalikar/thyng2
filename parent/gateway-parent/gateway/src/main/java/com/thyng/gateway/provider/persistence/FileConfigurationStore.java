@@ -1,6 +1,10 @@
 package com.thyng.gateway.provider.persistence;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -12,7 +16,6 @@ import java.util.Optional;
 
 import com.thyng.gateway.Constant;
 import com.thyng.gateway.provider.property.PropertyProvider;
-import com.thyng.gateway.provider.serialization.SerializationProvider;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
 public class FileConfigurationStore implements ConfigurationStore {
 
 	private final PropertyProvider properties;
-	private final SerializationProvider<String> serializationProvider;
 	
 	@Override
 	public synchronized GatewayConfigurationDTO save(GatewayConfigurationDTO dto) throws Exception{
@@ -34,10 +36,14 @@ public class FileConfigurationStore implements ConfigurationStore {
 				StandardOpenOption.TRUNCATE_EXISTING);
 				final FileLock fileLock = channel.lock()){
 			log.info("Persisting gateway details to "+path);
-			final String json = serializationProvider.serialize(dto);
-			channel.write(ByteBuffer.wrap(json.getBytes(Constant.CHARSET)));
-			log.info("Successfully persisted gateway details to "+path);
-			return dto;
+			try(final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			final ObjectOutputStream oos = new ObjectOutputStream(baos)){
+				oos.writeObject(dto);
+				oos.flush();
+				channel.write(ByteBuffer.wrap(baos.toByteArray()));
+				log.info("Successfully persisted gateway details to "+path);
+				return dto;
+			}
 		}
 	}
 	
@@ -46,9 +52,9 @@ public class FileConfigurationStore implements ConfigurationStore {
 		final Path path = getConfigurationFilePath();
 		if(Files.exists(path)) {
 			log.info("Reading gateway details from "+path);
-			final String json = new String(Files.readAllBytes(path), Constant.CHARSET);
-			final GatewayConfigurationDTO dto = serializationProvider.deserialize(json, 
-					GatewayConfigurationDTO.class);
+			final ByteArrayInputStream bais = new ByteArrayInputStream(Files.readAllBytes(path));
+			final ObjectInputStream ois = new ObjectInputStream(bais);
+			final GatewayConfigurationDTO dto = (GatewayConfigurationDTO) ois.readObject();
 			log.info("Successfully read gateway details from "+path);
 			return Optional.of(dto);
 		}
@@ -57,7 +63,7 @@ public class FileConfigurationStore implements ConfigurationStore {
 	
 	private Path getConfigurationFilePath() throws IOException {
 		return Files.createDirectories(Paths.get(properties.get(Constant.KEY_STORAGE, null)))
-				.resolve(properties.get(Constant.KEY_GATEWAY_ID, null) + ".json");
+				.resolve(properties.get(Constant.KEY_GATEWAY_ID, null) + ".ser");
 	}
 	
 }

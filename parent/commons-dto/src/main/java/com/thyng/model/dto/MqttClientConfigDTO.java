@@ -1,11 +1,14 @@
 package com.thyng.model.dto;
 
+import java.io.Serializable;
+
 import com.thyng.model.enumeration.MqttVersion;
 
 import lombok.Data;
 
 @Data
-public class MqttClientConfigDTO {
+public class MqttClientConfigDTO implements Serializable{
+	private static final long serialVersionUID = -5511682534556865803L;
 
 	private Long id;
 	
