@@ -2,6 +2,7 @@ package com.thyng.gateway.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ScheduledExecutorService;
 
 import com.thyng.gateway.EventBus;
@@ -56,11 +57,19 @@ public class Context {
 		}
 	}
 	
+	public Set<Long> getSensorIds(){
+		return sensorIdToSensorDTO.keySet();
+	}
+	
 	public ThingDetailsDTO getThing(Long sensorId){
 		return sensorIdToThingDTO.get(sensorId);
 	}
 	
 	public SensorDTO getSensor(Long sensorId){
 		return sensorIdToSensorDTO.get(sensorId);
+	}
+	
+	public int getSensorCount() {
+		return sensorIdToSensorDTO.size();
 	}
 }

@@ -22,6 +22,12 @@ public class TestServer {
 				// TODO Auto-generated method stub
 				return null;
 			}
+
+			@Override
+			protected byte handle(byte[] data) {
+				// TODO Auto-generated method stub
+				return 0;
+			}
 			
 		};
 		

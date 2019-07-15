@@ -2,11 +2,15 @@ package com.thyng.model;
 
 import com.thyng.model.dto.GatewayConfigurationDTO;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Value
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RegistrationResponse {
 
-	private final GatewayConfigurationDTO gatewayConfigurationDTO;
+	private GatewayConfigurationDTO gatewayConfigurationDTO;
 
 }

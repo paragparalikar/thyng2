@@ -1,5 +1,6 @@
 package com.thyng.repository;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,8 +24,15 @@ public class InMemoryTelemetryRepository implements TelemetryRepository {
 	
 	@Override
 	public void save(Telemetry telemetry) {
-		log.debug("Persisting telemetry sensorId: "+telemetry.getSensorId()+", uuid: "+telemetry.getUuid());
-		read(telemetry.getSensorId()).putAll(telemetry.getValues());
+		log.info("Persisting telemetry with transactionId : "+telemetry.getTransactionId());
+		for(int index = 0; index < telemetry.getSensorIds().length; index++) {
+			final Long sensorId = telemetry.getSensorIds()[index];
+			final Map<Long, Double> values = read(sensorId);
+			final ByteBuffer byteBuffer = ByteBuffer.wrap(telemetry.getData()[index]);
+			while(byteBuffer.hasRemaining()) {
+				values.put(byteBuffer.getLong(), byteBuffer.getDouble());
+			}
+		}
 	}
 	
 	@Override

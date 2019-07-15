@@ -35,14 +35,13 @@ public abstract class NettyServer {
 	public abstract Object serve(final Object request);
 	
 	@SneakyThrows
-	public NettyServer start() {
+	public void start() {
 		if(isDone(parentNioEventLoopGroup) || isDone(childNioEventLoopGroup)) {
 			throw new IllegalStateException("Server can not be restarted once shutdown");
 		}
 		log.info("Starting Netty server at port " + port);
 		channelFuture = serverBootstrap.bind(port).sync();
 		log.info("Successfully started Netty server at port " + port);
-		return this;
 	}
 	
 	private boolean isDone(final NioEventLoopGroup nioEventLoopGroup) {
@@ -54,7 +53,7 @@ public abstract class NettyServer {
 	}
 	
 	@SneakyThrows
-	public NettyServer stop() {
+	public void stop() {
 		if(null != channelFuture && !channelFuture.isDone()) {
 			log.info("Stopping Netty server");
 			channelFuture.channel().close();
@@ -63,7 +62,6 @@ public abstract class NettyServer {
 			childNioEventLoopGroup.shutdownGracefully();
 			channelFuture.channel().closeFuture().sync();
 		}
-		return this;
 	}	
 }
 

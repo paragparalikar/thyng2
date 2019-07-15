@@ -2,12 +2,12 @@ package com.thyng;
 
 import com.thyng.model.HeartbeatRequest;
 import com.thyng.model.HeartbeatResponse;
+import com.thyng.model.TelemetryRequest;
+import com.thyng.model.TelemetryResponse;
 import com.thyng.model.RegistrationRequest;
 import com.thyng.model.RegistrationResponse;
 import com.thyng.model.SensorStatusRequest;
 import com.thyng.model.SensorStatusResponse;
-import com.thyng.model.TelemetryRequest;
-import com.thyng.model.TelemetryResponse;
 import com.thyng.model.ThingStatusRequest;
 import com.thyng.model.ThingStatusResponse;
 import com.thyng.netty.NettyServer;
@@ -43,4 +43,5 @@ public abstract class AbstractThyngNettyServer extends NettyServer {
 	protected abstract ThingStatusResponse handle(ThingStatusRequest request);
 	
 	protected abstract SensorStatusResponse handle(SensorStatusRequest request);
+	
 }

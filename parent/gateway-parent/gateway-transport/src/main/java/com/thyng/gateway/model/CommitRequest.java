@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CommitRequest {
 
-	private String uuid;
-	
-	private Long sensorId;
+	private Long transactionId;
 
 }

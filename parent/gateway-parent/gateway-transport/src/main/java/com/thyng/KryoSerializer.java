@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.KryoException;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.thyng.gateway.model.CommitRequest;
@@ -48,40 +49,44 @@ public class KryoSerializer implements Serializer {
 	private static final Kryo KRYO = new Kryo();
 
 	static {
-		KRYO.register(Authority.class);
-		KRYO.register(MqttQoS.class);
-		KRYO.register(MqttVersion.class);
-		KRYO.register(Protocol.class);
-		KRYO.register(Telemetry.class);
-		KRYO.register(HashMap.class);
-		KRYO.register(HashSet.class);
-		KRYO.register(ArrayList.class);
-		KRYO.register(ActuatorDTO.class);
-		KRYO.register(GatewayConfigurationDTO.class);
-		KRYO.register(GatewayDetailsDTO.class);
-		KRYO.register(GatewayDTO.class);
-		KRYO.register(GatewayThinDTO.class);
-		KRYO.register(MqttClientConfigDTO.class);
-		KRYO.register(MqttLastWillDTO.class);
-		KRYO.register(SensorDTO.class);
-		KRYO.register(TenantDTO.class);
-		KRYO.register(ThingDetailsDTO.class);
-		KRYO.register(ThingDTO.class);
-		KRYO.register(UserDTO.class);
-		KRYO.register(CommitRequest.class);
-		KRYO.register(CommitResponse.class);
-		KRYO.register(RollbackRequest.class);
-		KRYO.register(RollbackResponse.class);
-		KRYO.register(RegistrationRequest.class);
-		KRYO.register(RegistrationResponse.class);
-		KRYO.register(TelemetryRequest.class);
-		KRYO.register(TelemetryResponse.class);
-		KRYO.register(HeartbeatRequest.class);
-		KRYO.register(HeartbeatResponse.class);
-		KRYO.register(ThingStatusRequest.class);
-		KRYO.register(ThingStatusResponse.class);
-		KRYO.register(SensorStatusRequest.class);
-		KRYO.register(SensorStatusResponse.class);
+		KRYO.register(byte[].class, 10);
+		KRYO.register(long[].class, 11);
+		KRYO.register(byte[][].class, 12);
+		
+		KRYO.register(Authority.class, 20);
+		KRYO.register(MqttQoS.class, 21);
+		KRYO.register(MqttVersion.class, 22);
+		KRYO.register(Protocol.class, 23);
+		KRYO.register(HashMap.class, 24);
+		KRYO.register(HashSet.class, 25);
+		KRYO.register(ArrayList.class, 26);
+		KRYO.register(ActuatorDTO.class, 27);
+		KRYO.register(GatewayConfigurationDTO.class, 28);
+		KRYO.register(GatewayDetailsDTO.class, 29);
+		KRYO.register(GatewayDTO.class, 30);
+		KRYO.register(GatewayThinDTO.class, 31);
+		KRYO.register(MqttClientConfigDTO.class, 32);
+		KRYO.register(MqttLastWillDTO.class, 33);
+		KRYO.register(SensorDTO.class, 34);
+		KRYO.register(TenantDTO.class, 35);
+		KRYO.register(ThingDetailsDTO.class, 36);
+		KRYO.register(ThingDTO.class, 37);
+		KRYO.register(UserDTO.class, 38);
+		KRYO.register(CommitRequest.class, 39);
+		KRYO.register(CommitResponse.class, 40);
+		KRYO.register(RollbackRequest.class, 41);
+		KRYO.register(RollbackResponse.class, 42);
+		KRYO.register(RegistrationRequest.class, 43);
+		KRYO.register(RegistrationResponse.class, 44);
+		KRYO.register(HeartbeatRequest.class, 45);
+		KRYO.register(HeartbeatResponse.class, 46);
+		KRYO.register(ThingStatusRequest.class, 47);
+		KRYO.register(ThingStatusResponse.class, 48);
+		KRYO.register(SensorStatusRequest.class, 49);
+		KRYO.register(SensorStatusResponse.class, 50);
+		KRYO.register(Telemetry.class, 51);
+		KRYO.register(TelemetryRequest.class, 52);
+		KRYO.register(TelemetryResponse.class, 53);
 	}
 
 	private KryoSerializer() {
@@ -89,9 +94,20 @@ public class KryoSerializer implements Serializer {
 	
 	@Override
 	public byte[] serialize(Object object) {
-		final Output output = new Output(4096);
-		KRYO.writeClassAndObject(output, object);
-		return output.toBytes();
+		return serialize(object, 4096);
+	}
+	
+	private byte[] serialize(Object object, int size) {
+		try {
+			final Output output = new Output(size);
+			KRYO.writeClassAndObject(output, object);
+			return output.toBytes();
+		}catch(KryoException e) {
+			if(size < 10240000) {
+				return serialize(object, size*2);
+			}
+			throw e;
+		}
 	}
 	
 	@Override

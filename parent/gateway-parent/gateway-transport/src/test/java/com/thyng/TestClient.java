@@ -1,13 +1,20 @@
 package com.thyng;
 
-import com.thyng.model.HeartbeatRequest;
-import com.thyng.model.HeartbeatResponse;
+import java.nio.ByteBuffer;
+
 import com.thyng.netty.Client;
 import com.thyng.netty.OioClient;
 
 public class TestClient {
-	public static void main(String[] args) {
-		final Client client = new OioClient(9090, "localhost");
-		final HeartbeatResponse response = client.execute(new HeartbeatRequest(164l));
+	public static void main(String[] args) throws InterruptedException {
+		final Client client = new OioClient(8080, "localhost");
+		final ByteBuffer byteBuffer = ByteBuffer.allocate(16);
+		byteBuffer.putLong(197);
+		byteBuffer.putDouble(33);
+		while(true) {
+			System.out.println("Sending telemetry");
+			client.execute(byteBuffer.array());
+			Thread.sleep(100);
+		}
 	}
 }

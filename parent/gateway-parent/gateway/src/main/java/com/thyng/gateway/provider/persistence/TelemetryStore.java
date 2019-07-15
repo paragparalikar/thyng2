@@ -1,22 +1,12 @@
 package com.thyng.gateway.provider.persistence;
 
-import java.util.Map;
-
-import com.thyng.model.Telemetry;
-
 public interface TelemetryStore {
 
-	int getCount();
-	
-	Long getSensorId();
+	byte[] read(Long transactionId);
 
-	TelemetryStore save(Map<String, Double> values);
+	TelemetryStore rollback(Long transactionId);
 
-	Telemetry read();
-
-	TelemetryStore rollback(String uuid);
-
-	TelemetryStore commit(String uuid);
+	TelemetryStore commit(Long transactionId);
 
 	TelemetryStore save(Long timestamp, Double value);
 

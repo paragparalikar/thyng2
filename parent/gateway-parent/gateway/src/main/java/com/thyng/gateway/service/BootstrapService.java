@@ -14,6 +14,8 @@ import com.thyng.gateway.provider.persistence.FilePersistenceProvider;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
 import com.thyng.gateway.provider.property.MutablePropertyProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
+import com.thyng.gateway.service.health.HeartbeatService;
+import com.thyng.gateway.service.health.StatusMonitoringService;
 import com.thyng.model.RegistrationRequest;
 import com.thyng.model.RegistrationResponse;
 import com.thyng.model.dto.GatewayConfigurationDTO;
@@ -31,6 +33,10 @@ public class BootstrapService extends CompositeService {
 	public BootstrapService() throws Exception {
 		initShutdownHook();
 		context = buildContext();
+		add(new HeartbeatService(context));
+		add(new StatusMonitoringService(context));
+		add(new GatewayNettyServerService(context));
+		add(new TelemetryDispatchService(context));
 		ServiceLoader.load(ServiceBuilder.class).forEach(builder -> add(builder.newInstance(context)));
 	}
 	

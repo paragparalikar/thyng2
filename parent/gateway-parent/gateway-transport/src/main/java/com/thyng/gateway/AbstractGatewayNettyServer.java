@@ -14,13 +14,17 @@ public abstract class AbstractGatewayNettyServer extends NettyServer {
 
 	@Override
 	public Object serve(Object request) {
-		if(request instanceof CommitRequest){
+		if(request instanceof byte[]) {
+			return handle((byte[]) request);
+		}else if(request instanceof CommitRequest){
 			return handle((CommitRequest)request);
 		}else if(request instanceof RollbackRequest) {
 			return handle((RollbackRequest)request);
 		}
 		throw new UnsupportedOperationException(request.getClass().getCanonicalName() + " is not supported");
 	}
+	
+	protected abstract byte handle(byte[] data);
 
 	protected abstract CommitResponse handle(CommitRequest request);
 	

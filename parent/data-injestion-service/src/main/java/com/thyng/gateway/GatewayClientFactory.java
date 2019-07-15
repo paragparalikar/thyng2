@@ -21,7 +21,7 @@ public class GatewayClientFactory {
 	
 	public Client get(final Long gatewayId) {
 		return gatewayClientCache.computeIfAbsent(gatewayId, id -> {
-			final Gateway gateway = gatewayService.findByIdIncludeThings(gatewayId);
+			final Gateway gateway = gatewayService.findById(gatewayId);
 			return new OioClient(gateway.getPort(), gateway.getHost());
 		});
 	}

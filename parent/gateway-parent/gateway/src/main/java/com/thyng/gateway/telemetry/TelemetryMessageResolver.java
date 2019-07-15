@@ -1,26 +1,19 @@
 package com.thyng.gateway.telemetry;
 
-import java.util.Arrays;
+import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.thyng.gateway.Constant;
 import com.thyng.gateway.model.TelemetryMessage;
-import com.thyng.util.StringUtil;
 
 public class TelemetryMessageResolver {
 
-	public TelemetryMessage resolve(final String payload) {
+	public TelemetryMessage resolve(final byte[] data) {
+		final ByteBuffer byteBuffer = ByteBuffer.wrap(data);
 		final Map<Long, Double> values = new HashMap<>();
-		Arrays.asList(payload.split(Constant.LINEFEED))
-			.forEach(line -> {
-				if(StringUtil.hasText(line)) {
-					final String[] tokens = line.split(",");
-					if(2 <= tokens.length) {
-						values.put(Long.parseLong(tokens[0]), Double.parseDouble(tokens[1]));
-					}
-				}
-			});
+		while(byteBuffer.hasRemaining()) {
+			values.put(byteBuffer.getLong(), byteBuffer.getDouble());
+		}
 		return TelemetryMessage.builder()
 				.timestamp(System.currentTimeMillis())
 				.values(values)
