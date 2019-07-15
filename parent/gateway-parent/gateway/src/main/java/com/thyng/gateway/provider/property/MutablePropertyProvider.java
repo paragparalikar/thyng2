@@ -20,6 +20,7 @@ public class MutablePropertyProvider implements PropertyProvider{
 		loadDefaultProperties();
 		loadCustomProperties();
 		loadSystemProperties();
+		resolveSystemProperties();
 		return this;
 	}
 	
@@ -52,6 +53,20 @@ public class MutablePropertyProvider implements PropertyProvider{
 	private void loadSystemProperties(){
 		log.info("Loading properties - system");
 		properties.putAll(System.getProperties());
+	}
+	
+	private void resolveSystemProperties() {
+		final String prefix = "system:";
+		log.info("Resolving properties with prefix \""+prefix+"\"");
+		properties.stringPropertyNames().forEach(key -> {
+			final String value = properties.getProperty(key);
+			if(StringUtil.hasText(value) && value.startsWith(prefix)) {
+				final String envKey = value.substring(prefix.length());
+				final String envValue = System.getProperty(envKey, System.getenv(envKey));
+				log.info("Resolving " + key + " using " + envKey + " as " + envValue);
+				properties.put(key, envValue);
+			}
+		});
 	}
 
 	@Override

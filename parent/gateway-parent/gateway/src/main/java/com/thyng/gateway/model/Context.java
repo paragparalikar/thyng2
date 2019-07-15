@@ -5,12 +5,12 @@ import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 
 import com.thyng.gateway.EventBus;
-import com.thyng.gateway.client.ThyngClient;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
+import com.thyng.netty.Client;
 
 import lombok.Builder;
 import lombok.Value;
@@ -18,8 +18,9 @@ import lombok.Value;
 @Value
 public class Context {
 
+	private final Client client;
 	private final EventBus eventBus;
-	private final ThyngClient client;
+	
 	private final GatewayConfigurationDTO details;
 	private final ScheduledExecutorService executor;
 	
@@ -31,7 +32,7 @@ public class Context {
 
 	@Builder
 	public Context(	EventBus eventBus, 
-					ThyngClient client, 
+					Client client, 
 					ScheduledExecutorService executor,
 					PropertyProvider properties, 
 					GatewayConfigurationDTO details, 

@@ -7,16 +7,18 @@ import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import com.thyng.gateway.EventBus;
-import com.thyng.gateway.client.EventPublisherThyngClient;
-import com.thyng.gateway.client.ThyngClient;
-import com.thyng.gateway.client.ThyngClientBuilder;
+import com.thyng.gateway.client.EventPublisherClient;
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.provider.persistence.ConfigurationStore;
 import com.thyng.gateway.provider.persistence.FilePersistenceProvider;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
 import com.thyng.gateway.provider.property.MutablePropertyProvider;
 import com.thyng.gateway.provider.property.PropertyProvider;
+import com.thyng.model.RegistrationRequest;
+import com.thyng.model.RegistrationResponse;
 import com.thyng.model.dto.GatewayConfigurationDTO;
+import com.thyng.netty.Client;
+import com.thyng.netty.OioClient;
 import com.thyng.util.Lambda;
 
 import lombok.extern.slf4j.Slf4j;
@@ -69,11 +71,11 @@ public class BootstrapService extends CompositeService {
 		final ScheduledExecutorService executor = Executors.newScheduledThreadPool
 				(Runtime.getRuntime().availableProcessors(), threadFactory);
 		final EventBus eventBus = new EventBus(executor);
-		final ThyngClientBuilder clientBuilder = ServiceLoader.load(ThyngClientBuilder.class).iterator().next();
-		final ThyngClient client = new EventPublisherThyngClient(eventBus, clientBuilder.newInstance(properties));
 		final PersistenceProvider persistenceProvider = new FilePersistenceProvider(properties);
-		
-		final GatewayConfigurationDTO details =  getDetails(client, persistenceProvider.getConfigurationStore());
+		final Client rawClient = new OioClient(properties.getInteger("thyng.server.port", 9090), 
+				properties.get("thyng.server.host", "localhost"));
+		final Client client = new EventPublisherClient(rawClient, eventBus);
+		final GatewayConfigurationDTO details =  getDetails(properties, client, persistenceProvider.getConfigurationStore());
 		return Context.builder()
 				.eventBus(eventBus)
 				.executor(executor)
@@ -84,17 +86,29 @@ public class BootstrapService extends CompositeService {
 				.build();
 	}
 	
-	private GatewayConfigurationDTO getDetails(final ThyngClient client,
+	private GatewayConfigurationDTO getDetails(
+			final PropertyProvider properties, 
+			final Client client,
 			final ConfigurationStore configurationStore) throws Exception{
 		try{
 			return configurationStore.load().orElseGet(Lambda.uncheck(() -> {
-				log.info("Gateway details not available locally, fetching from server");
-				return configurationStore.save(client.registerAndFetchDetails());
+				log.info("Gateway details not available locally");
+				return configurationStore.save(fetch(properties, client));
 			}));
 		}catch(Exception e){
-			log.error("Could not load details from persistence provider, fetching from server", e);
-			return configurationStore.save(client.registerAndFetchDetails());
+			log.error("Could not load details from persistence provider", e);
+			return configurationStore.save(fetch(properties, client));
 		}
+	}
+	
+	private GatewayConfigurationDTO fetch(final PropertyProvider properties, final Client client) {
+		log.info("Fetching gateway details from Thyng server");
+		final RegistrationResponse response = client.execute(RegistrationRequest.builder()
+				.gatewayId(properties.getLong("thyng.gateway.id", null))
+				.host(properties.get("thyng.gateway.server.host", null))
+				.port(properties.getInteger("thyng.gateway.server.port", null))
+				.build());
+		return response.getGatewayConfigurationDTO();
 	}
 		
 }

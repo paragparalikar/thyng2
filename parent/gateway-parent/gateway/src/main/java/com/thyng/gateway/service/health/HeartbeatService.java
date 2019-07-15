@@ -4,9 +4,11 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-import com.thyng.gateway.client.ThyngClient;
+import com.thyng.gateway.client.EventPublisherClient;
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.service.Service;
+import com.thyng.model.HeartbeatRequest;
+import com.thyng.model.HeartbeatResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +27,7 @@ public class HeartbeatService implements Service, Runnable, Consumer<Long> {
 	public void start() throws Exception {
 		delay = context.getProperties().getLong(KEY_HEARTBEAT_INTERVAL , 10000l);
 		log.info("Starting heartbeat service width interval "+delay);
-		context.getEventBus().register(ThyngClient.ACTIVITY, this);
+		context.getEventBus().register(EventPublisherClient.ACTIVITY, this);
 		future = context.getExecutor().scheduleWithFixedDelay(this, 0, delay, TimeUnit.MILLISECONDS);
 	}
 
@@ -39,7 +41,8 @@ public class HeartbeatService implements Service, Runnable, Consumer<Long> {
 		try{
 			if(shouldBeat()){
 				log.debug("Sending Heartbeat");
-				context.getClient().heartbeat();
+				final Long gatewayId = context.getProperties().getLong("thyng.gateway.id", null);
+				final HeartbeatResponse response = context.getClient().execute(new HeartbeatRequest(gatewayId));
 			}
 		}catch(Exception e){
 			log.error("Failed heartbeat", e);
@@ -52,7 +55,7 @@ public class HeartbeatService implements Service, Runnable, Consumer<Long> {
 	
 	@Override
 	public void stop() throws Exception {
-		context.getEventBus().unregister(ThyngClient.ACTIVITY, this);
+		context.getEventBus().unregister(EventPublisherClient.ACTIVITY, this);
 		if(null != future){
 			log.info("Stopping heartbeat service");
 			future.cancel(true);

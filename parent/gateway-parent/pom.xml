@@ -12,9 +12,6 @@
 
 	<modules>
 		<module>gateway</module>
-		<module>gateway-client</module>
-		<module>gateway-server-http</module>
-		<module>gateway-server-coap</module>
-		<module>thyng-client-http</module>
+		<module>gateway-transport</module>
 	</modules>
 </project>

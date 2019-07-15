@@ -7,6 +7,8 @@ import java.util.function.Consumer;
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.model.SensorStatus;
 import com.thyng.gateway.service.Service;
+import com.thyng.model.SensorStatusRequest;
+import com.thyng.model.SensorStatusResponse;
 import com.thyng.model.dto.SensorDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -57,7 +59,8 @@ public class SensorMonitoringService implements Service, Runnable, Consumer<Long
 	private void statusChanged() throws Exception{
 		active = !active;
 		context.getEventBus().publish(getTopicStatusChanged(sensor.getId()), new SensorStatus(sensor, active));
-		context.getClient().sendSensorStatus(sensor.getId(), active);
+		final SensorStatusRequest request = new SensorStatusRequest(sensor.getId(), active);
+		final SensorStatusResponse response = context.getClient().execute(request);
 	}
 	
 	@Override

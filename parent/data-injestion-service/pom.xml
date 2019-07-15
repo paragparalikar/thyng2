@@ -18,7 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.thyng</groupId>
-			<artifactId>gateway-client</artifactId>
+			<artifactId>gateway-transport</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

@@ -4,6 +4,8 @@ import com.thyng.gateway.model.Context;
 import com.thyng.gateway.model.TelemetryMessage;
 import com.thyng.gateway.provider.persistence.TelemetryStore;
 import com.thyng.model.Telemetry;
+import com.thyng.model.TelemetryRequest;
+import com.thyng.model.TelemetryResponse;
 import com.thyng.model.dto.SensorDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -32,7 +34,8 @@ public class TelemetryMessageDispatcher {
 	private void doDispatch(final TelemetryStore telemetryStore) {
 		final Telemetry telemetry = telemetryStore.read();
 		try {
-			context.getClient().send(telemetry);
+			final TelemetryRequest request = new TelemetryRequest(telemetry);
+			final TelemetryResponse response = context.getClient().execute(request);
 		}catch(Throwable throwable) {
 			log.error("Failed to dispatch telemetry to server\n" 
 					+ throwable.getMessage(), throwable);

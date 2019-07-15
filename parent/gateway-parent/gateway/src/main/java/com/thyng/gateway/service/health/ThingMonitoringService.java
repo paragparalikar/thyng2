@@ -7,6 +7,8 @@ import java.util.function.Consumer;
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.model.SensorStatus;
 import com.thyng.gateway.service.CompositeService;
+import com.thyng.model.ThingStatusRequest;
+import com.thyng.model.ThingStatusResponse;
 import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
 
@@ -42,7 +44,7 @@ public class ThingMonitoringService extends CompositeService implements Consumer
 			sensorStatuses.put(sensorStatus.getSensor().getId(), sensorStatus.getActive());
 			if(!active && sensorStatus.getActive()){
 				active = true;
-				context.getClient().sendThingStatus(thing.getId(), active);
+				updateThingStatus(thing.getId(), active);
 			}else if(active && !sensorStatus.getActive()){
 				Boolean active = false;
 				for(SensorDTO sensor : thing.getSensors()){
@@ -53,12 +55,17 @@ public class ThingMonitoringService extends CompositeService implements Consumer
 				}
 				if(!active){
 					this.active = false;
-					context.getClient().sendThingStatus(thing.getId(), this.active);
+					updateThingStatus(thing.getId(), this.active);
 				}
 			}
 		}catch(Exception e){
 			log.error("Exception while monitoring thing", e);
 		}
+	}
+	
+	private void updateThingStatus(final Long thingId, final Boolean value) {
+		final ThingStatusRequest request = new ThingStatusRequest(thingId, value);
+		final ThingStatusResponse response = context.getClient().execute(request);
 	}
 	
 	@Override
