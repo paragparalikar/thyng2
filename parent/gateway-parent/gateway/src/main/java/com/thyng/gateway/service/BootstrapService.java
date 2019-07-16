@@ -36,7 +36,7 @@ public class BootstrapService extends CompositeService {
 		add(new HeartbeatService(context));
 		add(new StatusMonitoringService(context));
 		add(new GatewayNettyServerService(context));
-		add(new TelemetryDispatchService(context));
+		add(new MetricsDispatchService(context));
 		ServiceLoader.load(ServiceBuilder.class).forEach(builder -> add(builder.newInstance(context)));
 	}
 	

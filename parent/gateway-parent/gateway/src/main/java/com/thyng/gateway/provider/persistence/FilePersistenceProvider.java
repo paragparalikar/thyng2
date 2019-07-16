@@ -12,7 +12,7 @@ import lombok.NonNull;
 public class FilePersistenceProvider implements PersistenceProvider {
 	
 	private final PropertyProvider properties;
-	private final Map<Long, TelemetryStore> telemetryStoreChache = new HashMap<>();
+	private final Map<Long, SensorMetricsStore> sensorMetricsStoreChache = new HashMap<>();
 	private final FileConfigurationStore configurationStore;
 	
 	public FilePersistenceProvider(@NonNull final PropertyProvider properties) {
@@ -21,9 +21,9 @@ public class FilePersistenceProvider implements PersistenceProvider {
 	}
 	
 	@Override
-	public TelemetryStore getTelemetryStore(final Long sensorId) {
-		return telemetryStoreChache.computeIfAbsent(sensorId, id -> {
-			return FileTelemetryStore.builder()
+	public SensorMetricsStore getSensorMetricsStore(final Long sensorId) {
+		return sensorMetricsStoreChache.computeIfAbsent(sensorId, id -> {
+			return FileSensorMetricsStore.builder()
 					.sensorId(id)
 					.baseStoragePath(properties.get(Constant.KEY_STORAGE, null))
 					.build();

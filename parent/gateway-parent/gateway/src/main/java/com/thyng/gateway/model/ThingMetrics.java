@@ -7,8 +7,8 @@ import lombok.Value;
 
 @Value
 @Builder
-public class TelemetryMessage {
-	public static final String RECEIVED = "telemetry-message-received";
+public class ThingMetrics {
+	public static final String RECEIVED = "thing-metrics-received";
 	
 	private final Long timestamp;
 	private final Map<Long,Double> values;

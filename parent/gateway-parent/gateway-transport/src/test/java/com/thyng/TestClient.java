@@ -12,7 +12,7 @@ public class TestClient {
 		byteBuffer.putLong(197);
 		byteBuffer.putDouble(33);
 		while(true) {
-			System.out.println("Sending telemetry");
+			System.out.println("Sending metrics");
 			client.execute(byteBuffer.array());
 			Thread.sleep(100);
 		}

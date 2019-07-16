@@ -1,30 +1,30 @@
 package com.thyng.gateway.service;
 
 import com.thyng.gateway.AbstractGatewayNettyServer;
+import com.thyng.gateway.metrics.ThingMetricsHandler;
 import com.thyng.gateway.model.CommitRequest;
 import com.thyng.gateway.model.CommitResponse;
 import com.thyng.gateway.model.Context;
 import com.thyng.gateway.model.RollbackRequest;
 import com.thyng.gateway.model.RollbackResponse;
-import com.thyng.gateway.provider.persistence.TelemetryStore;
-import com.thyng.gateway.telemetry.TelemetryMessageHandler;
+import com.thyng.gateway.provider.persistence.SensorMetricsStore;
 
 public class GatewayNettyServerService extends AbstractGatewayNettyServer implements Service {
 
 	private final Context context;
-	private final TelemetryMessageHandler telemetryMessageHandler;
+	private final ThingMetricsHandler thingMetricsHandler;
 	
 	public GatewayNettyServerService(final Context context) {
 		super(context.getProperties().getInteger("thyng.gateway.server.port", 8080));
 		this.context = context;
-		this.telemetryMessageHandler = new TelemetryMessageHandler(context);
+		this.thingMetricsHandler = new ThingMetricsHandler(context);
 	}
 	
 	@Override
 	protected CommitResponse handle(CommitRequest request) {
 		context.getSensorIds().forEach(sensorId -> {
-			final TelemetryStore telemetryStroe = context.getPersistenceProvider().getTelemetryStore(sensorId);
-			telemetryStroe.commit(request.getTransactionId());
+			final SensorMetricsStore sensorMetricsStore = context.getPersistenceProvider().getSensorMetricsStore(sensorId);
+			sensorMetricsStore.commit(request.getTransactionId());
 		});
 		return new CommitResponse();
 	}
@@ -32,8 +32,8 @@ public class GatewayNettyServerService extends AbstractGatewayNettyServer implem
 	@Override
 	protected RollbackResponse handle(RollbackRequest request) {
 		context.getSensorIds().forEach(sensorId -> {
-			final TelemetryStore telemetryStroe = context.getPersistenceProvider().getTelemetryStore(sensorId);
-			telemetryStroe.rollback(request.getTransactionId());
+			final SensorMetricsStore sensorMetricsStore = context.getPersistenceProvider().getSensorMetricsStore(sensorId);
+			sensorMetricsStore.rollback(request.getTransactionId());
 		});
 		return new RollbackResponse();
 	}
@@ -51,7 +51,7 @@ public class GatewayNettyServerService extends AbstractGatewayNettyServer implem
 	 */
 	@Override
 	protected byte handle(byte[] data) {
-		telemetryMessageHandler.handle(data);
+		thingMetricsHandler.handle(data);
 		return 0;
 	}
 

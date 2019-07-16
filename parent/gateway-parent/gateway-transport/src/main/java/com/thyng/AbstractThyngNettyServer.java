@@ -2,8 +2,8 @@ package com.thyng;
 
 import com.thyng.model.HeartbeatRequest;
 import com.thyng.model.HeartbeatResponse;
-import com.thyng.model.TelemetryRequest;
-import com.thyng.model.TelemetryResponse;
+import com.thyng.model.GatewayMetricsRequest;
+import com.thyng.model.GatewayMetricsResponse;
 import com.thyng.model.RegistrationRequest;
 import com.thyng.model.RegistrationResponse;
 import com.thyng.model.SensorStatusRequest;
@@ -20,8 +20,8 @@ public abstract class AbstractThyngNettyServer extends NettyServer {
 
 	@Override
 	public Object serve(Object request) {
-		if(request instanceof TelemetryRequest) {
-			return handle((TelemetryRequest) request);
+		if(request instanceof GatewayMetricsRequest) {
+			return handle((GatewayMetricsRequest) request);
 		}else if(request instanceof RegistrationRequest) {
 			return handle((RegistrationRequest) request);
 		}else if(request instanceof HeartbeatRequest) {
@@ -34,7 +34,7 @@ public abstract class AbstractThyngNettyServer extends NettyServer {
 		throw new UnsupportedOperationException(request.getClass().getCanonicalName() + " is not supported");
 	}
 
-	protected abstract TelemetryResponse handle(TelemetryRequest request);
+	protected abstract GatewayMetricsResponse handle(GatewayMetricsRequest request);
 	
 	protected abstract RegistrationResponse handle(RegistrationRequest request);
 	

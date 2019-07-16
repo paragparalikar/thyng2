@@ -16,9 +16,9 @@ import com.thyng.gateway.model.RollbackRequest;
 import com.thyng.mapper.GatewayMapper;
 import com.thyng.model.HeartbeatRequest;
 import com.thyng.model.HeartbeatResponse;
-import com.thyng.model.Telemetry;
-import com.thyng.model.TelemetryRequest;
-import com.thyng.model.TelemetryResponse;
+import com.thyng.model.GatewayMetrics;
+import com.thyng.model.GatewayMetricsRequest;
+import com.thyng.model.GatewayMetricsResponse;
 import com.thyng.model.RegistrationRequest;
 import com.thyng.model.RegistrationResponse;
 import com.thyng.model.SensorStatusRequest;
@@ -28,7 +28,7 @@ import com.thyng.model.ThingStatusResponse;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.netty.Client;
 import com.thyng.service.GatewayService;
-import com.thyng.service.TelemetryService;
+import com.thyng.service.MetricsService;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +40,7 @@ public class ThyngNettyServer extends AbstractThyngNettyServer {
 	private final Executor executor;
 	private final GatewayMapper gatewayMapper;
 	private final GatewayService gatewayService;
-	private final TelemetryService telemetryService;
+	private final MetricsService metricsService;
 	private final GatewayClientFactory gatewayClientFactory;
 	
 	@Autowired
@@ -49,12 +49,12 @@ public class ThyngNettyServer extends AbstractThyngNettyServer {
 			@NonNull final Executor executor,
 			@NonNull final GatewayService gatewayService, 
 			@NonNull final GatewayMapper gatewayMapper, 
-			@NonNull final TelemetryService telemetryService) {
+			@NonNull final MetricsService metricsService) {
 		super(port);
 		this.executor = executor;
 		this.gatewayMapper = gatewayMapper;
 		this.gatewayService = gatewayService;
-		this.telemetryService = telemetryService;
+		this.metricsService = metricsService;
 		this.gatewayClientFactory = new GatewayClientFactory(gatewayService);
 	}
 
@@ -71,21 +71,21 @@ public class ThyngNettyServer extends AbstractThyngNettyServer {
 	}
 
 	@Override
-	protected TelemetryResponse handle(TelemetryRequest request) {
+	protected GatewayMetricsResponse handle(GatewayMetricsRequest request) {
 		executor.execute(() -> {
 			try {
-				final Telemetry telemetry = request.getTelemetry();
-				telemetryService.save(telemetry);
-				final Client client = gatewayClientFactory.get(telemetry.getGatewayId());
-				client.execute(new CommitRequest(telemetry.getTransactionId()));
+				final GatewayMetrics gatewayMetrics = request.getGatewayMetrics();
+				metricsService.save(gatewayMetrics);
+				final Client client = gatewayClientFactory.get(gatewayMetrics.getGatewayId());
+				client.execute(new CommitRequest(gatewayMetrics.getTransactionId()));
 			}catch(Exception exception) {
-				log.error("Failed to persist telemetry", exception);
-				final Telemetry telemetry = request.getTelemetry();
-				final Client client = gatewayClientFactory.get(telemetry.getGatewayId());
-				client.execute(new RollbackRequest(telemetry.getTransactionId()));
+				log.error("Failed to persist gatewayMetrics", exception);
+				final GatewayMetrics gatewayMetrics = request.getGatewayMetrics();
+				final Client client = gatewayClientFactory.get(gatewayMetrics.getGatewayId());
+				client.execute(new RollbackRequest(gatewayMetrics.getTransactionId()));
 			}
 		});
-		return new TelemetryResponse();
+		return new GatewayMetricsResponse();
 	}
 
 	@Override

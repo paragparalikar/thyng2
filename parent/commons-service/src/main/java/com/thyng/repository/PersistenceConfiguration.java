@@ -15,8 +15,8 @@ public class PersistenceConfiguration {
 	
 	@Bean
 	@Profile("dev")
-	public TelemetryRepository telemetryRepository() {
-		return new InMemoryTelemetryRepository();
+	public MetricsRepository metricsRepository() {
+		return new InMemoryMetricsRepository();
 	}
 	
 }

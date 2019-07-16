@@ -6,6 +6,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.KryoException;
@@ -21,9 +22,9 @@ import com.thyng.model.RegistrationRequest;
 import com.thyng.model.RegistrationResponse;
 import com.thyng.model.SensorStatusRequest;
 import com.thyng.model.SensorStatusResponse;
-import com.thyng.model.Telemetry;
-import com.thyng.model.TelemetryRequest;
-import com.thyng.model.TelemetryResponse;
+import com.thyng.model.GatewayMetrics;
+import com.thyng.model.GatewayMetricsRequest;
+import com.thyng.model.GatewayMetricsResponse;
 import com.thyng.model.ThingStatusRequest;
 import com.thyng.model.ThingStatusResponse;
 import com.thyng.model.dto.ActuatorDTO;
@@ -52,6 +53,7 @@ public class KryoSerializer implements Serializer {
 		KRYO.register(byte[].class, 10);
 		KRYO.register(long[].class, 11);
 		KRYO.register(byte[][].class, 12);
+		KRYO.register(long[][].class, 13);
 		
 		KRYO.register(Authority.class, 20);
 		KRYO.register(MqttQoS.class, 21);
@@ -84,9 +86,9 @@ public class KryoSerializer implements Serializer {
 		KRYO.register(ThingStatusResponse.class, 48);
 		KRYO.register(SensorStatusRequest.class, 49);
 		KRYO.register(SensorStatusResponse.class, 50);
-		KRYO.register(Telemetry.class, 51);
-		KRYO.register(TelemetryRequest.class, 52);
-		KRYO.register(TelemetryResponse.class, 53);
+		KRYO.register(GatewayMetrics.class, 51);
+		KRYO.register(GatewayMetricsRequest.class, 52);
+		KRYO.register(GatewayMetricsResponse.class, 53);
 	}
 
 	private KryoSerializer() {

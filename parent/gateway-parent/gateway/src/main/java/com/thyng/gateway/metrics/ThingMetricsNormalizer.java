@@ -1,4 +1,4 @@
-package com.thyng.gateway.telemetry;
+package com.thyng.gateway.metrics;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
@@ -6,7 +6,7 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import com.thyng.gateway.model.Context;
-import com.thyng.gateway.model.TelemetryMessage;
+import com.thyng.gateway.model.ThingMetrics;
 import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
 import com.thyng.util.Lambda;
@@ -15,12 +15,12 @@ import com.thyng.util.StringUtil;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class TelemetryMessageNormalizer {
+public class ThingMetricsNormalizer {
 	private static final ScriptEngineManager scriptEngineManager = new ScriptEngineManager();
 
 	private final Context context;
 	
-	public void normalize(TelemetryMessage message) throws ScriptException {
+	public void normalize(ThingMetrics message) throws ScriptException {
 		message.getValues().replaceAll(Lambda.uncheck((sensorId, value) -> {
 			final SensorDTO sensor = context.getSensor(sensorId);
 			final ThingDetailsDTO thing = context.getThing(sensorId);

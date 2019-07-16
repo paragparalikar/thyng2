@@ -1,5 +1,7 @@
 package com.thyng.model;
 
+import java.util.Map;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,11 +9,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Telemetry {
+public class GatewayMetrics {
 
-	private long gatewayId;
-	private long transactionId;
-	private long[] sensorIds;
-	private byte[][] data;
+	private Long gatewayId;
+	private Long transactionId;
+	private Map<Long, Map<Long,Double>> sensorMetrics;
 	
 }

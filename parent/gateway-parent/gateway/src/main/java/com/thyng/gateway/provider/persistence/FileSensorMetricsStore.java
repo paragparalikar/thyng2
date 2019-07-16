@@ -7,18 +7,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import lombok.Builder;
 import lombok.SneakyThrows;
 
-public class FileTelemetryStore implements TelemetryStore {
+public class FileSensorMetricsStore implements SensorMetricsStore {
 	
 	private final Long sensorId;
 	private final Path storePath;
 	private final String baseStoragePath;
 	
 	@Builder
-	public FileTelemetryStore(final Long sensorId, final String baseStoragePath) {
+	public FileSensorMetricsStore(final Long sensorId, final String baseStoragePath) {
 		this.sensorId = sensorId;
 		this.baseStoragePath = baseStoragePath;
 		this.storePath = buildStorePath();
@@ -27,7 +30,7 @@ public class FileTelemetryStore implements TelemetryStore {
 	@SneakyThrows
 	private Path buildStorePath() {
 		return Files.createDirectories(Paths.get(baseStoragePath, "data", 
-				sensorId.toString())).resolve( "telemetry");
+				sensorId.toString())).resolve( "metrics");
 	}
 	
 	@SneakyThrows
@@ -38,20 +41,25 @@ public class FileTelemetryStore implements TelemetryStore {
 	
 	@Override
 	@SneakyThrows
-	public synchronized byte[] read(Long transactionId) {
+	public synchronized Map<Long, Double> read(Long transactionId) {
 		final Path inFlightPath = getInFlightPath(transactionId);
 		if(Files.exists(storePath, LinkOption.NOFOLLOW_LINKS)) {
 			Files.move(storePath, inFlightPath, 
 					StandardCopyOption.ATOMIC_MOVE, 
 					StandardCopyOption.REPLACE_EXISTING);
-			return Files.readAllBytes(inFlightPath);
+			final Map<Long, Double> map = new HashMap<>();
+			final ByteBuffer byteBuffer = ByteBuffer.wrap(Files.readAllBytes(inFlightPath));
+			while(byteBuffer.hasRemaining()) {
+				map.put(byteBuffer.getLong(), byteBuffer.getDouble());
+			}
+			return map;
 		}
-		return new byte[0];
+		return Collections.emptyMap();
 	}
 
 	@Override
 	@SneakyThrows
-	public synchronized TelemetryStore rollback(Long transactionId) {
+	public synchronized SensorMetricsStore rollback(Long transactionId) {
 		final Path inFlightPath = getInFlightPath(transactionId); 
 		if(Files.exists(inFlightPath, LinkOption.NOFOLLOW_LINKS)) {
 			Files.copy(inFlightPath, Files.newOutputStream(storePath, 
@@ -65,14 +73,14 @@ public class FileTelemetryStore implements TelemetryStore {
 
 	@Override
 	@SneakyThrows
-	public synchronized TelemetryStore commit(Long transactionId) {
+	public synchronized SensorMetricsStore commit(Long transactionId) {
 		Files.deleteIfExists(getInFlightPath(transactionId));
 		return this;
 	}
 
 	@Override
 	@SneakyThrows
-	public synchronized TelemetryStore save(Long timestamp, Double value) {
+	public synchronized SensorMetricsStore save(Long timestamp, Double value) {
 		final ByteBuffer byteBuffer = ByteBuffer.allocate(16);
 		byteBuffer.putLong(timestamp);
 		byteBuffer.putDouble(value);

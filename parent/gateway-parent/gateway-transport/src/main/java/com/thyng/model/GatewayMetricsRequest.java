@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TelemetryRequest {
+public class GatewayMetricsRequest {
 
-	private Telemetry telemetry;
+	private GatewayMetrics gatewayMetrics;
 
 }
