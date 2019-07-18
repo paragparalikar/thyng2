@@ -7,6 +7,7 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import com.thyng.model.GatewayMetrics;
+import com.thyng.model.Metrics;
 
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,14 @@ public class InMemoryMetricsRepository implements MetricsRepository {
 	@Override
 	public Map<Long, Double> read(@NonNull final Long sensorId){
 		return cache.computeIfAbsent(sensorId, id -> new TreeMap<>());
+	}
+	
+	@Override
+	public void save(Metrics metrics) {
+		log.info("Persisting metrics");
+		metrics.getSensorIdValues().forEach((sensorId, values) -> {
+			read(sensorId).putAll(values);
+		});
 	}
 	
 	@Override

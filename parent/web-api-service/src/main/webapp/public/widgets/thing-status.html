@@ -1,0 +1,44 @@
+<div>
+	<table id="thing-status-widget-table">
+		<thead>
+			<tr>
+				<td>Name</td>
+				<td>Status</td>
+				<td>Changed On</td>
+			</tr>
+		</thead>
+	</table>
+</div>
+<script>
+$(function(){
+	var thingStatusWidgetTable = $("#thing-status-widget-table").DataTable({
+		rowId: "id",
+		columns: [
+			{
+				data: "name",
+				render: function(data, type, row){
+					return user.hasAuthority("THING_VIEW") ? '<a href="" onclick="$(\'#thing-status-widget-table\').trigger(\'view-thing\', [this, event,'+row.id+'])">' + data + '</a>' : data;
+				}
+			},
+			{
+				data: "status",
+				render: function(data, type, row){
+					return data;
+				}
+			},
+			{
+				data: "timestamp"
+			}
+		]
+	});
+	
+	$("#thing-status-widget-table").on("view-thing", function(event, element, originalEvent, id){
+		element.blur();
+		originalEvent.preventDefault();
+		row = thingStatusWidgetTable.row("#" + id);
+		$.publish("show-view-thing-modal", row.data().id);
+	});
+	
+	thingStatusWidgetTable.clear().rows.add(things).draw();
+});
+</script>

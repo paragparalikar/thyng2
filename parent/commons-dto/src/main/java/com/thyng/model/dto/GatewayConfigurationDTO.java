@@ -12,6 +12,8 @@ public class GatewayConfigurationDTO extends GatewayDetailsDTO{
 
 	private Set<ThingDetailsDTO> things;
 	
+	private Set<MetricsSchemaDTO> metricsSchemas;
+	
 	private MqttClientConfigDTO mqttClientConfig;
 	
 }

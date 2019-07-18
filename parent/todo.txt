@@ -1,3 +1,4 @@
+
 Secondary cache configuration
 Audit configuration
 Discovery service
@@ -22,8 +23,21 @@ Gateway service
  
  
  Default dashboard may contain:
-  - Location for all things
-  - Tachometer for alive vs total things I have access to
+  - User activity audit : latest count/this month/week/day
+  - Count of dashboard visits by users - this month/week/day
+  - Count of metrics received - this month/week/day
+  - Tachometer for alive vs total things
+  - Tachometer for alive vs total sensors
+  - Tachometer for alive vs total gateways
+  - Table of thing statuses
+  - Table of sensor statuses
+  - Table of gateway statuses
+  - Table of thing status changes : latest count/this month/week/day
+  - Table of sensor status changes : latest count/this month/week/day
+  - Table of gateway status changes : latest count/this month/week/day
+  - Count of alerts generated - this month/week/day
+  - Table of alerts generated
+  - Map showing Location for all things
   - My Favorite Things + alive status - Depending on created, modified and viewed things + add to favorite option
   - My Favorite Rules + evaluation count, hit count - Depending on created, modified and viewed things + add to favorite option
   - My Favorite Commands + execution count - Depending on created, modified and viewed things + add to favorite option
@@ -35,7 +49,7 @@ Thing Details View may contain:
   - Tachometer for alive vs total time
   - Big Icon for alive status + last activity info
   - Audit trail
-  - Activity - some time in past + current using websockets
+  - Activity - some time in past + current using sse
   - Extended audit trail - Users who got the access to thing, rules that matched againt it, command executed on it
   
   

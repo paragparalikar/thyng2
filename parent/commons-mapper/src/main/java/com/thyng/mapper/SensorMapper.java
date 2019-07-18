@@ -10,10 +10,12 @@ import org.mapstruct.Mapping;
 import com.thyng.entity.Sensor;
 import com.thyng.model.dto.SensorDTO;
 
-@Mapper(componentModel="spring")
+@Mapper(componentModel="spring", uses = MetricsSchemaMapper.class)
 public interface SensorMapper {
 
 	@Mapping(source = "thing.id", target = "thingId")
+	@Mapping(source = "metricsSchema.id", target = "metricsSchemaId")
+	@Mapping(source = "metricsSchema.name", target = "metricsSchemaName")
 	SensorDTO toDTO(Sensor sensor);
 	
 	Set<SensorDTO> toDTO(Collection<? extends Sensor> sensors);

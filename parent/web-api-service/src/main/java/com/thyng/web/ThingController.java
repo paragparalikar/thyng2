@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.thyng.entity.Thing;
 import com.thyng.entity.User;
 import com.thyng.mapper.ThingMapper;
+import com.thyng.model.ThingStatus;
 import com.thyng.model.dto.ThingDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
+import com.thyng.model.mapper.ThingStatusMapper;
 import com.thyng.service.ThingService;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class ThingController {
 
 	private final ThingMapper thingMapper;
 	private final ThingService thingService;
+	private final ThingStatusMapper thingStatusMapper;
 	
 	@GetMapping
 	public Set<ThingDTO> findAll(@AuthenticationPrincipal User user){
@@ -43,6 +46,11 @@ public class ThingController {
 	@GetMapping("/{id}")
 	public ThingDetailsDTO findById(@PathVariable @NotNull @Positive Long id){
 		return thingMapper.dto(thingService.findById(id));
+	}
+	
+	@GetMapping("/statuses")
+	public Set<ThingStatus> getThingStatuses(@AuthenticationPrincipal User user){
+		return thingStatusMapper.toThingStatuses(thingService.findByTenantId(user.getTenant().getId()));
 	}
 	
 	@PostMapping

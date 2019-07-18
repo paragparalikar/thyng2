@@ -23,7 +23,7 @@ public class MetricsDispatchService implements Service, Runnable {
 	
 	@Override
 	public void start() throws Exception {
-		final Long delay = context.getProperties().getLong("thyng.gateway.metrics.dispatch.delay" , 1000l);
+		final Long delay = Long.getLong("thyng.gateway.metrics.dispatch.delay" , 1000l);
 		log.info("Starting metrics dispatch service width interval " + delay);
 		future = context.getExecutor().scheduleWithFixedDelay(this, 0, delay, TimeUnit.MILLISECONDS);
 	}

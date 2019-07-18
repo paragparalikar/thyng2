@@ -15,7 +15,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.Optional;
 
 import com.thyng.gateway.Constant;
-import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -25,8 +24,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class FileConfigurationStore implements ConfigurationStore {
 
-	private final PropertyProvider properties;
-	
 	@Override
 	public synchronized GatewayConfigurationDTO save(GatewayConfigurationDTO dto) throws Exception{
 		final Path path = getConfigurationFilePath();
@@ -62,8 +59,8 @@ public class FileConfigurationStore implements ConfigurationStore {
 	}
 	
 	private Path getConfigurationFilePath() throws IOException {
-		return Files.createDirectories(Paths.get(properties.get(Constant.KEY_STORAGE, null)))
-				.resolve(properties.get(Constant.KEY_GATEWAY_ID, null) + ".ser");
+		return Files.createDirectories(Paths.get(System.getProperty(Constant.KEY_STORAGE, null)))
+				.resolve(System.getProperty(Constant.KEY_GATEWAY_ID, null) + ".ser");
 	}
 	
 }

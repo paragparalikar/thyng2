@@ -1,6 +1,9 @@
 package com.thyng.model.dto;
 
 import java.io.Serializable;
+import java.util.Map;
+
+import com.thyng.model.enumeration.Language;
 
 import lombok.Data;
 
@@ -20,12 +23,15 @@ public class SensorDTO implements Serializable{
 	
 	private String unit;
 	
-	private Boolean active;
-	
-	private Integer inactivityPeriod;
+	private Map<String,String> properties;
 	
 	private String normalizer;
 	
-	private Integer batchSize;
+	private Language normalizerLanguage;
 	
+	private Integer inactivityPeriod;
+	
+	private Long metricsSchemaId;
+	
+	private String metricsSchemaName;
 }

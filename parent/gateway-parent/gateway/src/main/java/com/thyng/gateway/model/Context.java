@@ -7,7 +7,6 @@ import java.util.concurrent.ScheduledExecutorService;
 
 import com.thyng.gateway.EventBus;
 import com.thyng.gateway.provider.persistence.PersistenceProvider;
-import com.thyng.gateway.provider.property.PropertyProvider;
 import com.thyng.model.dto.GatewayConfigurationDTO;
 import com.thyng.model.dto.SensorDTO;
 import com.thyng.model.dto.ThingDetailsDTO;
@@ -25,7 +24,6 @@ public class Context {
 	private final GatewayConfigurationDTO details;
 	private final ScheduledExecutorService executor;
 	
-	private final PropertyProvider properties;
 	private final PersistenceProvider persistenceProvider;
 
 	private final Map<Long, ThingDetailsDTO> sensorIdToThingDTO = new HashMap<>();
@@ -35,14 +33,12 @@ public class Context {
 	public Context(	EventBus eventBus, 
 					Client client, 
 					ScheduledExecutorService executor,
-					PropertyProvider properties, 
 					GatewayConfigurationDTO details, 
 					PersistenceProvider persistenceProvider) {
 		super();
 		this.eventBus = eventBus;
 		this.client = client;
 		this.executor = executor;
-		this.properties = properties;
 		this.details = details;
 		this.persistenceProvider = persistenceProvider;
 		init();

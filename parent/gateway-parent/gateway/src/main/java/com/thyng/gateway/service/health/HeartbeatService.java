@@ -25,7 +25,7 @@ public class HeartbeatService implements Service, Runnable, Consumer<Long> {
 	
 	@Override
 	public void start() throws Exception {
-		delay = context.getProperties().getLong(KEY_HEARTBEAT_INTERVAL , 10000l);
+		delay = Long.getLong(KEY_HEARTBEAT_INTERVAL , 10000l);
 		log.info("Starting heartbeat service width interval "+delay);
 		context.getEventBus().register(EventPublisherClient.ACTIVITY, this);
 		future = context.getExecutor().scheduleWithFixedDelay(this, 0, delay, TimeUnit.MILLISECONDS);
@@ -41,7 +41,7 @@ public class HeartbeatService implements Service, Runnable, Consumer<Long> {
 		try{
 			if(shouldBeat()){
 				log.debug("Sending Heartbeat");
-				final Long gatewayId = context.getProperties().getLong("thyng.gateway.id", null);
+				final Long gatewayId = context.getDetails().getId();
 				final HeartbeatResponse response = context.getClient().execute(new HeartbeatRequest(gatewayId));
 			}
 		}catch(Exception e){

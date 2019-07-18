@@ -20,7 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -87,12 +86,6 @@ public class Gateway extends AuditableEntity implements Cloneable{
 	
 	@Positive
 	private Integer port;
-	
-	private Boolean active;
-	
-	@Min(60)
-	@Builder.Default
-	private Integer inactivityPeriod = 60;
 		
 	@OneToMany(mappedBy="gateway", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<com.thyng.entity.Thing> things;
@@ -116,8 +109,6 @@ public class Gateway extends AuditableEntity implements Cloneable{
 				.properties(new HashMap<>(getProperties()))
 				.host(getHost())
 				.port(getPort())
-				.active(getActive())
-				.inactivityPeriod(getInactivityPeriod())
 				.things(new HashSet<>(getThings().stream().map(Thing::clone).collect(Collectors.toSet())))
 				.mqttClientConfig(getMqttClientConfig())
 				.build();

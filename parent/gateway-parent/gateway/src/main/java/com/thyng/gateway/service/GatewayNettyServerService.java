@@ -15,7 +15,7 @@ public class GatewayNettyServerService extends AbstractGatewayNettyServer implem
 	private final ThingMetricsHandler thingMetricsHandler;
 	
 	public GatewayNettyServerService(final Context context) {
-		super(context.getProperties().getInteger("thyng.gateway.server.port", 8080));
+		super(Integer.getInteger("thyng.gateway.server.port", 8080));
 		this.context = context;
 		this.thingMetricsHandler = new ThingMetricsHandler(context);
 	}

@@ -116,8 +116,6 @@ public class MockDataSetupService {
 				.description("Description for Gateway")
 				.tenant(tenant)
 				.properties(buildProperties())
-				.active(0 == (index % 2))
-				.inactivityPeriod(60)
 				.mqttClientConfig(buildMqttClientConfig())
 				.build();
 	}
@@ -142,7 +140,6 @@ public class MockDataSetupService {
 				.id(null)
 				.tenant(tenant)
 				.gateway(gateway)
-				.active(0 == (thingIndex % 3))
 				.description("Description for Thing-"+thingIndex)
 				.name("Thing-"+thingIndex+"-"+gateway.getId())
 				.properties(buildProperties())
@@ -159,7 +156,7 @@ public class MockDataSetupService {
 					.description("Description for Sensor -"+index)
 					.name("Sensor-"+index+"-"+thing.getName())
 					.unit("Unit-"+index)
-					.batchSize(10)
+					.inactivityPeriod(3)
 					.build());
 		}
 		return sensors;

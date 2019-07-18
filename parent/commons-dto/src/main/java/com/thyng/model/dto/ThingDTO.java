@@ -15,8 +15,6 @@ public class ThingDTO implements Serializable{
 	private String name;
 	
 	private String description;
-
-	private Boolean active;
 	
 	private Long gatewayId;
 	

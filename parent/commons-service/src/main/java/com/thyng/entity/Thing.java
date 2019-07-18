@@ -67,8 +67,6 @@ public class Thing extends AuditableEntity implements Cloneable{
 	@ElementCollection
 	private Map<@NotBlank String,@NotBlank  String> properties;
 	
-	private Boolean active;
-	
 	@Override
 	public Thing clone(){
 		return Thing.builder()
@@ -77,7 +75,6 @@ public class Thing extends AuditableEntity implements Cloneable{
 				.description(getDescription())
 				.tenant(getTenant())
 				.gateway(getGateway())
-				.active(getActive())
 				.properties(new HashMap<>(getProperties()))
 				.sensors(new HashSet<>(getSensors()))
 				.actuators(new HashSet<>(getActuators()))
