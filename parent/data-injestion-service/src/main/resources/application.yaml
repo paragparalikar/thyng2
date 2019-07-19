@@ -1,10 +1,15 @@
+spring:
+  application:
+    name: data
+
 server:
-  port:80
-  injestion:
-    port:
-      http: 9090
-      coap: 9091
-      binary: 9092
-      mqtt: 9093
-      lora: 9094
+  port:8080
+
+logging:
+  level:
+    org.springframework: INFO
     
+spring:
+  cloud:
+    refresh:
+      enabled: false

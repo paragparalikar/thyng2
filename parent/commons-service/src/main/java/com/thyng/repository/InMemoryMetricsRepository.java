@@ -24,10 +24,8 @@ public class InMemoryMetricsRepository implements MetricsRepository {
 	
 	@Override
 	public void save(Metrics metrics) {
-		log.info("Persisting metrics");
-		metrics.getSensorIdValues().forEach((sensorId, values) -> {
-			read(sensorId).putAll(values);
-		});
+		log.info("Persisting metrics for sensorId "+metrics.getSensorId());
+		read(metrics.getSensorId()).put(metrics.getTimestamp(), metrics.getValue());
 	}
 	
 	@Override

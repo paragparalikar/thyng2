@@ -1,8 +1,8 @@
 package com.thyng.metrics.endpoint;
 
-public class MqttClientEndpoint {
+public class BinaryMetricsEndpoint {
 
-	public MqttClientEndpoint() {
+	public BinaryMetricsEndpoint() {
 		// TODO Auto-generated constructor stub
 	}
 

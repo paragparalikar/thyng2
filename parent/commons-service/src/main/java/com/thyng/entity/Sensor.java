@@ -76,7 +76,4 @@ public class Sensor extends AuditableEntity {
 	@Enumerated(EnumType.STRING)
 	private Language normalizerLanguage;
 	
-	@ManyToOne
-	private MetricsSchema metricsSchema;
-	
 }

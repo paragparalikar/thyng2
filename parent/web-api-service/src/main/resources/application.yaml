@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: api
+  port: 80
   main:
     banner-mode: CONSOLE
   mvc:

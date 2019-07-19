@@ -30,8 +30,4 @@ public class SensorDTO implements Serializable{
 	private Language normalizerLanguage;
 	
 	private Integer inactivityPeriod;
-	
-	private Long metricsSchemaId;
-	
-	private String metricsSchemaName;
 }

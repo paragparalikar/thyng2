@@ -83,6 +83,5 @@
 		<module>web-api-service</module>
 		<module>data-injestion-service</module>
 		<module>data-processing-service</module>
-		<module>metrics-transport</module>
 	</modules>
 </project>

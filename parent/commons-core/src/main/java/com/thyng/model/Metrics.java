@@ -1,17 +1,19 @@
 package com.thyng.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Metrics {
 
-	private final byte[] data;
-	private final Long metricsSchemaId;
-	private final Map<Long, Map<Long, Double>> sensorIdValues = new HashMap<>();
+	private Object meta;
+	private Double value;
+	private Long sensorId;
+	private Long timestamp;
 	
 }

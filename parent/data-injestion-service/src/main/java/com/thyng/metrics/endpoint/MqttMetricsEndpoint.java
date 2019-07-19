@@ -1,8 +1,9 @@
 package com.thyng.metrics.endpoint;
 
-public class HttpEndpoint {
+// Eclipse Paho client
+public class MqttMetricsEndpoint {
 
-	public HttpEndpoint() {
+	public MqttMetricsEndpoint() {
 		// TODO Auto-generated constructor stub
 	}
 

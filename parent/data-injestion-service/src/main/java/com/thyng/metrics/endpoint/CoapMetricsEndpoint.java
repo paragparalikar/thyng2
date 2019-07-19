@@ -1,8 +1,9 @@
 package com.thyng.metrics.endpoint;
 
-public class CoapEndpoint {
+// Californium server
+public class CoapMetricsEndpoint {
 
-	public CoapEndpoint() {
+	public CoapMetricsEndpoint() {
 		// TODO Auto-generated constructor stub
 	}
 
