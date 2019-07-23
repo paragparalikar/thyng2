@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thyng.entity.Thing;
-import com.thyng.entity.User;
-import com.thyng.mapper.ThingMapper;
+import com.thyng.domain.thing.Thing;
+import com.thyng.domain.thing.ThingDTO;
+import com.thyng.domain.thing.ThingDetailsDTO;
+import com.thyng.domain.thing.ThingMapper;
+import com.thyng.domain.thing.ThingService;
+import com.thyng.domain.user.User;
 import com.thyng.model.ThingStatus;
-import com.thyng.model.dto.ThingDTO;
-import com.thyng.model.dto.ThingDetailsDTO;
 import com.thyng.model.mapper.ThingStatusMapper;
-import com.thyng.service.ThingService;
 
 import lombok.RequiredArgsConstructor;
 

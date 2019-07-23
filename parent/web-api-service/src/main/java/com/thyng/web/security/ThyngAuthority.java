@@ -2,7 +2,7 @@ package com.thyng.web.security;
 
 import org.springframework.security.core.GrantedAuthority;
 
-import com.thyng.model.enumeration.Authority;
+import com.thyng.domain.user.Authority;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

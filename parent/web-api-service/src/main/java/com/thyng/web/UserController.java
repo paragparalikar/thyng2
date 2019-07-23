@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thyng.entity.User;
-import com.thyng.mapper.UserMapper;
-import com.thyng.model.dto.UserDTO;
-import com.thyng.service.UserService;
+import com.thyng.domain.user.User;
+import com.thyng.domain.user.UserDTO;
+import com.thyng.domain.user.UserMapper;
+import com.thyng.domain.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 

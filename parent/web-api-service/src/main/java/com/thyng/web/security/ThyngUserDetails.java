@@ -10,10 +10,10 @@ import org.springframework.security.core.CredentialsContainer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.thyng.entity.Name;
-import com.thyng.entity.Tenant;
-import com.thyng.entity.User;
-import com.thyng.model.enumeration.Authority;
+import com.thyng.domain.tenant.Tenant;
+import com.thyng.domain.user.Authority;
+import com.thyng.domain.user.Name;
+import com.thyng.domain.user.User;
 
 import lombok.Builder;
 import lombok.NonNull;

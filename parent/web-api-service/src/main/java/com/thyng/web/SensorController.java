@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thyng.entity.Sensor;
-import com.thyng.entity.Thing;
-import com.thyng.mapper.SensorMapper;
-import com.thyng.model.dto.SensorDTO;
-import com.thyng.service.SensorService;
-import com.thyng.service.ThingService;
+import com.thyng.domain.sensor.Sensor;
+import com.thyng.domain.sensor.SensorDTO;
+import com.thyng.domain.sensor.SensorMapper;
+import com.thyng.domain.sensor.SensorService;
+import com.thyng.domain.thing.Thing;
+import com.thyng.domain.thing.ThingService;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

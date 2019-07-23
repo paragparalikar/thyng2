@@ -1,5 +1,5 @@
-<%@ page import="com.thyng.model.dto.UserDTO" %>
-<%@ page import="com.thyng.model.enumeration.Authority" %>
+<%@ page import="com.thyng.domain.user.UserDTO" %>
+<%@ page import="com.thyng.domain.user.Authority" %>
 <% final UserDTO user = (UserDTO)session.getAttribute("user"); %>
 <html>
 <head>

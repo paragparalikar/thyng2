@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.mapstruct.Mapper;
 
-import com.thyng.entity.Thing;
+import com.thyng.domain.thing.Thing;
 import com.thyng.model.ThingStatus;
 
 @Mapper(componentModel = "spring")

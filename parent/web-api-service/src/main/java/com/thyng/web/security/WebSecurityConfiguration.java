@@ -22,10 +22,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thyng.entity.User;
-import com.thyng.mapper.UserMapper;
-import com.thyng.model.dto.UserDTO;
-import com.thyng.service.UserService;
+import com.thyng.domain.user.User;
+import com.thyng.domain.user.UserDTO;
+import com.thyng.domain.user.UserMapper;
+import com.thyng.domain.user.UserService;
 
 @Configuration
 @EnableWebSecurity 

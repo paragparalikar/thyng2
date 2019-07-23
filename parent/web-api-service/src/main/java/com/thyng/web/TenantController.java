@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thyng.entity.Tenant;
-import com.thyng.mapper.TenantMapper;
-import com.thyng.model.dto.TenantDTO;
-import com.thyng.service.TenantService;
+import com.thyng.domain.tenant.Tenant;
+import com.thyng.domain.tenant.TenantDTO;
+import com.thyng.domain.tenant.TenantMapper;
+import com.thyng.domain.tenant.TenantService;
 
 import lombok.RequiredArgsConstructor;
 

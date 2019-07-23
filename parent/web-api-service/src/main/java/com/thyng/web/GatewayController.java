@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thyng.entity.Gateway;
-import com.thyng.entity.User;
-import com.thyng.mapper.GatewayMapper;
-import com.thyng.model.dto.GatewayDTO;
-import com.thyng.model.dto.GatewayDetailsDTO;
-import com.thyng.model.dto.GatewayThinDTO;
-import com.thyng.service.GatewayService;
+import com.thyng.domain.gateway.Gateway;
+import com.thyng.domain.gateway.GatewayDTO;
+import com.thyng.domain.gateway.GatewayDetailsDTO;
+import com.thyng.domain.gateway.GatewayMapper;
+import com.thyng.domain.gateway.GatewayService;
+import com.thyng.domain.gateway.GatewayThinDTO;
+import com.thyng.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
 

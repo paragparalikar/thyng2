@@ -1,4 +1,4 @@
-<%@ page import="com.thyng.model.enumeration.Protocol" %>
+<%@ page import="com.thyng.domain.actuator.Protocol" %>
 
 <div id="actuator-edit-modal" class="modal" style="display: block;">
 	<div class="modal-content" style="width: 50em;">

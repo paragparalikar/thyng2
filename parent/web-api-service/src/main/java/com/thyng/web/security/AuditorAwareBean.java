@@ -6,7 +6,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.thyng.entity.User;
+import com.thyng.domain.user.User;
 
 public class AuditorAwareBean implements AuditorAware<Long>{
 

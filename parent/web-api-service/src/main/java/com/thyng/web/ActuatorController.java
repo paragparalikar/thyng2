@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.thyng.entity.Actuator;
-import com.thyng.entity.Thing;
-import com.thyng.mapper.ActuatorMapper;
-import com.thyng.model.dto.ActuatorDTO;
-import com.thyng.service.ActuatorService;
-import com.thyng.service.ThingService;
+import com.thyng.domain.actuator.Actuator;
+import com.thyng.domain.actuator.ActuatorDTO;
+import com.thyng.domain.actuator.ActuatorMapper;
+import com.thyng.domain.actuator.ActuatorService;
+import com.thyng.domain.thing.Thing;
+import com.thyng.domain.thing.ThingService;
 
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

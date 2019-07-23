@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import com.thyng.model.exception.NotFoundException;
+import com.thyng.configuration.persistence.NotFoundException;
 
 @ControllerAdvice
 public class WebControllerAdvice {
